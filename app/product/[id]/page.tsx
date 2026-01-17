@@ -15,6 +15,7 @@ export default function ProductPage({ params }: ProductPageProps) {
     p => p.id === params.id || p.id === params.id
   )[0];
 
+  console.log('ProductPage.params', params);
   console.log('ProductPage.params.id', params.id);
   console.log('ProductPage.product', product);
 
