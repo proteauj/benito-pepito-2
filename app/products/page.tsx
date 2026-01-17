@@ -102,7 +102,7 @@ export default function ProductsPage() {
           <ProductCard
             key={product.id}
             product={product}
-            onClick={() => router.push(`/product/${product.id}`)}
+            onClick={() => router.push(`/product/${product.slug}`)}
           />
         ))}
       </div>
@@ -114,7 +114,7 @@ export default function ProductsPage() {
             <SwiperSlide key={product.id} virtualIndex={index}>
               <ProductCard
                 product={product}
-                onClick={() => router.push(`/product/${product.id}`)}
+                onClick={() => router.push(`/product/${product.slug}`)}
               />
             </SwiperSlide>
           ))}
