@@ -12,6 +12,7 @@ import { products } from '../data/products';
 
 export default function ProductsPage() {
   const router = useRouter();
+
   const [materialFilter, setMaterialFilter] = useState('');
   const [sizeFilter, setSizeFilter] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
@@ -41,6 +42,7 @@ export default function ProductsPage() {
     <div className="container mx-auto px-4 py-8">
       {/* FILTRES */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+        {/* Matériel */}
         <div>
           <label className="mr-2 font-semibold">Filtrer par matière:</label>
           <select
@@ -62,6 +64,7 @@ export default function ProductsPage() {
           </select>
         </div>
 
+        {/* Grandeur */}
         <div>
           <label className="mr-2 font-semibold">Filtrer par grandeur:</label>
           <select
@@ -79,6 +82,7 @@ export default function ProductsPage() {
           </select>
         </div>
 
+        {/* Tri prix */}
         <div>
           <label className="mr-2 font-semibold">Trier par prix:</label>
           <select
