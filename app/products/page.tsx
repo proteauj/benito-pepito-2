@@ -10,7 +10,7 @@ import ProductCard from './ProductCard';
 import { Product } from '../../lib/db/types';
 import { products } from '../data/products';
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
   const router = useRouter();
 
   const [materialFilter, setMaterialFilter] = useState('');
@@ -18,25 +18,31 @@ export default function ProductsPage() {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   const filteredProducts = useMemo(() => {
-    let result = products;
+    const filterAndSort = async () => {
+      const response = await fetch('/api/products');
+      let result: Product[] = await response.json();
 
-    if (materialFilter) {
-      result = result.filter(
-        p => p.material?.toLowerCase() === materialFilter.toLowerCase()
-      );
-    }
-    if (sizeFilter) {
-      result = result.filter(
-        p => p.size?.toLowerCase() === sizeFilter.toLowerCase()
-      );
-    }
+      if (materialFilter) {
+        result = result.filter(
+          p => p.material?.toLowerCase() === materialFilter.toLowerCase()
+        );
+      }
+      if (sizeFilter) {
+        result = result.filter(
+          p => p.size?.toLowerCase() === sizeFilter.toLowerCase()
+        );
+      }
 
-    return result.sort((a, b) =>
-      sortOrder === 'asc' ? (a.price || 0) - (b.price || 0) : (b.price || 0) - (a.price || 0)
-    );
+      return result.sort((a, b) =>
+        sortOrder === 'asc' ? (a.price || 0) - (b.price || 0) : (b.price || 0) - (a.price || 0)
+      );
+    };
+    
+    return filterAndSort();
   }, [materialFilter, sizeFilter, sortOrder]);
 
-  if (!filteredProducts.length) return <p>Aucun produit disponible</p>;
+  const products = await filteredProducts;
+  if (!products.length) return <p>Aucun produit disponible</p>;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -98,7 +104,7 @@ export default function ProductsPage() {
 
       {/* GRID Desktop */}
       <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredProducts.map(product => (
+        {products.map(product => (
           <ProductCard
             key={product.id}
             product={product}
@@ -110,7 +116,7 @@ export default function ProductsPage() {
       {/* SWIPER Mobile */}
       <div className="md:hidden">
         <Swiper slidesPerView={1} spaceBetween={10} autoHeight virtual modules={[Virtual]}>
-          {filteredProducts.map((product, index) => (
+          {products.map((product, index) => (
             <SwiperSlide key={product.id} virtualIndex={index}>
               <ProductCard
                 product={product}

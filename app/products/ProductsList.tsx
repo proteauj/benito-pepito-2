@@ -14,14 +14,17 @@ export default function ProductsList() {
   const category = searchParams.get('category') || 'All';
 
   useEffect(() => {
-    fetch('/api/products')
-      .then(res => res.json())
-      .then(data => {
-        let allProducts: Product[] = [];
-        Object.values(data).forEach(arr => allProducts.push(...(arr as Product[])));
-        setProducts(category === 'All' ? allProducts : allProducts.filter(p => p.category === category));
-      })
-      .finally(() => setLoading(false));
+    const fetchProducts = async () => {
+      const response = await fetch('/api/products');
+      let result: Product[] = await response.json();
+
+      let allProducts: Product[] = [];
+      Object.values(result).forEach(arr => allProducts.push(...(arr as unknown as Product[])));
+      setProducts(category === 'All' ? allProducts : allProducts.filter(p => p.category === category));
+
+      setLoading(false);
+    };
+    fetchProducts();
   }, [category]);
 
   if (loading) return <p>Chargement des œuvres...</p>;
