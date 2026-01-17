@@ -1,6 +1,7 @@
-html, body {
-  height: 100%;
-  overflow: hidden;
+html, body, #__next {
+  height: auto;       /* permet le scroll vertical naturel */
+  overflow-x: hidden; /* empêche scroll horizontal */
+  overflow-y: auto;   /* scroll vertical activé */
 }
 
 /* Solid gold background for the top menu header */
