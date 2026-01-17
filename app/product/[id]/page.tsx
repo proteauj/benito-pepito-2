@@ -21,7 +21,7 @@ export default function ProductPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-white">
+    <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
         {/* ProductCard en mode full + expanded */}
         <ProductCard
