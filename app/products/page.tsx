@@ -1,101 +1,79 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Virtual, Grid } from 'swiper/modules';
+import { useRouter } from 'next/navigation';
 import 'swiper/css';
 import 'swiper/css/grid';
 import 'swiper/css/virtual';
-import { useRouter } from 'next/navigation';
 import ProductCard from './ProductCard';
 import { Product } from '../../lib/db/types';
 
-interface ProductsPageProps {
-  products: Product[];
-}
-
-export default function ProductsPage({ products }: ProductsPageProps) {
+export default function ProductsPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<string>(''); // filtre material
   const router = useRouter();
-  const [columnCount, setColumnCount] = useState(4);
 
-  // --- Responsivité ---
   useEffect(() => {
-    const updateColumns = () => {
-      const width = window.innerWidth;
-      if (width >= 1280) setColumnCount(4);
-      else if (width >= 768) setColumnCount(2);
-      else setColumnCount(1);
-    };
-    updateColumns();
-    window.addEventListener('resize', updateColumns);
-    return () => window.removeEventListener('resize', updateColumns);
+    // Remplace par ton fetch API
+    fetch('/api/products')
+      .then(res => res.json())
+      .then((data: Product[]) => setProducts(data))
+      .finally(() => setLoading(false));
   }, []);
 
-  // --- Filtre multi-sélection ---
-  const allMaterials = Array.from(
-    new Set(products.flatMap((p) => p.material?.split(',') || []))
-  );
+  if (loading) return <p>Chargement des produits...</p>;
+  if (!products.length) return <p>Aucun produit disponible</p>;
 
-  const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
+  // On applique le filtre material si sélectionné
+  const filteredProducts = filter
+    ? products.filter(p => p.material?.toLowerCase() === filter.toLowerCase())
+    : products;
 
-  const toggleMaterial = (mat: string) => {
-    setSelectedMaterials((prev) =>
-      prev.includes(mat) ? prev.filter((m) => m !== mat) : [...prev, mat]
-    );
-  };
-
-  const filteredProducts =
-    selectedMaterials.length === 0
-      ? products
-      : products.filter((p) =>
-          (p.material?.split(',') || []).some((m) =>
-            selectedMaterials.includes(m)
-          )
-        );
+  if (!filteredProducts.length)
+    return <p>Aucun produit ne correspond au filtre "{filter}"</p>;
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* --- Filtre Multi-sélection --- */}
-      <div className="mb-4 flex gap-2 flex-wrap">
-        {allMaterials.map((mat) => {
-          const isSelected = selectedMaterials.includes(mat);
-          return (
-            <button
-              key={mat}
-              className={`px-3 py-1 rounded border ${
-                isSelected
-                  ? 'bg-blue-600 text-white border-blue-600'
-                  : 'bg-gray-200 border-gray-300'
-              }`}
-              onClick={() => toggleMaterial(mat)}
-            >
-              {mat}
-            </button>
-          );
-        })}
-        <button
-          className="px-3 py-1 rounded border bg-gray-200 border-gray-300"
-          onClick={() => setSelectedMaterials([])}
+      {/* Filtre Material */}
+      <div className="mb-4">
+        <label className="mr-2 font-semibold">Filtrer par matière:</label>
+        <select
+          value={filter}
+          onChange={e => setFilter(e.target.value)}
+          className="border px-2 py-1"
         >
-          Réinitialiser
-        </button>
+          <option value="">Tous</option>
+          <option value="Marble">Marbre</option>
+          <option value="Bronze">Bronze</option>
+          <option value="Rocks">Roches</option>
+          <option value="Metal">Métal</option>
+          <option value="Moss">Mousse</option>
+          <option value="Wood">Bois</option>
+          <option value="False Weed">Fausses herbes</option>
+          <option value="Acrylic on Canvas">Acrylique sur toile</option>
+          <option value="Oil on Canvas">Huile sur toile</option>
+          <option value="Acrylic on Wood">Acrylique sur bois</option>
+        </select>
       </div>
 
-      {/* --- Swiper Grid Responsive --- */}
+      {/* Swiper */}
       <Swiper
         direction="vertical"
-        slidesPerView={columnCount} // nombre de slides visibles selon écran
+        slidesPerView={4}
         spaceBetween={20}
         grid={{ rows: 1, fill: 'row' }}
         virtual
         modules={[Virtual, Grid]}
-        style={{ height: 'calc(100vh - 150px)' }}
+        style={{ height: 'calc(100vh - 120px)' }}
       >
         {filteredProducts.map((product, index) => (
           <SwiperSlide key={product.id} virtualIndex={index}>
             <ProductCard
               product={product}
-              onClick={() => router.push(`/product/${product.id}`)} // ✅ OK maintenant
+              onClick={() => router.push(`/product/${product.id}`)}
             />
           </SwiperSlide>
         ))}
