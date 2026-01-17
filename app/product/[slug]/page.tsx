@@ -6,9 +6,9 @@ interface ProductPageProps {
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
-  // recherche par slug ou fallback id
+  // Cherche par slug ou id, insensible à la casse
   const product = products.find(
-    p => p.slug === params.slug || p.id === params.slug
+    p => p.slug.toLowerCase() === params.slug.toLowerCase() || p.id === params.slug
   );
 
   if (!product) return <p>Produit introuvable</p>;

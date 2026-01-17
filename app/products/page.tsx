@@ -7,12 +7,11 @@ import { useRouter } from 'next/navigation';
 import 'swiper/css';
 import 'swiper/css/virtual';
 import ProductCard from './ProductCard';
+import { Product } from '../../lib/db/types';
 import { products } from '../data/products';
-import { useI18n } from '../i18n/I18nProvider'
 
 export default function ProductsPage() {
   const router = useRouter();
-  const { t } = useI18n();
 
   const [materialFilter, setMaterialFilter] = useState('');
   const [sizeFilter, setSizeFilter] = useState('');
@@ -43,6 +42,7 @@ export default function ProductsPage() {
     <div className="container mx-auto px-4 py-8">
       {/* FILTRES */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+        {/* Matériel */}
         <div>
           <label className="mr-2 font-semibold">Filtrer par matière:</label>
           <select
@@ -64,6 +64,7 @@ export default function ProductsPage() {
           </select>
         </div>
 
+        {/* Grandeur */}
         <div>
           <label className="mr-2 font-semibold">Filtrer par grandeur:</label>
           <select
@@ -81,6 +82,7 @@ export default function ProductsPage() {
           </select>
         </div>
 
+        {/* Tri prix */}
         <div>
           <label className="mr-2 font-semibold">Trier par prix:</label>
           <select
@@ -88,8 +90,8 @@ export default function ProductsPage() {
             onChange={e => setSortOrder(e.target.value as 'asc' | 'desc')}
             className="border px-2 py-1"
           >
-            <option value="asc">{t('sort.priceAsc')}</option>
-            <option value="desc">{t('sort.priceDesc')}</option>
+            <option value="asc">Prix croissant</option>
+            <option value="desc">Prix décroissant</option>
           </select>
         </div>
       </div>
