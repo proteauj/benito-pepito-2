@@ -11,7 +11,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   console.log('ProductPage.products', products);
   
   // Recherche par slug ou par id pour plus de robustesse
-  const product = products.find(
+  const product = products.filter(
     p => p.id === params.id || p.id === params.id
   );
 
