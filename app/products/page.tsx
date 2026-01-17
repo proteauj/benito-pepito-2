@@ -129,7 +129,7 @@ export default function ProductsPage() {
 
       {/* SWIPER HORIZONTAL POUR MOBILE */}
       <div className="md:hidden">
-        <Swiper slidesPerView={1} spaceBetween={10}>
+        <Swiper slidesPerView={1} spaceBetween={10} autoHeight>
           {filteredProducts.map((product) => (
             <SwiperSlide key={product.id}>
               <ProductCard
