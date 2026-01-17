@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Order {
+  id                String           @id @default(cuid())
+  stripeSessionId   String           @unique
+  customerEmail     String?
+  productIds        String[]
+  totalAmount       Int
+  currency          String           @default("CAD")
+  status            String           @default("pending")
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  billingAddress    CustomerAddress? @relation("OrderBillingAddress", fields: [billingAddressId], references: [id])
+  shippingAddress   CustomerAddress? @relation("OrderShippingAddress", fields: [shippingAddressId], references: [id])
+  billingAddressId  String?
+  shippingAddressId String?
+}
+
+model CustomerAddress {
+  id         String   @id @default(cuid())
+  type       String // 'billing' or 'shipping'
+  line1      String?
+  line2      String?
+  city       String?
+  state      String?
+  postalCode String?
+  country    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  billingOrders  Order[] @relation("OrderBillingAddress")
+  shippingOrders Order[] @relation("OrderShippingAddress")
+}
+
+model ProductStock {
+  productId String   @id
+  inStock   Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+}
+
+model Migration {
+  id         String   @id @default(cuid())
+  name       String   @unique
+  executedAt DateTime @default(now())
+}
+
+model PageVisit {
+  id        String   @id @default(cuid())
+  page      String // 'homepage', 'products', etc.
+  visitorIP String? // Optional for privacy
+  userAgent String? // Optional browser info
+  visitedAt DateTime @default(now())
+}
