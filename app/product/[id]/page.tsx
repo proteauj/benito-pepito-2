@@ -25,19 +25,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <ProductCard product={product} />
-      <div className="mt-4">
-        <h2 className="text-lg font-semibold">Matériel</h2>
-        <p>{product.materialFr}</p>
-      </div>
-      <div className="mt-2">
-        <h2 className="text-lg font-semibold">Taille</h2>
-        <p>{product.size}</p>
-      </div>
-      <div className="mt-2">
-        <h2 className="text-lg font-semibold">Prix</h2>
-        <p>{product.price} $</p>
-      </div>
+      <ProductCard product={product} variant="full" />
     </div>
   );
 }
