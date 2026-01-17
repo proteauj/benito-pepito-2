@@ -1,50 +1,28 @@
-'use client';
-
-import Image from 'next/image';
-import { useState } from 'react';
+import React from 'react';
 import { Product } from '../../lib/db/types';
 
 interface Props {
   product: Product;
-  priority?: boolean;
+  onClick?: () => void; // ✅ Assure-toi que onClick est ici
 }
 
-export default function ProductCard({ product, priority }: Props) {
-  const [showFull, setShowFull] = useState(false);
-
+export default function ProductCard({ product, onClick }: Props) {
   return (
     <div
-      className="bg-white rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow duration-200 cursor-pointer flex flex-col"
-      onClick={() => setShowFull(true)}
+      className="cursor-pointer border rounded overflow-hidden shadow hover:shadow-lg transition"
+      onClick={onClick} // ✅ Utilisation
     >
-      {/* Image Container */}
-      <div className="relative w-full" style={{ height: 'auto', minHeight: '0' }}>
-        <Image
+      <div className="relative w-full h-[200px] md:h-[250px] lg:h-[300px]">
+        <img
           src={product.imageThumbnail}
           alt={product.title}
-          fill
-          className="object-contain"
-          sizes="(max-width: 768px) 100vw, 25vw"
-          placeholder="blur"
-          blurDataURL={product.imageThumbnail}
+          className="object-contain w-full h-full"
+          loading="lazy"
         />
-
-        {/* Full-size seulement au clic */}
-        {showFull && (
-          <Image
-            src={product.image}
-            alt={product.title}
-            fill
-            style={{ objectFit: 'cover' }}
-            priority
-          />
-        )}
       </div>
-
-      {/* Section info prend juste la place nécessaire */}
-      <div className="p-3 flex flex-col gap-1">
+      <div className="p-4">
         <h2 className="font-semibold text-lg">{product.title}</h2>
-        <p className="text-gray-600 text-sm">{product.size}</p>
+        <p className="text-gray-600">{product.material}</p>
         <p className="mt-1 font-bold">${product.price}</p>
       </div>
     </div>

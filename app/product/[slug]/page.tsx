@@ -1,58 +1,30 @@
-// app/product/[slug]/page.tsx
+import React from 'react';
+import { Product } from '../../../lib/db/types';
 
-'use client';
-
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';  // on utilise 'next/navigation' pour la redirection
-
-interface Product {
-  id: string;
-  title: string;
-  description: string;
-  price: number;
-  imageThumbnail: string;
+interface Props {
+  product: Product;
+  onClick?: () => void; // ✅ Assure-toi que onClick est ici
 }
 
-interface ProductPageProps {
-  params: { slug: string }; // on récupère 'slug' dans params
-}
-
-export default function ProductPage({ params }: ProductPageProps) {
-  const { slug } = params;  // récupération du slug à partir de params
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchProduct() {
-      try {
-        const res = await fetch(`/api/products?slug=${slug}`);
-        if (!res.ok) {
-          throw new Error('Produit introuvable');
-        }
-        const data = await res.json();
-        setProduct(data);
-      } catch (err) {
-        setError('Produit introuvable');
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    if (slug) {
-      fetchProduct();
-    }
-  }, [slug]);
-
-  if (loading) return <div>Chargement...</div>;
-  if (error || !product) return <div>{error || 'Produit introuvable'}</div>;
-
+export default function ProductCard({ product, onClick }: Props) {
   return (
-    <div>
-      <h1>{product.title}</h1>
-      <img src={product.imageThumbnail} alt={product.title} />
-      <p>{product.description}</p>
-      <p>Prix: ${product.price}</p>
+    <div
+      className="cursor-pointer border rounded overflow-hidden shadow hover:shadow-lg transition"
+      onClick={onClick} // ✅ Utilisation
+    >
+      <div className="relative w-full h-[200px] md:h-[250px] lg:h-[300px]">
+        <img
+          src={product.imageThumbnail}
+          alt={product.title}
+          className="object-contain w-full h-full"
+          loading="lazy"
+        />
+      </div>
+      <div className="p-4">
+        <h2 className="font-semibold text-lg">{product.title}</h2>
+        <p className="text-gray-600">{product.material}</p>
+        <p className="mt-1 font-bold">${product.price}</p>
+      </div>
     </div>
   );
 }
