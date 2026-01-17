@@ -1,7 +1,11 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Virtual } from 'swiper/modules';
 import { useRouter } from 'next/navigation';
+import 'swiper/css';
+import 'swiper/css/virtual';
 import ProductCard from './ProductCard';
 import { products } from '../data/products';
 import { Product } from '../../lib/db/types';
@@ -13,7 +17,6 @@ export default function ProductsPage() {
   const [sizeFilter, setSizeFilter] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  // Filtrage et tri en mémoire, pas d'appel API
   const filteredProducts = useMemo(() => {
     let result = products;
 
@@ -22,7 +25,6 @@ export default function ProductsPage() {
         p => p.material?.toLowerCase() === materialFilter.toLowerCase()
       );
     }
-
     if (sizeFilter) {
       result = result.filter(
         p => p.size?.toLowerCase() === sizeFilter.toLowerCase()
@@ -62,7 +64,7 @@ export default function ProductsPage() {
         </div>
 
         <div>
-          <label className="mr-2 font-semibold">Taille:</label>
+          <label className="mr-2 font-semibold">Grandeur:</label>
           <select
             value={sizeFilter}
             onChange={e => setSizeFilter(e.target.value)}
@@ -92,7 +94,7 @@ export default function ProductsPage() {
       </div>
 
       {/* GRID Desktop */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.map(product => (
           <ProductCard
             key={product.id}
@@ -100,6 +102,20 @@ export default function ProductsPage() {
             onClick={() => router.push(`/product/${product.id}`)}
           />
         ))}
+      </div>
+
+      {/* SWIPER Mobile */}
+      <div className="md:hidden">
+        <Swiper slidesPerView={1} spaceBetween={10} autoHeight virtual modules={[Virtual]}>
+          {filteredProducts.map((product, index) => (
+            <SwiperSlide key={product.id} virtualIndex={index}>
+              <ProductCard
+                product={product}
+                onClick={() => router.push(`/product/${product.id}`)}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </div>
   );
