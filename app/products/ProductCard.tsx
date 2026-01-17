@@ -5,41 +5,52 @@ import { Product } from '../../lib/db/types';
 interface ProductCardProps {
   product: Product;
   onClick?: () => void;
-  variant?: 'mini' | 'full'; // nouveau prop
+  expanded?: boolean;       // Affiche plus d'infos si true
+  useThumbnail?: boolean;   // Affiche la miniature si true, sinon image principale
 }
 
-export default function ProductCard({ product, onClick, variant = 'mini' }: ProductCardProps) {
-  const isFull = variant === 'full';
+export default function ProductCard({
+  product,
+  onClick,
+  expanded = false,
+  useThumbnail = false,
+}: ProductCardProps) {
+  const imgSrc = useThumbnail ? product.imageThumbnail || product.image : product.image;
 
   return (
     <div
-      className={`cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition ${
-        isFull ? 'bg-white p-6' : ''
+      className={`cursor-pointer rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 ${
+        expanded ? 'md:h-[600px]' : ''
       }`}
       onClick={onClick}
     >
-      <div className={`relative w-full ${isFull ? 'h-auto flex justify-center' : 'h-64 overflow-hidden'}`}>
+      {/* Image */}
+      <div className={`w-full ${expanded ? 'h-96 md:h-[400px]' : 'h-64'} overflow-hidden`}>
         <img
-          src={product.image || '/placeholder.png'}
-          alt={product.title}
-          className={`object-cover ${isFull ? 'object-contain max-h-[600px]' : 'w-full h-full'}`}
+          src={imgSrc || '/placeholder.png'}
+          alt={product.titleFr || product.title}
+          className={`w-full h-full object-cover transform ${
+            expanded ? 'hover:scale-105' : ''
+          } transition-transform duration-300`}
         />
       </div>
 
-      <div className={`absolute bottom-0 left-0 right-0 ${isFull ? 'relative bg-white bg-opacity-100 p-4 mt-4' : 'bg-white bg-opacity-90 p-2'}`}>
-        <p className={`${isFull ? 'text-xl font-bold' : 'font-bold text-sm'}`}>{product.titleFr || product.title}</p>
-        <p className={`${isFull ? 'text-lg' : 'text-xs'}`}>{product.price} $</p>
+      {/* Infos */}
+      <div className="bg-white p-4">
+        <p className={`font-bold ${expanded ? 'text-lg' : 'text-sm'} truncate`}>
+          {product.titleFr || product.title}
+        </p>
+        <p className={`${expanded ? 'text-md' : 'text-xs'} text-gray-700`}>
+          {product.price} $
+        </p>
 
-        {isFull && (
-          <div className="mt-2 space-y-1">
-            <p><span className="font-semibold">Matériel: </span>{product.materialFr || product.material}</p>
-            <p><span className="font-semibold">Taille: </span>{product.size}</p>
-            <p><span className="font-semibold">Année: </span>{product.year}</p>
-            <p><span className="font-semibold">Catégorie: </span>{product.category}</p>
-            <p className={product.inStock ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'}>
-              {product.inStock ? 'En stock' : 'Rupture de stock'}
-            </p>
-          </div>
+        {expanded && (
+          <>
+            {product.size && <p className="text-sm text-gray-500 mt-1">Taille: {product.size}</p>}
+            {product.materialFr && (
+              <p className="text-sm text-gray-500">Matériel: {product.materialFr}</p>
+            )}
+          </>
         )}
       </div>
     </div>

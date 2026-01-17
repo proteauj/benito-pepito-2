@@ -1,14 +1,9 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Virtual } from 'swiper/modules';
-import { useRouter } from 'next/navigation';
-import 'swiper/css';
-import 'swiper/css/virtual';
-import ProductCard from './ProductCard';
+import { useState } from 'react';
+import ProductCard from '../products/ProductCard';
 import { products } from '../data/products';
-import { Product } from '../../lib/db/types';
+import { useRouter } from 'next/navigation';
 
 export default function ProductsPage() {
   const router = useRouter();
@@ -17,24 +12,11 @@ export default function ProductsPage() {
   const [sizeFilter, setSizeFilter] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  const filteredProducts = useMemo(() => {
-    let result = products;
-
-    if (materialFilter) {
-      result = result.filter(
-        p => p.material?.toLowerCase() === materialFilter.toLowerCase()
-      );
-    }
-    if (sizeFilter) {
-      result = result.filter(
-        p => p.size?.toLowerCase() === sizeFilter.toLowerCase()
-      );
-    }
-
-    return result.sort((a, b) =>
-      sortOrder === 'asc' ? (a.price || 0) - (b.price || 0) : (b.price || 0) - (a.price || 0)
-    );
-  }, [materialFilter, sizeFilter, sortOrder]);
+  // Filtrage et tri simples
+  const filteredProducts = products
+    .filter(p => (materialFilter ? p.material?.toLowerCase() === materialFilter.toLowerCase() : true))
+    .filter(p => (sizeFilter ? p.size?.toLowerCase() === sizeFilter.toLowerCase() : true))
+    .sort((a, b) => (sortOrder === 'asc' ? (a.price || 0) - (b.price || 0) : (b.price || 0) - (a.price || 0)));
 
   if (!filteredProducts.length) return <p>Aucun produit disponible</p>;
 
@@ -43,7 +25,7 @@ export default function ProductsPage() {
       {/* FILTRES */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
         <div>
-          <label className="mr-2 font-semibold">Matériel:</label>
+          <label className="mr-2 font-semibold">Filtrer par matière:</label>
           <select
             value={materialFilter}
             onChange={e => setMaterialFilter(e.target.value)}
@@ -64,7 +46,7 @@ export default function ProductsPage() {
         </div>
 
         <div>
-          <label className="mr-2 font-semibold">Grandeur:</label>
+          <label className="mr-2 font-semibold">Filtrer par grandeur:</label>
           <select
             value={sizeFilter}
             onChange={e => setSizeFilter(e.target.value)}
@@ -94,7 +76,7 @@ export default function ProductsPage() {
       </div>
 
       {/* GRID Desktop */}
-      <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.map(product => (
           <ProductCard
             key={product.id}
@@ -102,20 +84,6 @@ export default function ProductsPage() {
             onClick={() => router.push(`/product/${product.id}`)}
           />
         ))}
-      </div>
-
-      {/* SWIPER Mobile */}
-      <div className="md:hidden">
-        <Swiper slidesPerView={1} spaceBetween={10} autoHeight virtual modules={[Virtual]}>
-          {filteredProducts.map((product, index) => (
-            <SwiperSlide key={product.id} virtualIndex={index}>
-              <ProductCard
-                product={product}
-                onClick={() => router.push(`/product/${product.id}`)}
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
       </div>
     </div>
   );
