@@ -13,7 +13,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   // Recherche par slug ou par id pour plus de robustesse
   const product = products.filter(
     p => p.id === params.id || p.id === params.id
-  );
+  )[0];
 
   console.log('ProductPage.params.id', params.id);
   console.log('ProductPage.product', product);
