@@ -1,3 +1,4 @@
+// app/products/page.tsx
 'use client';
 
 import { useState, useMemo } from 'react';
@@ -6,38 +7,38 @@ import { Virtual } from 'swiper/modules';
 import { useRouter } from 'next/navigation';
 import 'swiper/css';
 import 'swiper/css/virtual';
-import ProductCard from './ProductCard';
+import ProductCard from '../products/ProductCard';
 import { Product } from '../../lib/db/types';
 import { products } from '../data/products';
 
-export default async function ProductsPage() {
+export default function ProductsPage() {
   const router = useRouter();
 
   const [materialFilter, setMaterialFilter] = useState('');
   const [sizeFilter, setSizeFilter] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-    console.log('Products', products);
-    const filterAndSort = async (): Promise<Product[]> => {
-      var result: any[] =[];
-      if (materialFilter) {
-        result = products.filter(
-          (p: Product) => p.material && p.material.toLowerCase() === materialFilter.toLowerCase()
-        );
-      }
-      if (sizeFilter) {
-        result = result.filter(
-          p => p.size?.toLowerCase() === sizeFilter.toLowerCase()
-        );
-      }
+  // Filtrage et tri synchrones directement à partir du JSON
+  const filteredProducts = useMemo(() => {
+    let result = products;
 
-      return result.sort((a, b) =>
-        sortOrder === 'asc' ? (a.price || 0) - (b.price || 0) : (b.price || 0) - (a.price || 0)
+    if (materialFilter) {
+      result = result.filter(
+        p => p.material?.toLowerCase() === materialFilter.toLowerCase()
       );
-    };
-    const productsSorted = await filterAndSort();
+    }
+    if (sizeFilter) {
+      result = result.filter(
+        p => p.size?.toLowerCase() === sizeFilter.toLowerCase()
+      );
+    }
 
-  if (!products.length) return <p>Aucun produit disponible</p>;
+    return result.sort((a, b) =>
+      sortOrder === 'asc' ? (a.price || 0) - (b.price || 0) : (b.price || 0) - (a.price || 0)
+    );
+  }, [materialFilter, sizeFilter, sortOrder]);
+
+  if (!filteredProducts.length) return <p>Aucun produit disponible</p>;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -99,7 +100,7 @@ export default async function ProductsPage() {
 
       {/* GRID Desktop */}
       <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map(product => (
+        {filteredProducts.map(product => (
           <ProductCard
             key={product.id}
             product={product}
@@ -111,7 +112,7 @@ export default async function ProductsPage() {
       {/* SWIPER Mobile */}
       <div className="md:hidden">
         <Swiper slidesPerView={1} spaceBetween={10} autoHeight virtual modules={[Virtual]}>
-          {products.map((product, index) => (
+          {filteredProducts.map((product, index) => (
             <SwiperSlide key={product.id} virtualIndex={index}>
               <ProductCard
                 product={product}
