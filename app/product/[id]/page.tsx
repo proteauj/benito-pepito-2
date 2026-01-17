@@ -11,7 +11,7 @@ export default function ProductPage() {
   if (!product) return <p>Produit introuvable</p>;
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-white">
+    <div className="container mx-auto px-4 py-8">
       <ProductCard
         product={product}
         useFullImg={true}

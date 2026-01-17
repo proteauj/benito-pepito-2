@@ -27,7 +27,7 @@ export default function ProductCard({
 
   return (
     <div
-      className={`cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition ${expanded ? 'max-w-2xl mx-auto' : ''}`}
+      className={`bg-white cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition ${expanded ? 'max-w-2xl mx-auto' : ''}`}
       onClick={onClick}
     >
       <div className={`${expanded ? 'w-full h-[600px]' : 'w-full h-64'} overflow-hidden`}>
