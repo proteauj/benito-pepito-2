@@ -8,6 +8,8 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, onClick }: ProductCardProps) {
+  console.log('ProductCard.product', product);
+
   return (
     <div
       className="cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition"
