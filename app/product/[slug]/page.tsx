@@ -9,19 +9,17 @@ interface ProductCardProps {
 export default function ProductCard({ product, onClick }: ProductCardProps) {
   return (
     <div
-      className="relative cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition"
+      className="relative cursor-pointer overflow-hidden rounded shadow hover:shadow-lg transition"
       onClick={onClick}
     >
-      {/* Conteneur image avec ratio fixe */}
-      <div className="w-full aspect-[4/5]">
-        <img
-          src={product.image}
-          alt={product.title}
-          className="w-full h-full object-cover"
-        />
-      </div>
+      {/* Image responsive sans hauteur fixe */}
+      <img
+        src={product.image}
+        alt={product.title}
+        className="w-full h-auto object-cover"
+      />
 
-      {/* Overlay Titre + Prix */}
+      {/* Overlay titre + prix sur fond blanc */}
       <div className="absolute bottom-0 left-0 w-full bg-white p-2">
         <h3 className="text-black font-semibold text-sm sm:text-base md:text-lg">
           {product.title}
