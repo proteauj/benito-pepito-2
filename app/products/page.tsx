@@ -17,7 +17,7 @@ export default async function ProductsPage() {
   const [sizeFilter, setSizeFilter] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  const filteredProducts = useMemo(() => {
+    console.log('Products', products);
     const filterAndSort = async (): Promise<Product[]> => {
       var result: any[] =[];
       if (materialFilter) {
@@ -35,11 +35,8 @@ export default async function ProductsPage() {
         sortOrder === 'asc' ? (a.price || 0) - (b.price || 0) : (b.price || 0) - (a.price || 0)
       );
     };
-    
-    return filterAndSort();
-  }, [materialFilter, sizeFilter, sortOrder]);
+    const productsSorted = await filterAndSort();
 
-  const products = await filteredProducts;
   if (!products.length) return <p>Aucun produit disponible</p>;
 
   return (
