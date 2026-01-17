@@ -6,7 +6,7 @@ interface ProductPageProps {
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
-  // Cherche par slug et fallback par id pour compatibilité
+  // recherche par slug ou fallback id
   const product = products.find(
     p => p.slug === params.slug || p.id === params.slug
   );
