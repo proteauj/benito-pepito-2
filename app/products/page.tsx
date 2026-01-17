@@ -114,7 +114,7 @@ export default function ProductsPage() {
             <SwiperSlide key={product.id} virtualIndex={index}>
               <ProductCard
                 product={product}
-                onClick={() => router.push(`/product/${product.slug}`)}
+                onClick={() => router.push(`/product/${product.id}`)}
               />
             </SwiperSlide>
           ))}

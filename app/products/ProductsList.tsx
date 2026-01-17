@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ProductCard from './ProductCard';
 import { Product } from '@/lib/db/types';
+import { useRouter } from 'next/navigation';
 
 export default function ProductsList() {
+  const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
@@ -32,7 +34,7 @@ export default function ProductsList() {
           <ProductCard
             key={product.id}
             product={product}
-            onClick={() => {} } // optional if needed
+            onClick={() => router.push(`/product/${product.id}`)}
           />
         ))}
       </div>

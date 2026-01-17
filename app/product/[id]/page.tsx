@@ -2,13 +2,13 @@ import { products } from '../../data/products';
 import ProductCard from '../../products/ProductCard';
 
 interface ProductPageProps {
-  params: { slug: string };
+  params: { id: string };
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
   // Recherche par slug ou par id pour plus de robustesse
   const product = products.find(
-    p => p.slug === params.slug || p.id === params.slug
+    p => p.id === params.id || p.id === params.id
   );
 
   if (!product) return <p>Produit introuvable</p>;
