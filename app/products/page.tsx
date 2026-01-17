@@ -103,7 +103,7 @@ export default async function ProductsPage() {
           <ProductCard
             key={product.id}
             product={product}
-            onClick={() => router.push(`/products/${product.id}`)}
+            onClick={() => router.push(`/product/${product.id}`)}
           />
         ))}
       </div>
@@ -115,7 +115,7 @@ export default async function ProductsPage() {
             <SwiperSlide key={product.id} virtualIndex={index}>
               <ProductCard
                 product={product}
-                onClick={() => router.push(`/products/${product.id}`)}
+                onClick={() => router.push(`/product/${product.id}`)}
               />
             </SwiperSlide>
           ))}

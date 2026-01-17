@@ -34,7 +34,7 @@ export default function ProductsList() {
           <ProductCard
             key={product.id}
             product={product}
-            onClick={() => router.push(`/products/${product.id}`)}
+            onClick={() => router.push(`/product/${product.id}`)}
           />
         ))}
       </div>
