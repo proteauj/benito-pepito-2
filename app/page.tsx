@@ -6,6 +6,7 @@ import { useCart } from './contexts/CartContext';
 import CategorySlideshow from './components/CategorySlideshow';
 import { useI18n } from './i18n/I18nProvider';
 import { Product } from '../lib/db/types';
+import { products } from './data/products';
 
 type ProductsByCategory = Record<string, Product[]>;
 
@@ -20,7 +21,7 @@ export default function HomePage() {
   useEffect(() => {
     const trackVisit = async () => {
       try {
-        await fetch('/api/analytics/track?page=homepage', {
+        await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/analytics/track?page=homepage'`, {
           method: 'POST',
         });
       } catch (error) {
@@ -35,11 +36,13 @@ export default function HomePage() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const response = await fetch('/api/products');
-        if (!response.ok) {
-          throw new Error('Failed to fetch products');
-        }
-        const data = await response.json();
+        const data = products.reduce((acc: ProductsByCategory, product) => {
+          if (!acc[product.category]) {
+            acc[product.category] = [];
+          }
+          acc[product.category].push(product);
+          return acc;
+        }, {});
         setProductsByCategory(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');

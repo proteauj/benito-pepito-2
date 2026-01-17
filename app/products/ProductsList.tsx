@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import ProductCard from './ProductCard';
 import { Product } from '@/lib/db/types';
 import { useRouter } from 'next/navigation';
+import { products } from '../data/products';
 
 export default function ProductsList() {
   const router = useRouter();
@@ -15,12 +16,8 @@ export default function ProductsList() {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await fetch('/api/products');
-      let result: Product[] = await response.json();
-
-      let allProducts: Product[] = [];
-      Object.values(result).forEach(arr => allProducts.push(...(arr as unknown as Product[])));
-      setProducts(category === 'All' ? allProducts : allProducts.filter(p => p.category === category));
+      Object.values(products).forEach(arr => products.push(...(arr as unknown as Product[])));
+      setProducts(category === 'All' ? products : products.filter(p => p.category === category));
 
       setLoading(false);
     };
