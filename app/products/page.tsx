@@ -1,88 +1,127 @@
-// app/product/[id]/page.tsx
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { products } from '../data/products';
-import ProductCard from './ProductCard';
+import { useState, useMemo } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Virtual } from 'swiper/modules';
+import { useRouter } from 'next/navigation';
 import 'swiper/css';
 import 'swiper/css/virtual';
+import ProductCard from './ProductCard';
+import { Product } from '@/lib/db/types';
 import { useI18n } from '@/i18n/I18nProvider';
+import { products } from '../data/products';
 
-interface ProductPageProps {
-  params: { id: string };
-}
-
-export default function ProductPage({ params }: ProductPageProps) {
-  const router = useRouter();
+export default function ProductsPage() {
   const { t } = useI18n();
+  const router = useRouter();
 
-  const product = products.find(p => p.id.toString() === params.id);
-  if (!product) return <p>Produit introuvable</p>;
+  const [materialFilter, setMaterialFilter] = useState('');
+  const [sizeFilter, setSizeFilter] = useState('');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  // Autres œuvres de la même catégorie
-  const relatedProducts = products.filter(
-    p => p.id !== product.id && p.category === product.category
-  );
+  const filteredProducts = useMemo(() => {
+    let result = products;
+
+    if (materialFilter) {
+      result = result.filter(
+        p => p.material?.toLowerCase() === materialFilter.toLowerCase()
+      );
+    }
+    if (sizeFilter) {
+      result = result.filter(
+        p => p.size?.toLowerCase() === sizeFilter.toLowerCase()
+      );
+    }
+
+    return result.sort((a, b) =>
+      sortOrder === 'asc' ? (a.price || 0) - (b.price || 0) : (b.price || 0) - (a.price || 0)
+    );
+  }, [materialFilter, sizeFilter, sortOrder]);
+
+  if (!filteredProducts.length) return <p>Aucun produit disponible</p>;
 
   return (
-    <div className="container mx-auto px-4 py-8 space-y-6">
-      {/* Produit principal */}
-      <div className="max-w-3xl mx-auto">
-        <ProductCard product={product} />
-        <div className="mt-4 space-y-2">
-          <h2 className="text-lg font-semibold">{t('material')}</h2>
-          <p>{product.materialFr}</p>
+    <div className="container mx-auto px-4 py-8">
+      {/* FILTRES */}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+        {/* Matériel */}
+        <div>
+          <label className="mr-2 font-semibold">Filtrer par matière:</label>
+          <select
+            value={materialFilter}
+            onChange={e => setMaterialFilter(e.target.value)}
+            className="border px-2 py-1"
+          >
+            <option value="">Tous</option>
+            <option value="Marble">Marbre</option>
+            <option value="Bronze">Bronze</option>
+            <option value="Rocks">Roches</option>
+            <option value="Metal">Métal</option>
+            <option value="Moss">Mousse</option>
+            <option value="Wood">Bois</option>
+            <option value="False Weed">Fausses herbes</option>
+            <option value="Acrylic on Canvas">Acrylique sur toile</option>
+            <option value="Oil on Canvas">Huile sur toile</option>
+            <option value="Acrylic on Wood">Acrylique sur bois</option>
+          </select>
+        </div>
 
-          <h2 className="text-lg font-semibold">{t('size')}</h2>
-          <p>{product.size}</p>
+        {/* Grandeur */}
+        <div>
+          <label className="mr-2 font-semibold">Filtrer par grandeur:</label>
+          <select
+            value={sizeFilter}
+            onChange={e => setSizeFilter(e.target.value)}
+            className="border px-2 py-1"
+          >
+            <option value="">Toutes</option>
+            <option value="XS">XS</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+            <option value="XXL">XXL</option>
+          </select>
+        </div>
 
-          <h2 className="text-lg font-semibold">{t('description')}</h2>
-          <p>{product.title}</p>
-
-          <h2 className="text-lg font-semibold">{t('price')}</h2>
-          <p>{product.price} $</p>
+        {/* Tri prix */}
+        <div>
+          <label className="mr-2 font-semibold">Trier par prix:</label>
+          <select
+            value={sortOrder}
+            onChange={e => setSortOrder(e.target.value as 'asc' | 'desc')}
+            className="border px-2 py-1"
+          >
+            <option value="asc">{t('sort.priceAsc')}</option>
+            <option value="desc">{t('sort.priceDesc')}</option>
+          </select>
         </div>
       </div>
 
-      {/* Mini-galerie d’autres œuvres */}
-      {relatedProducts.length > 0 && (
-        <div>
-          <h3 className="text-xl font-semibold mb-4">{t('relatedWorks')}</h3>
+      {/* GRID Desktop */}
+      <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {filteredProducts.map(product => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            onClick={() => router.push(`/product/${product.id}`)}
+          />
+        ))}
+      </div>
 
-          {/* Desktop Grid */}
-          <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {relatedProducts.map(p => (
+      {/* SWIPER Mobile */}
+      <div className="md:hidden">
+        <Swiper slidesPerView={1} spaceBetween={10} autoHeight virtual modules={[Virtual]}>
+          {filteredProducts.map((product, index) => (
+            <SwiperSlide key={product.id} virtualIndex={index}>
               <ProductCard
-                key={p.id}
-                product={p}
-                onClick={() => router.push(`/product/${p.id}`)}
+                product={product}
+                onClick={() => router.push(`/product/${product.id}`)}
               />
-            ))}
-          </div>
-
-          {/* Mobile Swiper */}
-          <div className="md:hidden">
-            <Swiper
-              slidesPerView={1}
-              spaceBetween={10}
-              autoHeight
-              virtual
-              modules={[Virtual]}
-            >
-              {relatedProducts.map((p, index) => (
-                <SwiperSlide key={p.id} virtualIndex={index}>
-                  <ProductCard
-                    product={p}
-                    onClick={() => router.push(`/product/${p.id}`)}
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        </div>
-      )}
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
     </div>
   );
 }
