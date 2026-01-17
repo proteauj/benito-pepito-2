@@ -6,7 +6,6 @@ interface ProductPageProps {
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
-  // Chercher par slug
   const product = products.find(p => p.slug === params.slug);
 
   if (!product) return <p>Produit introuvable</p>;

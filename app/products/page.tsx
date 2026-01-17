@@ -8,9 +8,11 @@ import 'swiper/css';
 import 'swiper/css/virtual';
 import ProductCard from './ProductCard';
 import { Product } from '../../lib/db/types';
+import { useI18n } from '../i18n/I18nProvider'
 import { products } from '../data/products';
 
 export default function ProductsPage() {
+  const { t } = useI18n();
   const router = useRouter();
 
   const [materialFilter, setMaterialFilter] = useState('');
@@ -90,8 +92,8 @@ export default function ProductsPage() {
             onChange={e => setSortOrder(e.target.value as 'asc' | 'desc')}
             className="border px-2 py-1"
           >
-            <option value="asc">Prix croissant</option>
-            <option value="desc">Prix décroissant</option>
+            <option value="asc">{t('sort.priceAsc')}</option>
+            <option value="desc">{t('sort.priceDesc')}</option>
           </select>
         </div>
       </div>
@@ -102,7 +104,7 @@ export default function ProductsPage() {
           <ProductCard
             key={product.id}
             product={product}
-            onClick={() => router.push(`/product/${product.slug}`)}
+            onClick={() => router.push(`/product/${product.slug}`)} // ⚡ utiliser slug
           />
         ))}
       </div>
@@ -114,7 +116,7 @@ export default function ProductsPage() {
             <SwiperSlide key={product.id} virtualIndex={index}>
               <ProductCard
                 product={product}
-                onClick={() => router.push(`/product/${product.slug}`)}
+                onClick={() => router.push(`/product/${product.slug}`)} // ⚡ utiliser slug
               />
             </SwiperSlide>
           ))}
