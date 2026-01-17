@@ -1,55 +1,55 @@
 'use client';
 
 import { Product } from '../../lib/db/types';
+import { useCart } from '../contexts/CartContext';
+import { useState } from 'react';
 
 interface ProductCardProps {
   product: Product;
   onClick?: () => void;
-  expanded?: boolean;       // Affiche plus d'infos si true
-  useThumbnail?: boolean;   // Affiche la miniature si true, sinon image principale
+  expanded?: boolean;       // si true, affiche toutes les infos
+  useFullImage?: boolean;   // si true, affiche image haute qualité
 }
 
-export default function ProductCard({
-  product,
-  onClick,
-  expanded = false,
-  useThumbnail = false,
-}: ProductCardProps) {
-  const imgSrc = useThumbnail ? product.imageThumbnail || product.image : product.image;
+export default function ProductCard({ product, onClick, expanded = false, useFullImage = false }: ProductCardProps) {
+  const { addToCart } = useCart();
+  const [added, setAdded] = useState(false);
+
+  const handleAddToCart = () => {
+    addToCart(product);
+    setAdded(true);
+  };
 
   return (
     <div
-      className={`cursor-pointer rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 ${
-        expanded ? 'md:h-[600px]' : ''
-      }`}
+      className={`rounded overflow-hidden shadow hover:shadow-lg transition ${expanded ? 'p-4' : 'cursor-pointer'}`}
       onClick={onClick}
     >
-      {/* Image */}
-      <div className={`w-full ${expanded ? 'h-96 md:h-[400px]' : 'h-64'} overflow-hidden`}>
+      <div className={expanded ? 'flex justify-center mb-4' : 'w-full h-64 overflow-hidden'}>
         <img
-          src={imgSrc || '/placeholder.png'}
-          alt={product.titleFr || product.title}
-          className={`w-full h-full object-cover transform ${
-            expanded ? 'hover:scale-105' : ''
-          } transition-transform duration-300`}
+          src={useFullImage ? product.image || '/placeholder.png' : product.imageThumbnail || product.image || '/placeholder.png'}
+          alt={product.title}
+          className={expanded ? 'max-h-[600px] object-contain shadow-lg rounded' : 'w-full h-full object-cover'}
         />
       </div>
 
-      {/* Infos */}
-      <div className="bg-white p-4">
-        <p className={`font-bold ${expanded ? 'text-lg' : 'text-sm'} truncate`}>
+      <div className={`bg-white p-2 ${expanded ? 'shadow rounded' : ''}`}>
+        <p className={`font-bold ${expanded ? 'text-2xl mb-2' : 'text-sm truncate'}`}>
           {product.titleFr || product.title}
         </p>
-        <p className={`${expanded ? 'text-md' : 'text-xs'} text-gray-700`}>
-          {product.price} $
-        </p>
+        <p className={`${expanded ? 'mb-2' : 'text-xs'}`}>{product.price} $</p>
 
         {expanded && (
           <>
-            {product.size && <p className="text-sm text-gray-500 mt-1">Taille: {product.size}</p>}
-            {product.materialFr && (
-              <p className="text-sm text-gray-500">Matériel: {product.materialFr}</p>
-            )}
+            <p className="mb-2"><strong>Matériel:</strong> {product.materialFr || product.material}</p>
+            <p className="mb-2"><strong>Taille:</strong> {product.size}</p>
+            <button
+              className={`mt-4 px-4 py-2 rounded text-white font-semibold ${added ? 'bg-green-500 cursor-default' : 'bg-yellow-500 hover:bg-yellow-600'}`}
+              onClick={handleAddToCart}
+              disabled={added}
+            >
+              {added ? 'Ajouté au panier' : 'Ajouter au panier'}
+            </button>
           </>
         )}
       </div>
