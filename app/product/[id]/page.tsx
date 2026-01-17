@@ -34,11 +34,10 @@ export default function ProductPage() {
       {/* Bouton Ajouter au panier */}
       <div className="bg-white p-4 rounded shadow mt-4">
         <button
-          className={`px-4 py-2 rounded text-white font-semibold ${
-            added ? 'bg-green-500 cursor-default' : 'bg-blue-600 hover:bg-blue-700'
-          }`}
           onClick={handleAddToCart}
           disabled={added}
+          className={`w-full px-4 py-2 font-semibold text-white rounded shadow
+            ${added ? 'bg-green-500 cursor-default' : 'bg-yellow-500 hover:bg-yellow-600'}`}
         >
           {added ? 'Ajouté au panier' : 'Ajouter au panier'}
         </button>
