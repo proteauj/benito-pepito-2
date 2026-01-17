@@ -1,3 +1,4 @@
+// app/products/ProductCard.tsx
 import { Product } from '../../lib/db/types';
 
 interface ProductCardProps {
@@ -8,20 +9,27 @@ interface ProductCardProps {
 export default function ProductCard({ product, onClick }: ProductCardProps) {
   return (
     <div
-      className="cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition"
+      className="cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition flex flex-col"
       onClick={onClick}
     >
-      <div className="relative w-full h-64 overflow-hidden">
+      <div className="relative w-full h-64 sm:h-72 md:h-80 lg:h-96 flex-shrink-0">
         <img
           src={product.imageThumbnail || product.image || '/placeholder.png'}
           alt={product.title}
           className="object-cover w-full h-full"
         />
-        <div className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-90 p-2">
+        <div className="absolute bottom-0 left-0 right-0 bg-white p-2">
           <p className="font-bold text-sm">{product.title}</p>
           <p className="text-xs">{product.price} $</p>
         </div>
       </div>
+
+      {/* Optionnel : détails rapides sous l’image */}
+      {product.materialFr && (
+        <div className="p-2 text-sm text-gray-700">
+          <p>{product.materialFr}</p>
+        </div>
+      )}
     </div>
   );
 }
