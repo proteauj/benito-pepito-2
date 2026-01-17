@@ -5,35 +5,40 @@ import { Product } from '../../lib/db/types';
 interface ProductCardProps {
   product: Product;
   onClick?: () => void;
-  useFullImg?: boolean;
-  expanded?: boolean;
+  useFullImg?: boolean; // plein format ou miniature
+  expanded?: boolean;   // afficher toutes les infos
 }
 
-export default function ProductCard({ product, onClick, useFullImg = false, expanded = true }: ProductCardProps) {
+export default function ProductCard({
+  product,
+  onClick,
+  useFullImg = false,
+  expanded = false,
+}: ProductCardProps) {
   return (
     <div
-      className={`cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition flex flex-col ${
-        expanded ? 'h-auto' : 'h-full'
-      }`}
+      className="cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition bg-white"
       onClick={onClick}
     >
-      <div className={`${useFullImg ? 'w-full max-h-[600px]' : 'w-full h-48'} overflow-hidden`}>
+      {/* Image */}
+      <div className={`w-full ${useFullImg ? 'h-[600px]' : 'h-64'} overflow-hidden`}>
         <img
-          src={useFullImg ? product.image : product.imageThumbnail || product.image || '/placeholder.png'}
+          src={useFullImg ? product.image || '/placeholder.png' : product.imageThumbnail || product.image || '/placeholder.png'}
           alt={product.title}
-          className={`${useFullImg ? 'object-contain' : 'object-cover'} w-full h-full`}
+          className={`w-full h-full ${useFullImg ? 'object-contain' : 'object-cover'}`}
         />
       </div>
 
-      <div className="bg-white p-2 flex-1 flex flex-col justify-between">
-        <div>
-          <p className="font-bold text-sm truncate">{product.titleFr || product.title}</p>
-          <p className="text-xs">{product.price} $</p>
-        </div>
-        {expanded && useFullImg && (
-          <button className="mt-2 px-4 py-2 block w-full text-center bg-[var(--gold)] text-black font-semibold rounded hover:bg-white hover:text-[var(--leaf)]">
-            Ajouter au panier
-          </button>
+      {/* Infos */}
+      <div className="p-2">
+        <p className="font-bold text-sm truncate">{product.titleFr || product.title}</p>
+        <p className="text-xs mb-1">{product.price} $</p>
+
+        {expanded && (
+          <>
+            <p className="text-xs mb-1"><strong>Matériel:</strong> {product.materialFr || product.material}</p>
+            <p className="text-xs mb-1"><strong>Taille:</strong> {product.size}</p>
+          </>
         )}
       </div>
     </div>
