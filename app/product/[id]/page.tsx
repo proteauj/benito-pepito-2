@@ -24,7 +24,11 @@ export default function ProductPage() {
     <div className="container mx-auto px-4 py-8 bg-white">
       {/* ProductCard en mode expanded */}
       <div className="mb-6">
-        <ProductCard product={product} expanded />
+        <ProductCard
+          product={product}
+          expanded={true}        // affiche toutes les infos
+          useThumbnail={false}   // image haute qualité
+        />
       </div>
 
       {/* Bouton Ajouter au panier */}

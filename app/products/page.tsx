@@ -82,6 +82,8 @@ export default function ProductsPage() {
             key={product.id}
             product={product}
             onClick={() => router.push(`/product/${product.id}`)}
+            useThumbnail={true}   // image légère
+            expanded={false}       // liste compacte
           />
         ))}
       </div>
