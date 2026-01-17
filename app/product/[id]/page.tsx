@@ -6,10 +6,15 @@ interface ProductPageProps {
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
+  console.log('products', products);
+  
   // Recherche par slug ou par id pour plus de robustesse
   const product = products.find(
     p => p.id === params.id || p.id === params.id
   );
+
+  console.log('params.id', params.id);
+  console.log('product', product);
 
   if (!product) return <p>Produit introuvable</p>;
 
