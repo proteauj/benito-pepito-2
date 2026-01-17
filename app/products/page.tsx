@@ -1,15 +1,10 @@
-// app/products/page.tsx
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Virtual } from 'swiper/modules';
 import { useRouter } from 'next/navigation';
-import 'swiper/css';
-import 'swiper/css/virtual';
-import ProductCard from '../products/ProductCard';
-import { Product } from '../../lib/db/types';
+import ProductCard from './ProductCard';
 import { products } from '../data/products';
+import { Product } from '../../lib/db/types';
 
 export default function ProductsPage() {
   const router = useRouter();
@@ -18,7 +13,7 @@ export default function ProductsPage() {
   const [sizeFilter, setSizeFilter] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  // Filtrage et tri synchrones directement à partir du JSON
+  // Filtrage et tri en mémoire, pas d'appel API
   const filteredProducts = useMemo(() => {
     let result = products;
 
@@ -27,6 +22,7 @@ export default function ProductsPage() {
         p => p.material?.toLowerCase() === materialFilter.toLowerCase()
       );
     }
+
     if (sizeFilter) {
       result = result.filter(
         p => p.size?.toLowerCase() === sizeFilter.toLowerCase()
@@ -44,9 +40,8 @@ export default function ProductsPage() {
     <div className="container mx-auto px-4 py-8">
       {/* FILTRES */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
-        {/* Matériel */}
         <div>
-          <label className="mr-2 font-semibold">Filtrer par matière:</label>
+          <label className="mr-2 font-semibold">Matériel:</label>
           <select
             value={materialFilter}
             onChange={e => setMaterialFilter(e.target.value)}
@@ -66,9 +61,8 @@ export default function ProductsPage() {
           </select>
         </div>
 
-        {/* Grandeur */}
         <div>
-          <label className="mr-2 font-semibold">Filtrer par grandeur:</label>
+          <label className="mr-2 font-semibold">Taille:</label>
           <select
             value={sizeFilter}
             onChange={e => setSizeFilter(e.target.value)}
@@ -84,7 +78,6 @@ export default function ProductsPage() {
           </select>
         </div>
 
-        {/* Tri prix */}
         <div>
           <label className="mr-2 font-semibold">Trier par prix:</label>
           <select
@@ -99,7 +92,7 @@ export default function ProductsPage() {
       </div>
 
       {/* GRID Desktop */}
-      <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.map(product => (
           <ProductCard
             key={product.id}
@@ -107,20 +100,6 @@ export default function ProductsPage() {
             onClick={() => router.push(`/product/${product.id}`)}
           />
         ))}
-      </div>
-
-      {/* SWIPER Mobile */}
-      <div className="md:hidden">
-        <Swiper slidesPerView={1} spaceBetween={10} autoHeight virtual modules={[Virtual]}>
-          {filteredProducts.map((product, index) => (
-            <SwiperSlide key={product.id} virtualIndex={index}>
-              <ProductCard
-                product={product}
-                onClick={() => router.push(`/product/${product.id}`)}
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
       </div>
     </div>
   );
