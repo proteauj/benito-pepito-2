@@ -17,10 +17,12 @@ export default function ProductsPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Remplace par ton fetch API
     fetch('/api/products')
       .then(res => res.json())
-      .then((data: Product[]) => setProducts(data))
+      .then((data) => {
+        const flatProducts = Object.values(data).flat() as Product[];
+        setProducts(flatProducts);
+      })
       .finally(() => setLoading(false));
   }, []);
 
