@@ -1,22 +1,25 @@
 'use client';
 
 import { products } from '../../data/products';
-import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import ProductCard from '../../products/ProductCard';
 
-export default function ProductPage() {
-  const params = useParams();
-  const product = products.find(p => p.id === params.id);
-
-  if (!product) return <p>Produit introuvable</p>;
+export default function ProductsPage() {
+  const router = useRouter();
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-white">
-      <ProductCard
-        product={product}
-        useFullImg={true}
-        expanded={true}  // affiche tous les détails + bouton
-      />
+    <div className="container mx-auto px-4 py-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {products.map(product => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            onClick={() => router.push(`/product/${product.id}`)}
+            useFullImg={false}  // miniatures
+            expanded={false}    // compact
+          />
+        ))}
+      </div>
     </div>
   );
 }
