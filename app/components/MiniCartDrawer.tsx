@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useCart } from '@/contexts/CartContext';
+import { useCart } from '../contexts/CartContext';
 import { useI18n } from '@/i18n/I18nProvider';
 import SafeImage from './SafeImage';
 import { useEffect, useState } from 'react';

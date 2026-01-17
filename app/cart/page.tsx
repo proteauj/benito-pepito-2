@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import SafeImage from '@/components/SafeImage';
-import { useCart } from '@/contexts/CartContext';
+import { useCart } from '../contexts/CartContext';
 import { useI18n } from '@/i18n/I18nProvider';
 
 export default function CartPage() {
