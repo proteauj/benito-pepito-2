@@ -18,13 +18,11 @@ export default async function ProductsPage() {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   const filteredProducts = useMemo(() => {
-    const filterAndSort = async () => {
-      const response = await fetch('/api/products');
-      let result: Product[] = await response.json();
-
+    const filterAndSort = async (): Promise<Product[]> => {
+      var result: any[] =[];
       if (materialFilter) {
-        result = result.filter(
-          p => p.material?.toLowerCase() === materialFilter.toLowerCase()
+        result = products.filter(
+          (p: Product) => p.material && p.material.toLowerCase() === materialFilter.toLowerCase()
         );
       }
       if (sizeFilter) {
