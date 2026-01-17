@@ -7,12 +7,10 @@ import { useRouter } from 'next/navigation';
 import 'swiper/css';
 import 'swiper/css/virtual';
 import ProductCard from './ProductCard';
-import { Product } from '@/lib/db/types';
-import { useI18n } from '@/i18n/I18nProvider';
+import { Product } from '../../lib/db/types';
 import { products } from '../data/products';
 
 export default function ProductsPage() {
-  const { t } = useI18n();
   const router = useRouter();
 
   const [materialFilter, setMaterialFilter] = useState('');
@@ -92,8 +90,8 @@ export default function ProductsPage() {
             onChange={e => setSortOrder(e.target.value as 'asc' | 'desc')}
             className="border px-2 py-1"
           >
-            <option value="asc">{t('sort.priceAsc')}</option>
-            <option value="desc">{t('sort.priceDesc')}</option>
+            <option value="asc">Prix croissant</option>
+            <option value="desc">Prix décroissant</option>
           </select>
         </div>
       </div>

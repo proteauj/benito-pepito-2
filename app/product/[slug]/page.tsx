@@ -1,4 +1,3 @@
-// app/product/[id]/page.tsx
 import { products } from '../../data/products';
 import ProductCard from '../../products/ProductCard';
 
@@ -6,7 +5,7 @@ interface ProductPageProps {
   params: { id: string };
 }
 
-export default async function ProductPage({ params }: ProductPageProps) {
+export default function ProductPage({ params }: ProductPageProps) {
   const product = products.find(p => p.id === params.id);
 
   if (!product) return <p>Produit introuvable</p>;
