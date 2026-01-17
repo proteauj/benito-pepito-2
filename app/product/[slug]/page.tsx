@@ -25,7 +25,7 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
           {product.title}
         </h3>
         <p className="text-gray-700 text-sm">
-          {product.price ? `${product.price} €` : ''}
+          {product.price ? `${product.price} $` : ''}
         </p>
       </div>
     </div>

@@ -1,8 +1,7 @@
-// app/products/ProductsList.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useI18n } from '@/i18n/I18nProvider';
 import { Product } from '../../lib/db/types';
 import ProductCard from './ProductCard';
@@ -14,6 +13,8 @@ interface ApiResponse {
 export default function ProductsList() {
   const { t } = useI18n();
   const searchParams = useSearchParams();
+  const router = useRouter();
+
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,39 +25,21 @@ export default function ProductsList() {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        console.log('Fetching products...');
-        
         const response = await fetch('/api/products');
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data: ApiResponse = await response.json();
-        console.log('API Response:', data);
-        
-        // Convertir l'objet en tableau plat de tous les produits
+
         let allProducts: Product[] = [];
-        
-        // Parcourir chaque catégorie et ajouter les produits
         Object.values(data).forEach(categoryProducts => {
-          if (Array.isArray(categoryProducts)) {
-            allProducts = [...allProducts, ...categoryProducts];
-          }
+          if (Array.isArray(categoryProducts)) allProducts = [...allProducts, ...categoryProducts];
         });
 
-        console.log('All products:', allProducts);
-        
-        // Filtrer par catégorie si nécessaire
         const filteredProducts = category !== 'All' 
           ? allProducts.filter(p => p.category === category)
           : allProducts;
-          
-        console.log(`Filtered to ${filteredProducts.length} products`);
+
         setProducts(filteredProducts);
-        
       } catch (err) {
-        console.error('Error in fetchProducts:', err);
         setError(err instanceof Error ? err.message : 'An unknown error occurred');
       } finally {
         setLoading(false);
@@ -86,7 +69,6 @@ export default function ProductsList() {
     return <div className="min-h-[50vh] flex items-center justify-center">Chargement des œuvres...</div>;
   }
 
-  // S'assurer que products est bien un tableau avant de mapper
   if (!Array.isArray(products) || products.length === 0) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
@@ -101,7 +83,8 @@ export default function ProductsList() {
         {products.map((product) => (
           <ProductCard 
             key={product.id} 
-            product={product}
+            product={product} 
+            onClick={() => router.push(`/product/${product.id}`)} // <-- Ajouté
           />
         ))}
       </div>
