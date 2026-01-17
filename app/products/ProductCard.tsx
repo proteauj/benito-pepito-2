@@ -7,11 +7,16 @@ import { useState } from 'react';
 interface ProductCardProps {
   product: Product;
   onClick?: () => void;
-  expanded?: boolean;       // si true, affiche toutes les infos
-  useFullImage?: boolean;   // si true, affiche image haute qualité
+  expanded?: boolean;      // afficher tous les détails
+  useFullImg?: boolean;    // image complète ou thumbnail
 }
 
-export default function ProductCard({ product, onClick, expanded = false, useFullImage = false }: ProductCardProps) {
+export default function ProductCard({
+  product,
+  onClick,
+  expanded = false,
+  useFullImg = false,
+}: ProductCardProps) {
   const { addToCart } = useCart();
   const [added, setAdded] = useState(false);
 
@@ -22,39 +27,33 @@ export default function ProductCard({ product, onClick, expanded = false, useFul
 
   return (
     <div
-      className={`rounded overflow-hidden shadow hover:shadow-lg transition ${expanded ? 'p-4' : 'cursor-pointer'}`}
+      className={`cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition ${expanded ? 'max-w-2xl mx-auto' : ''}`}
       onClick={onClick}
     >
-      <div className={expanded ? 'flex justify-center mb-4' : 'w-full h-64 overflow-hidden'}>
+      <div className={`${expanded ? 'w-full h-[600px]' : 'w-full h-64'} overflow-hidden`}>
         <img
-          src={useFullImage ? product.image || '/placeholder.png' : product.imageThumbnail || product.image || '/placeholder.png'}
+          src={useFullImg ? product.image || '/placeholder.png' : product.imageThumbnail || product.image || '/placeholder.png'}
           alt={product.title}
-          className={expanded ? 'max-h-[600px] object-contain shadow-lg rounded' : 'w-full h-full object-cover'}
+          className={`${expanded ? 'object-contain' : 'object-cover'} w-full h-full`}
         />
       </div>
 
-      <div className={`bg-white p-2 ${expanded ? 'shadow rounded' : ''}`}>
-        <p className={`font-bold ${expanded ? 'text-2xl mb-2' : 'text-sm truncate'}`}>
-          {product.titleFr || product.title}
-        </p>
-        <p className={`${expanded ? 'mb-2' : 'text-xs'}`}>{product.price} $</p>
+      <div className="bg-white p-2">
+        <p className="font-bold text-sm truncate">{product.titleFr || product.title}</p>
+        <p className="text-xs mb-2">{product.price} $</p>
 
         {expanded && (
-          <>
-            <p className="mb-2"><strong>Matériel:</strong> {product.materialFr || product.material}</p>
-            <p className="mb-2"><strong>Taille:</strong> {product.size}</p>
+          <div className="mt-2">
+            <p><strong>Matériel:</strong> {product.materialFr || product.material}</p>
+            <p><strong>Taille:</strong> {product.size}</p>
             <button
-              className={`mt-4 block w-full text-center font-semibold py-3 rounded ${
-                added
-                  ? 'bg-green-500 cursor-default text-white'
-                  : 'bg-[var(--gold)] text-black hover:bg-white hover:text-[var(--leaf)]'
-              }`}
+              className={`block w-full text-center bg-[var(--gold)] text-black py-3 font-semibold hover:bg-white hover:text-[var(--leaf)] mt-4`}
               onClick={handleAddToCart}
               disabled={added}
             >
               {added ? 'Ajouté au panier' : 'Ajouter au panier'}
             </button>
-          </>
+          </div>
         )}
       </div>
     </div>
