@@ -6,7 +6,10 @@ interface ProductPageProps {
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
-  const product = products.find(p => p.slug === params.slug);
+  // Cherche par slug et fallback par id pour compatibilité
+  const product = products.find(
+    p => p.slug === params.slug || p.id === params.slug
+  );
 
   if (!product) return <p>Produit introuvable</p>;
 
