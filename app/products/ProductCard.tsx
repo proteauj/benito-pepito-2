@@ -19,7 +19,7 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
         />
         <div className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-90 p-2">
           <p className="font-bold text-sm">{product.title}</p>
-          <p className="text-xs">{product.price} €</p>
+          <p className="text-xs">{product.price} $</p>
         </div>
       </div>
     </div>

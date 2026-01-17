@@ -1,26 +1,22 @@
-import { Product } from '../../../lib/db/types';
+// app/product/[id]/page.tsx
+import { products } from '../../data/products';
+import ProductCard from '../../products/ProductCard';
 
-interface ProductCardProps {
-  product: Product;
-  onClick?: () => void;
+interface ProductPageProps {
+  params: { id: string };
 }
 
-export default function ProductCard({ product, onClick }: ProductCardProps) {
+export default async function ProductPage({ params }: ProductPageProps) {
+  const product = products.find(p => p.id === params.id);
+
+  if (!product) return <p>Produit introuvable</p>;
+
   return (
-    <div
-      className="cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition"
-      onClick={onClick}
-    >
-      <div className="relative w-full h-64 overflow-hidden">
-        <img
-          src={product.imageThumbnail || product.image || '/placeholder.png'}
-          alt={product.title}
-          className="object-cover w-full h-full"
-        />
-        <div className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-90 p-2">
-          <p className="font-bold text-sm">{product.title}</p>
-          <p className="text-xs">{product.price} €</p>
-        </div>
+    <div className="container mx-auto px-4 py-8">
+      <ProductCard product={product} />
+      <div className="mt-4">
+        <h2 className="text-lg font-semibold">Matériel</h2>
+        <p>{product.materialFr}</p>
       </div>
     </div>
   );

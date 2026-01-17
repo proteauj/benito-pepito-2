@@ -1,56 +1,44 @@
+// app/products/page.tsx
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Virtual } from 'swiper/modules';
 import { useRouter } from 'next/navigation';
 import 'swiper/css';
 import 'swiper/css/virtual';
 import ProductCard from './ProductCard';
-import { Product } from '../../lib/db/types';
+import { Product } from '@/lib/db/types';
 import { useI18n } from '@/i18n/I18nProvider';
+import { products } from '../data/products';
 
 export default function ProductsPage() {
   const { t } = useI18n();
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
-  // Filtres
   const [materialFilter, setMaterialFilter] = useState('');
   const [sizeFilter, setSizeFilter] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  const router = useRouter();
-
-  useEffect(() => {
-    fetch('/api/products')
-      .then(res => res.json())
-      .then((data) => {
-        const flatProducts = Object.values(data).flat() as Product[];
-        setProducts(flatProducts);
-      })
-      .finally(() => setLoading(false));
-  }, []);
-
-  // Memoisation filtre + tri
   const filteredProducts = useMemo(() => {
     let result = products;
 
     if (materialFilter) {
-      result = result.filter(p => p.material?.toLowerCase() === materialFilter.toLowerCase());
+      result = result.filter(
+        p => p.material?.toLowerCase() === materialFilter.toLowerCase()
+      );
     }
-
     if (sizeFilter) {
-      result = result.filter(p => p.size?.toLowerCase() === sizeFilter.toLowerCase());
+      result = result.filter(
+        p => p.size?.toLowerCase() === sizeFilter.toLowerCase()
+      );
     }
 
-    return result.sort((a, b) => sortOrder === 'asc'
-      ? (a.price || 0) - (b.price || 0)
-      : (b.price || 0) - (a.price || 0)
+    return result.sort((a, b) =>
+      sortOrder === 'asc' ? (a.price || 0) - (b.price || 0) : (b.price || 0) - (a.price || 0)
     );
-  }, [products, materialFilter, sizeFilter, sortOrder]);
+  }, [materialFilter, sizeFilter, sortOrder]);
 
-  if (loading) return <p>Chargement des produits...</p>;
   if (!filteredProducts.length) return <p>Aucun produit disponible</p>;
 
   return (
@@ -124,13 +112,7 @@ export default function ProductsPage() {
 
       {/* SWIPER Mobile */}
       <div className="md:hidden">
-        <Swiper
-          slidesPerView={1}
-          spaceBetween={10}
-          autoHeight
-          virtual
-          modules={[Virtual]}
-        >
+        <Swiper slidesPerView={1} spaceBetween={10} autoHeight virtual modules={[Virtual]}>
           {filteredProducts.map((product, index) => (
             <SwiperSlide key={product.id} virtualIndex={index}>
               <ProductCard
