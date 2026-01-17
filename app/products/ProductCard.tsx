@@ -44,7 +44,11 @@ export default function ProductCard({ product, onClick, expanded = false, useFul
             <p className="mb-2"><strong>Matériel:</strong> {product.materialFr || product.material}</p>
             <p className="mb-2"><strong>Taille:</strong> {product.size}</p>
             <button
-              className={`mt-4 px-4 py-2 rounded text-white font-semibold ${added ? 'bg-green-500 cursor-default' : 'bg-yellow-500 hover:bg-yellow-600'}`}
+              className={`mt-4 block w-full text-center font-semibold py-3 rounded ${
+                added
+                  ? 'bg-green-500 cursor-default text-white'
+                  : 'bg-[var(--gold)] text-black hover:bg-white hover:text-[var(--leaf)]'
+              }`}
               onClick={handleAddToCart}
               disabled={added}
             >
