@@ -2,6 +2,7 @@
 
 import { products } from '../../data/products';
 import ProductCard from '../../products/ProductCard';
+import { useCart } from '../../contexts/CartContext';
 import { useState } from 'react';
 import { Product } from '../../../lib/db/types';
 
@@ -13,23 +14,22 @@ export default async function ProductPage({ params }: ProductPageProps) {
   // si params est une Promise
   const resolvedParams = await params;
 
-  const product: Product | undefined = products.find(
-    p => p.id === resolvedParams.id
-  );
+  // Recherche du produit par id
+  const product: Product | undefined = products.find(p => p.id === resolvedParams.id);
+
+  const { addToCart } = useCart();
+  const [added, setAdded] = useState(false);
 
   if (!product) return <p>Produit introuvable</p>;
 
-  const [added, setAdded] = useState(false);
-
   const handleAddToCart = () => {
-    // Ici tu peux appeler ton contexte panier ou API
+    addToCart(product);
     setAdded(true);
-    console.log(`Produit ajouté au panier: ${product.title}`);
   };
 
   return (
     <div className="container mx-auto px-4 py-8 bg-white">
-      {/* IMAGE LARGE */}
+      {/* Image haute qualité */}
       <div className="w-full flex justify-center mb-6">
         <img
           src={product.image || '/placeholder.png'}
@@ -38,7 +38,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         />
       </div>
 
-      {/* INFO PRODUIT */}
+      {/* Détails du produit */}
       <div className="bg-white p-4 rounded shadow">
         <h1 className="text-2xl font-bold mb-2">{product.titleFr || product.title}</h1>
 
@@ -52,7 +52,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <span className="font-semibold">Prix:</span> {product.price} $
         </div>
 
-        {/* BOUTON AJOUTER AU PANIER */}
+        {/* Bouton Ajouter au panier */}
         <button
           onClick={handleAddToCart}
           className={`px-4 py-2 rounded text-white font-semibold ${
