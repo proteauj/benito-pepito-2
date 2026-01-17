@@ -2,18 +2,15 @@
 
 import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { useRouter } from 'next/navigation';
 import 'swiper/css';
 import ProductCard from './ProductCard';
 import { Product } from '../../lib/db/types';
-import { useI18n } from '../i18n/I18nProvider';
+import { useRouter } from 'next/navigation';
 
 export default function ProductsPage() {
-  const { t } = useI18n();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Filtres et tri
   const [materialFilter, setMaterialFilter] = useState('');
   const [sizeFilter, setSizeFilter] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
@@ -36,20 +33,18 @@ export default function ProductsPage() {
 
   // Appliquer les filtres
   let filteredProducts = products;
-
   if (materialFilter) {
     filteredProducts = filteredProducts.filter(
       (p) => p.material?.toLowerCase() === materialFilter.toLowerCase()
     );
   }
-
   if (sizeFilter) {
     filteredProducts = filteredProducts.filter(
       (p) => p.size?.toLowerCase() === sizeFilter.toLowerCase()
     );
   }
 
-  // Appliquer le tri
+  // Tri
   filteredProducts.sort((a, b) => {
     if (sortOrder === 'asc') return (a.price || 0) - (b.price || 0);
     return (b.price || 0) - (a.price || 0);
@@ -84,7 +79,7 @@ export default function ProductsPage() {
           </select>
         </div>
 
-        {/* Taille / Grandeur */}
+        {/* Grandeur */}
         <div>
           <label className="mr-2 font-semibold">Filtrer par grandeur:</label>
           <select
@@ -93,12 +88,9 @@ export default function ProductsPage() {
             className="border px-2 py-1"
           >
             <option value="">Toutes</option>
-            <option value="XS">XS</option>
-            <option value="S">S</option>
-            <option value="M">M</option>
-            <option value="L">L</option>
-            <option value="XL">XL</option>
-            <option value="XXL">XXL</option>
+            <option value="Small">Petite</option>
+            <option value="Medium">Moyenne</option>
+            <option value="Large">Grande</option>
           </select>
         </div>
 
@@ -110,14 +102,14 @@ export default function ProductsPage() {
             onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')}
             className="border px-2 py-1"
           >
-            <option value="asc">{t('sort.priceAsc')}</option>
-            <option value="desc">{t('sort.priceDesc')}</option>
+            <option value="asc">Croissant</option>
+            <option value="desc">Décroissant</option>
           </select>
         </div>
       </div>
 
-      {/* GRILLE DES PRODUITS POUR TABLETTE / DESKTOP */}
-      <div className="hidden md:grid gap-6 grid-cols-3 lg:grid-cols-4">
+      {/* GRID DES PRODUITS POUR TABLETTE / DESKTOP */}
+      <div className="hidden md:grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {filteredProducts.map((product) => (
           <ProductCard
             key={product.id}
