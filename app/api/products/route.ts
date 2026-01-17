@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { products } from '../../data/products';
+import { products } from '@/data/products';
 import { Product } from '../../../lib/db/types';
 
 let DatabaseService: any = null;

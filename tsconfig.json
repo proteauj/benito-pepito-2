@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "forceConsistentCasingInFileNames": true,
     "target": "es2020",
     "lib": [
@@ -24,9 +25,7 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./app/*"
-      ],
+      "@/*": ["./*"],
       "@/components/*": [
         "./app/components/*"
       ],
