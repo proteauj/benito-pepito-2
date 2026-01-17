@@ -14,8 +14,8 @@ export default function ProductsPage() {
           key={product.id}
           product={product}
           onClick={() => router.push(`/product/${product.id}`)}
-          useFullImg={false} // miniature
-          expanded={false}    // liste compacte
+          useFullImg={false}   // miniatures
+          expanded={false}     // compact
         />
       ))}
     </div>
