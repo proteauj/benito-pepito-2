@@ -1,3 +1,5 @@
+'use client';
+
 import { Product } from '../../lib/db/types';
 
 interface ProductCardProps {
