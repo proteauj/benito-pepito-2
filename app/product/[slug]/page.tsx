@@ -1,32 +1,26 @@
-import React from 'react';
 import { Product } from '../../../lib/db/types';
 
 interface ProductCardProps {
   product: Product;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export default function ProductCard({ product, onClick }: ProductCardProps) {
   return (
     <div
-      className="relative cursor-pointer overflow-hidden rounded shadow hover:shadow-lg transition"
+      className="cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition"
       onClick={onClick}
     >
-      {/* Image responsive */}
-      <img
-        src={product.image}
-        alt={product.title}
-        className="w-full h-auto object-cover block"
-      />
-
-      {/* Overlay titre + prix */}
-      <div className="absolute bottom-0 left-0 w-full bg-white p-2">
-        <h3 className="text-black font-semibold text-sm sm:text-base md:text-lg">
-          {product.title}
-        </h3>
-        <p className="text-gray-700 text-sm">
-          {product.price ? `${product.price} $` : ''}
-        </p>
+      <div className="relative w-full h-64 overflow-hidden">
+        <img
+          src={product.imageThumbnail || product.image || '/placeholder.png'}
+          alt={product.title}
+          className="object-cover w-full h-full"
+        />
+        <div className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-90 p-2">
+          <p className="font-bold text-sm">{product.title}</p>
+          <p className="text-xs">{product.price} €</p>
+        </div>
       </div>
     </div>
   );

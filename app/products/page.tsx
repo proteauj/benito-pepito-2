@@ -1,23 +1,27 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Virtual } from 'swiper/modules';
+import { useRouter } from 'next/navigation';
 import 'swiper/css';
+import 'swiper/css/virtual';
 import ProductCard from './ProductCard';
 import { Product } from '../../lib/db/types';
-import { useRouter } from 'next/navigation';
+import { useI18n } from '@/i18n/I18nProvider';
 
 export default function ProductsPage() {
+  const { t } = useI18n();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Filtres
   const [materialFilter, setMaterialFilter] = useState('');
   const [sizeFilter, setSizeFilter] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   const router = useRouter();
 
-  // Fetch produits
   useEffect(() => {
     fetch('/api/products')
       .then(res => res.json())
@@ -28,30 +32,26 @@ export default function ProductsPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  // Memoisation filtre + tri
+  const filteredProducts = useMemo(() => {
+    let result = products;
+
+    if (materialFilter) {
+      result = result.filter(p => p.material?.toLowerCase() === materialFilter.toLowerCase());
+    }
+
+    if (sizeFilter) {
+      result = result.filter(p => p.size?.toLowerCase() === sizeFilter.toLowerCase());
+    }
+
+    return result.sort((a, b) => sortOrder === 'asc'
+      ? (a.price || 0) - (b.price || 0)
+      : (b.price || 0) - (a.price || 0)
+    );
+  }, [products, materialFilter, sizeFilter, sortOrder]);
+
   if (loading) return <p>Chargement des produits...</p>;
-  if (!products.length) return <p>Aucun produit disponible</p>;
-
-  // Appliquer les filtres
-  let filteredProducts = products;
-  if (materialFilter) {
-    filteredProducts = filteredProducts.filter(
-      (p) => p.material?.toLowerCase() === materialFilter.toLowerCase()
-    );
-  }
-  if (sizeFilter) {
-    filteredProducts = filteredProducts.filter(
-      (p) => p.size?.toLowerCase() === sizeFilter.toLowerCase()
-    );
-  }
-
-  // Tri
-  filteredProducts.sort((a, b) => {
-    if (sortOrder === 'asc') return (a.price || 0) - (b.price || 0);
-    return (b.price || 0) - (a.price || 0);
-  });
-
-  if (!filteredProducts.length)
-    return <p>Aucun produit ne correspond aux filtres sélectionnés</p>;
+  if (!filteredProducts.length) return <p>Aucun produit disponible</p>;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -62,7 +62,7 @@ export default function ProductsPage() {
           <label className="mr-2 font-semibold">Filtrer par matière:</label>
           <select
             value={materialFilter}
-            onChange={(e) => setMaterialFilter(e.target.value)}
+            onChange={e => setMaterialFilter(e.target.value)}
             className="border px-2 py-1"
           >
             <option value="">Tous</option>
@@ -84,33 +84,36 @@ export default function ProductsPage() {
           <label className="mr-2 font-semibold">Filtrer par grandeur:</label>
           <select
             value={sizeFilter}
-            onChange={(e) => setSizeFilter(e.target.value)}
+            onChange={e => setSizeFilter(e.target.value)}
             className="border px-2 py-1"
           >
             <option value="">Toutes</option>
-            <option value="Small">Petite</option>
-            <option value="Medium">Moyenne</option>
-            <option value="Large">Grande</option>
+            <option value="XS">XS</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+            <option value="XXL">XXL</option>
           </select>
         </div>
 
-        {/* Tri */}
+        {/* Tri prix */}
         <div>
           <label className="mr-2 font-semibold">Trier par prix:</label>
           <select
             value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')}
+            onChange={e => setSortOrder(e.target.value as 'asc' | 'desc')}
             className="border px-2 py-1"
           >
-            <option value="asc">Croissant</option>
-            <option value="desc">Décroissant</option>
+            <option value="asc">{t('sort.priceAsc')}</option>
+            <option value="desc">{t('sort.priceDesc')}</option>
           </select>
         </div>
       </div>
 
-      {/* GRID DES PRODUITS POUR TABLETTE / DESKTOP */}
-      <div className="hidden md:grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {filteredProducts.map((product) => (
+      {/* GRID Desktop */}
+      <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {filteredProducts.map(product => (
           <ProductCard
             key={product.id}
             product={product}
@@ -119,11 +122,17 @@ export default function ProductsPage() {
         ))}
       </div>
 
-      {/* SWIPER HORIZONTAL POUR MOBILE */}
-      <div className="md:hidden w-full">
-        <Swiper slidesPerView={1} spaceBetween={10} autoHeight>
-          {filteredProducts.map((product) => (
-            <SwiperSlide key={product.id}>
+      {/* SWIPER Mobile */}
+      <div className="md:hidden">
+        <Swiper
+          slidesPerView={1}
+          spaceBetween={10}
+          autoHeight
+          virtual
+          modules={[Virtual]}
+        >
+          {filteredProducts.map((product, index) => (
+            <SwiperSlide key={product.id} virtualIndex={index}>
               <ProductCard
                 product={product}
                 onClick={() => router.push(`/product/${product.id}`)}

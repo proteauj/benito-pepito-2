@@ -15,12 +15,17 @@ export default function ProductsList() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
+  const categoryParam = searchParams.get('category') || 'All';
+
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const category = searchParams.get('category') || 'All';
+  const [materialFilter, setMaterialFilter] = useState('');
+  const [sizeFilter, setSizeFilter] = useState('');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
+  // Fetch produits
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -29,25 +34,34 @@ export default function ProductsList() {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data: ApiResponse = await response.json();
 
-        let allProducts: Product[] = [];
-        Object.values(data).forEach(categoryProducts => {
-          if (Array.isArray(categoryProducts)) allProducts = [...allProducts, ...categoryProducts];
-        });
+        // Tableau plat et trié par id
+        let allProducts: Product[] = Object.values(data).flat() as Product[];
+        allProducts.sort((a, b) => (Number(a.id) || 0) - (Number(b.id) || 0));
 
-        const filteredProducts = category !== 'All' 
-          ? allProducts.filter(p => p.category === category)
+        // Filtrer par catégorie
+        const filteredByCategory = categoryParam !== 'All'
+          ? allProducts.filter(p => p.category === categoryParam)
           : allProducts;
 
-        setProducts(filteredProducts);
+        setProducts(filteredByCategory);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred');
+        setError(err instanceof Error ? err.message : 'Une erreur inconnue est survenue');
       } finally {
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, [category]);
+  }, [categoryParam]);
+
+  // Appliquer filtres matière, taille et tri prix
+  const displayedProducts = products
+    .filter(p => !materialFilter || p.material?.toLowerCase() === materialFilter.toLowerCase())
+    .filter(p => !sizeFilter || p.size?.toLowerCase() === sizeFilter.toLowerCase())
+    .sort((a, b) => {
+      if (sortOrder === 'asc') return (a.price || 0) - (b.price || 0);
+      return (b.price || 0) - (a.price || 0);
+    });
 
   if (error) {
     return (
@@ -66,25 +80,83 @@ export default function ProductsList() {
   }
 
   if (loading) {
-    return <div className="min-h-[50vh] flex items-center justify-center">Chargement des œuvres...</div>;
-  }
-
-  if (!Array.isArray(products) || products.length === 0) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
-        <p>Aucune œuvre trouvée dans cette catégorie.</p>
+        Chargement des œuvres...
+      </div>
+    );
+  }
+
+  if (!displayedProducts.length) {
+    return (
+      <div className="min-h-[50vh] flex items-center justify-center">
+        <p>Aucune œuvre ne correspond aux filtres sélectionnés.</p>
       </div>
     );
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* FILTRES */}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+        {/* Matériel */}
+        <div>
+          <label className="mr-2 font-semibold">Filtrer par matière:</label>
+          <select
+            value={materialFilter}
+            onChange={e => setMaterialFilter(e.target.value)}
+            className="border px-2 py-1"
+          >
+            <option value="">Tous</option>
+            <option value="Marble">Marbre</option>
+            <option value="Bronze">Bronze</option>
+            <option value="Rocks">Roches</option>
+            <option value="Metal">Métal</option>
+            <option value="Moss">Mousse</option>
+            <option value="Wood">Bois</option>
+            <option value="False Weed">Fausses herbes</option>
+            <option value="Acrylic on Canvas">Acrylique sur toile</option>
+            <option value="Oil on Canvas">Huile sur toile</option>
+            <option value="Acrylic on Wood">Acrylique sur bois</option>
+          </select>
+        </div>
+
+        {/* Grandeur */}
+        <div>
+          <label className="mr-2 font-semibold">Filtrer par grandeur:</label>
+          <select
+            value={sizeFilter}
+            onChange={e => setSizeFilter(e.target.value)}
+            className="border px-2 py-1"
+          >
+            <option value="">Toutes</option>
+            <option value="Small">Petite</option>
+            <option value="Medium">Moyenne</option>
+            <option value="Large">Grande</option>
+          </select>
+        </div>
+
+        {/* Tri prix */}
+        <div>
+          <label className="mr-2 font-semibold">Trier par prix:</label>
+          <select
+            value={sortOrder}
+            onChange={e => setSortOrder(e.target.value as 'asc' | 'desc')}
+            className="border px-2 py-1"
+          >
+            <option value="asc">Croissant</option>
+            <option value="desc">Décroissant</option>
+          </select>
+        </div>
+      </div>
+
+      {/* GRID DES PRODUITS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <ProductCard 
-            key={product.id} 
-            product={product} 
-            onClick={() => router.push(`/product/${product.id}`)} // <-- Ajouté
+        {displayedProducts.map(product => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            onClick={() => router.push(`/product/${product.id}`)}
           />
         ))}
       </div>
