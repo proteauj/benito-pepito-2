@@ -7,15 +7,17 @@ interface ProductPageProps {
   params: { id: string };
 }
 
-export default function ProductPage({ params }: ProductPageProps) {
+export default async function ProductPage({ params }: ProductPageProps) {
+  // si params est une Promise
+  const resolvedParams = await params;
   console.log('ProductPage.products', products);
   
   // Recherche par slug ou par id pour plus de robustesse
   const product = products.filter(
-    p => p.id === params.id || p.id === params.id
+    p => p.id === resolvedParams.id || p.id === resolvedParams.id
   )[0];
 
-  console.log('ProductPage.params', params);
+  console.log('ProductPage.params', resolvedParams);
   console.log('ProductPage.params.id', params.id);
   console.log('ProductPage.product', product);
 
