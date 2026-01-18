@@ -1,52 +1,80 @@
 'use client';
 
+import { useState } from 'react';
 import { Product } from '../../lib/db/types';
+import { useCart } from '../contexts/CartContext';
 
 interface ProductCardProps {
-  product?: Product; // 👈 optionnel
-  onClick?: () => void;
-  expanded?: boolean;
-  useFullImage?: boolean;
+  product: Product;
+  expanded?: boolean;      // affiche infos complètes
+  useFullImg?: boolean;    // image haute qualité
+  showAddToCart?: boolean; // bouton Ajouter au panier
+  onClick?: () => void;    // clic sur la carte
 }
 
 export default function ProductCard({
   product,
-  onClick,
   expanded = false,
-  useFullImage = false,
+  useFullImg = false,
+  showAddToCart = false,
+  onClick,
 }: ProductCardProps) {
+  const { addToCart } = useCart();
+  const [added, setAdded] = useState(false);
 
-  if (!product) {
-    console.warn('ProductCard rendered without product');
-    return null;
-  }
+  if (!product) return null;
 
-  const imageSrc = useFullImage
-    ? product && (product.image || product.imageThumbnail || '/placeholder.png')
-    : product && (product.imageThumbnail || product.image || '/placeholder.png');
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    addToCart(product);
+    setAdded(true);
+  };
 
   return (
     <div
-      className="cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition bg-white"
+      className={`cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition
+        ${expanded ? 'max-w-2xl mx-auto' : ''}
+      `}
       onClick={onClick}
     >
-      <div className={useFullImage ? 'w-full' : 'w-full h-64 overflow-hidden'}>
+      {/* Image */}
+      <div className={`overflow-hidden ${expanded ? 'h-auto' : 'h-64'}`}>
         <img
-          src={imageSrc}
+          src={useFullImg ? product.image || '/placeholder.png' : product.imageThumbnail || product.image || '/placeholder.png'}
           alt={product.title}
-          className={useFullImage ? 'w-full object-contain' : 'w-full h-full object-cover'}
+          className={useFullImg ? 'w-full object-contain max-h-[600px]' : 'w-full h-full object-cover'}
         />
       </div>
 
+      {/* Infos */}
       <div className="bg-white p-2">
-        <p className="font-bold text-sm">{product.titleFr || product.title}</p>
-        <p className="text-xs">{product.price} $</p>
+        <p className="font-bold text-sm truncate">{product.titleFr || product.title}</p>
+        <p className="text-xs mb-2">{product.price} $</p>
 
         {expanded && (
-          <div className="mt-2 text-sm">
-            <p><strong>Matériel :</strong> {product.materialFr}</p>
-            <p><strong>Taille :</strong> {product.size}</p>
-          </div>
+          <>
+            {product.materialFr && (
+              <p className="text-xs mb-1"><strong>Matériel:</strong> {product.materialFr}</p>
+            )}
+            {product.size && (
+              <p className="text-xs mb-1"><strong>Taille:</strong> {product.size}</p>
+            )}
+          </>
+        )}
+
+        {/* Bouton Ajouter au panier */}
+        {showAddToCart && (
+          <button
+            className={`block w-full text-center py-3 font-semibold rounded mt-2 transition
+              ${added
+                ? 'bg-gold-dark cursor-default text-black'
+                : 'bg-[var(--gold)] hover:bg-white hover:text-[var(--leaf)]'}
+            `}
+            onClick={handleAddToCart}
+            disabled={added}
+          >
+            {added ? 'Ajouté au panier' : 'Ajouter au panier'}
+          </button>
         )}
       </div>
     </div>
