@@ -10,6 +10,7 @@ interface ProductCardProps {
   expanded?: boolean;            // montre titre / prix
   keepImgProportions?: boolean;  // conserve proportions
   onAddToCart?: (product: Product) => void; // ajoute au panier
+  added?: boolean;
 }
 
 export default function ProductCard({
@@ -18,7 +19,7 @@ export default function ProductCard({
   useFullImg = false,
   expanded = false,
   keepImgProportions = false,
-  onAddToCart,
+  onAddToCart
 }: ProductCardProps) {
   const [added, setAdded] = useState(false);
 
