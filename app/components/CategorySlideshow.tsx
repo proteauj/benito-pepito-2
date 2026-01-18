@@ -48,7 +48,7 @@ export default function CategorySlideshow({ category, products }: CategorySlides
               product={currentProduct}
               onClick={() => {}}
               useFullImg={false}                  // true si full image
-              expanded={false}                         // galerie compacte
+              showDetails={false}                         // galerie compacte
               keepImgProportions={true}  // garder proportions exactes si nécessaire
             />
           </Link>

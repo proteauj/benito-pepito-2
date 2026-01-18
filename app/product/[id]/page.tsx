@@ -1,36 +1,41 @@
 'use client';
 
-import { products } from '../../data/products';
-import { useParams } from 'next/navigation';
-import ProductCard from '../../products/ProductCard';
-import { Product } from '@/lib/db/types';
 import { useState } from 'react';
-import { useCart } from '@/app/contexts/CartContext';
+import { useParams } from 'next/navigation';
+import { products } from '../../data/products';
+import ProductCard from '../../products/ProductCard';
+import { useCart } from '../../contexts/CartContext';
 
 export default function ProductPage() {
-  const params = useParams(); // id du produit depuis l'URL
-  const product = products.find(p => p.id === params.id);
-  const [added, setAdded] = useState(false);
+  const params = useParams();
   const { addToCart } = useCart();
+  const [added, setAdded] = useState(false);
 
-  const handleAddToCart = (product: Product) => {
+  // Cherche le produit par ID
+  const product = products.find((p) => p.id === params.id);
+
+  if (!product) return <p className="text-center py-8">Produit introuvable</p>;
+
+  // Handler pour ajouter au panier
+  const handleAddToCart = () => {
     addToCart(product);
     setAdded(true);
   };
 
-  if (!product) return <p className="text-center py-8">Produit introuvable</p>;
-
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="container mx-auto px-4 py-8 relative z-10">
+    <div className="min-h-screen bg-white flex flex-col items-center px-4 py-8">
+      
+      {/* ProductCard avec image pleine et bandeau */}
+      <div className="w-full max-w-3xl">
         <ProductCard
           product={product}
-          expanded={true}
-          useFullImg={true}
-          onAddToCart={handleAddToCart} // la fonction qui ajoute au panier
-          added={added}                 // true si déjà ajouté
+          useFullImg={true}    // Image grande
+          showDetails={true}   // Affiche titre, taille, prix et bouton
+          onAddToCart={handleAddToCart}
+          added={added}        // Pour changer la couleur du bouton si déjà ajouté
         />
       </div>
+
     </div>
   );
 }

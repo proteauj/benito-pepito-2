@@ -1,86 +1,64 @@
 'use client';
 
 import { Product } from '../../lib/db/types';
-import { useCart } from '../contexts/CartContext';
-import { useState } from 'react';
 
 interface ProductCardProps {
   product: Product;
-  expanded?: boolean;
-  useFullImg?: boolean;
-  keepImgProportions?: boolean;
-  onClick?: () => void;
-  showAddToCart?: boolean;
-  onAddToCart?: (product: Product) => void; // callback facultatif
-  added?: boolean;
+  onClick?: () => void;                 // Si on veut cliquer sur l'image
+  useFullImg?: boolean;                 // Image pleine ou thumbnail
+  showDetails?: boolean;                // Affiche bandeau avec titre/taille/prix et bouton
+  onAddToCart?: () => void;             // Fonction d'ajout au panier
+  added?: boolean;                      // Produit déjà ajouté
+  keepImgProportions?: boolean;         // Respecte les proportions de l'image
 }
 
 export default function ProductCard({
   product,
-  expanded = false,
-  useFullImg = false,
-  keepImgProportions = false,
   onClick,
-  showAddToCart = false,
+  useFullImg = false,
+  showDetails = false,
   onAddToCart,
+  added = false,
+  keepImgProportions = false,
 }: ProductCardProps) {
-  const { addToCart } = useCart();
-  const [added, setAdded] = useState(false);
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation(); // empêche le onClick du card
-    if (onAddToCart) {
-      onAddToCart(product);
-    } else {
-      addToCart(product);
-    }
-    setAdded(true); // indique que le produit a été ajouté
-  };
-
-  const imgSrc = useFullImg
-    ? product.image || '/placeholder.png'
-    : product.imageThumbnail || product.image || '/placeholder.png';
-
   return (
     <div
-      className={`cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition relative ${
-        expanded ? 'w-full' : 'w-full sm:w-auto'
-      }`}
+      className="cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition bg-white"
       onClick={onClick}
     >
+      {/* Image */}
       <div
-        className={`relative w-full ${
-          keepImgProportions
-            ? 'aspect-auto'
-            : expanded
-            ? 'h-[600px]'
-            : 'aspect-square'
-        } overflow-hidden`}
+        className={`w-full ${
+          useFullImg
+            ? 'max-h-[600px]'
+            : 'h-64'
+        } overflow-hidden relative`}
+        style={keepImgProportions ? { height: 'auto' } : undefined}
       >
         <img
-          src={imgSrc}
+          src={useFullImg ? product.image : product.imageThumbnail || product.image || '/placeholder.png'}
           alt={product.title}
-          className={`w-full h-full ${keepImgProportions ? 'object-contain' : 'object-cover'}`}
+          className={`w-full h-full object-cover ${
+            keepImgProportions ? 'object-contain' : ''
+          }`}
         />
       </div>
 
-      {expanded && (
-        <div
-          className={`bg-white/90 p-2 mt-2`}
-        >
-          <p className="font-bold text-sm truncate">{product.titleFr || product.title}</p>
-          <p className="text-xs">{product.materialFr || product.material}</p>
-          <p className="text-xs">{product.size}</p>
-          <p className="text-xs font-semibold">{product.price} $</p>
+      {/* Bandeau sous l'image */}
+      {showDetails && (
+        <div className="p-4 flex flex-col gap-2">
+          <p className="font-bold text-lg truncate">{product.titleFr || product.title}</p>
+          <p className="text-sm">{product.size}</p>
+          <p className="text-sm">{product.price} $</p>
 
-          {showAddToCart && (
+          {onAddToCart && (
             <button
-              onClick={handleAddToCart}
-              className={`mt-2 block w-full text-center py-3 font-semibold transition-colors ${
-                added
-                  ? 'bg-[var(--gold-dark)] text-black cursor-default'
-                  : 'bg-[var(--gold)] text-black hover:bg-[var(--gold-dark)]'
-              }`}
+              className={`block w-full text-center py-3 font-semibold transition-colors
+                ${added ? 'bg-[var(--gold-dark)] cursor-default' : 'bg-[var(--gold)] hover:bg-white hover:text-[var(--leaf)]'}`}
+              onClick={(e) => {
+                e.stopPropagation(); // éviter de déclencher onClick parent
+                if (!added) onAddToCart();
+              }}
               disabled={added}
             >
               {added ? 'Ajouté au panier' : 'Ajouter au panier'}
