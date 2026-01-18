@@ -18,8 +18,9 @@ export default function ProductsPage() {
             key={product.id}
             product={product}
             onClick={() => router.push(`/product/${product.id}`)}
-            expanded={false}
-            useFullImg={false}
+            useFullImg={false}            // gallery → thumbnails
+            expanded={false}               // pas le mode page détail
+            keepImgProportions={product.keepImgProportions || false}
           />
         ))}
       </div>

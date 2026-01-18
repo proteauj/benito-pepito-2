@@ -539,7 +539,8 @@ export const products: Product[] = [
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint36.png"
+    "imageThumbnail": "/images/thumb/paint36.png",
+    "keepImgProportions": true
   },
   {
     "id": "pa37",
@@ -554,7 +555,8 @@ export const products: Product[] = [
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint37.png"
+    "imageThumbnail": "/images/thumb/paint37.png",
+    "keepImgProportions": true
   },
   {
     "id": "pa38",
@@ -584,7 +586,8 @@ export const products: Product[] = [
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint39.png"
+    "imageThumbnail": "/images/thumb/paint39.png",
+    "keepImgProportions": true
   },
   {
     "id": "pa40",
@@ -734,7 +737,8 @@ export const products: Product[] = [
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint49.png"
+    "imageThumbnail": "/images/thumb/paint49.png",
+    "keepImgProportions": true
   },
   {
     "id": "pa50",
@@ -1319,7 +1323,8 @@ export const products: Product[] = [
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint89.png"
+    "imageThumbnail": "/images/thumb/paint89.png",
+    "keepImgProportions": true
   },
   {
     "id": "pa90",
@@ -1394,7 +1399,8 @@ export const products: Product[] = [
     "materialFr": "Acrylique sur Bois",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint94.png"
+    "imageThumbnail": "/images/thumb/paint94.png",
+    "keepImgProportions": true
   },
   {
     "id": "pa95",
@@ -1439,7 +1445,8 @@ export const products: Product[] = [
     "materialFr": "Acrylique sur Bois",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint97.png"
+    "imageThumbnail": "/images/thumb/paint97.png",
+    "keepImgProportions": true
   },
   {
     "id": "pa98",
@@ -1718,7 +1725,8 @@ export const products: Product[] = [
     "materialFr": "Pierres",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/home4.jpeg"
+    "imageThumbnail": "/images/thumb/home4.jpeg",
+    "keepImgProportions": true
   },
   {
     "id": "hg5",

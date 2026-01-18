@@ -30,4 +30,5 @@ export interface Product {
   materialFr?: string;
   inStock: boolean;
   year: number;
+  keepImgProportions?: boolean;
 }
