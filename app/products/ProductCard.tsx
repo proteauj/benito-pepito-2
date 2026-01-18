@@ -1,77 +1,61 @@
 'use client';
 
+import { useState } from 'react';
 import { Product } from '../../lib/db/types';
 
 interface ProductCardProps {
   product: Product;
-  onClick?: () => void;                 // Si on veut cliquer sur l'image
-  useFullImg?: boolean;                 // Image pleine ou thumbnail
-  showDetails?: boolean;                // Affiche bandeau avec titre/taille/prix et bouton
-  onAddToCart?: () => void;             // Fonction d'ajout au panier
-  added?: boolean;                      // Produit déjà ajouté
-  keepImgProportions?: boolean;         // Respecte les proportions de l'image
+  onClick?: () => void;
+  useFullImg?: boolean;          // true pour page détail
+  expanded?: boolean;            // montre titre / prix
+  keepImgProportions?: boolean;  // conserve proportions
+  onAddToCart?: (product: Product) => void; // ajoute au panier
 }
 
 export default function ProductCard({
   product,
   onClick,
   useFullImg = false,
-  showDetails = false,
-  onAddToCart,
-  added = false,
+  expanded = false,
   keepImgProportions = false,
+  onAddToCart,
 }: ProductCardProps) {
+  const [added, setAdded] = useState(false);
+
+  const handleAdd = () => {
+    if (onAddToCart) {
+      onAddToCart(product);
+      setAdded(true);
+    }
+  };
+
   return (
     <div
-      className="cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition bg-white"
+      className="cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition"
       onClick={onClick}
     >
-      {/* Image */}
-      <div
-        className={`bg-white cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition
-          ${useFullImg ? '' : 'h-64 sm:h-80'} // hauteur fixe pour les miniatures
-        `}
-        onClick={onClick}
-      >
-        <div className={`w-full ${
-                useFullImg
-                  ? 'max-h-[600px]'
-                  : 'h-64'
-              } overflow-hidden relative`}>
-          <img
-            src={useFullImg ? product.image : product.imageThumbnail || product.image || '/placeholder.png'}
-            alt={product.title}
-            className={`w-full h-full ${
-              keepImgProportions ? 'object-contain' : 'object-cover'
-            }`}
-          />
-        </div>
-
-        {showDetails && (
-          <div className="bg-white p-2">
-            <p className="font-bold text-sm truncate">{product.titleFr || product.title}</p>
-            <p className="text-xs">{product.price} $</p>
-          </div>
-        )}
+      <div className={`w-full ${useFullImg ? '' : 'aspect-square'} overflow-hidden`}>
+        <img
+          src={useFullImg ? product.image : product.imageThumbnail || product.image || '/placeholder.png'}
+          alt={product.title}
+          className={`w-full h-full ${keepImgProportions ? 'object-contain' : 'object-cover'}`}
+        />
       </div>
 
-      {/* Bandeau sous l'image */}
-      {showDetails && (
-        <div className="p-4 flex flex-col gap-2">
-          <p className="font-bold text-lg truncate">{product.titleFr || product.title}</p>
-          <p className="text-sm">{product.size}</p>
-          <p className="text-sm">{product.materialFr}</p>
-          <p className="text-sm">{product.price} $</p>
+      {expanded && (
+        <div className="bg-white p-2">
+          <p className="font-bold text-sm truncate">{product.titleFr || product.title}</p>
+          <p className="text-xs mb-2">{product.size}</p>
+          <p className="text-xs mb-2">{product.materialFr}</p>
+          <p className="text-xs mb-2">{product.price} $</p>
 
           {onAddToCart && (
             <button
-              className={`block w-full text-center py-3 font-semibold transition-colors
-                ${added ? 'bg-[var(--gold-dark)] cursor-default' : 'bg-[var(--gold)] hover:bg-white hover:text-[var(--leaf)]'}`}
-              onClick={(e) => {
-                e.stopPropagation(); // éviter de déclencher onClick parent
-                if (!added) onAddToCart();
-              }}
+              onClick={handleAdd}
               disabled={added}
+              className={`block w-full text-center font-semibold py-3 ${
+                added ? 'bg-[var(--gold-dark)] text-black cursor-default' : 'bg-[var(--gold)] text-black hover:bg-white hover:text-[var(--leaf)]'
+              }`}
             >
               {added ? 'Ajouté au panier' : 'Ajouter au panier'}
             </button>

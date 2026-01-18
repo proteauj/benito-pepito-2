@@ -30,7 +30,7 @@ export default function ProductPage() {
         <ProductCard
           product={product}
           useFullImg={true}    // Image grande
-          showDetails={true}   // Affiche titre, taille, prix et bouton
+          expanded={true}   // Affiche titre, taille, prix et bouton
           onAddToCart={handleAddToCart}
           keepImgProportions={true}
           added={added}        // Pour changer la couleur du bouton si déjà ajouté
