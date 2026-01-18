@@ -20,22 +20,24 @@ export async function GET(request: NextRequest) {
   const slug = searchParams.get('slug');
 
   if (slug) {
-    const product = products.find((p) => p.slug === slug);
-    if (!product) return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    const product = products.find(p => p.slug === slug);
+    if (!product) {
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    }
 
-    // Get stock status from database if available
-    let inStock = true; // Default value
-    if (DatabaseService) {
-      try {
+    let inStock = product.inStock; // fallback
+
+    try {
+      if (DatabaseService) {
         inStock = await DatabaseService.getProductStock(product.id);
-      } catch (error) {
-        console.log('Database error, using default stock value:', error);
       }
+    } catch (err) {
+      console.warn('Stock fallback to product data');
     }
 
     return NextResponse.json({
       ...product,
-      inStock
+      inStock,
     });
   }
 
@@ -120,3 +122,35 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to update products' }, { status: 500 });
   }
 }
+
+export async function POST(req: NextRequest) {
+  if (!DatabaseService) {
+    return NextResponse.json(
+      { error: 'Database not available' },
+      { status: 500 }
+    );
+  }
+
+  const { productIds } = await req.json();
+
+  if (!Array.isArray(productIds) || productIds.length === 0) {
+    return NextResponse.json({ error: 'No product IDs provided' }, { status: 400 });
+  }
+
+  try {
+    for (const id of productIds) {
+      await DatabaseService.markProductAsSold(id);
+    }
+
+    return NextResponse.json({
+      message: 'Products marked as sold',
+      productIds,
+    });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Failed to mark products as sold', details: String(error) },
+      { status: 500 }
+    );
+  }
+}
+

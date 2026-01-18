@@ -65,6 +65,34 @@ export class DatabaseService {
     }
   }
 
+  /**
+   * Mark one or multiple products as sold (set inStock = false)
+   */
+  static async markProductAsSold(productIds: string | string[]): Promise<void> {
+    const ids = Array.isArray(productIds) ? productIds : [productIds];
+
+    try {
+      await Promise.all(
+        ids.map(productId =>
+          prisma.productStock.upsert({
+            where: { productId },
+            update: {
+              inStock: false,
+              updatedAt: new Date()
+            },
+            create: {
+              productId,
+              inStock: false,
+              updatedAt: new Date()
+            }
+          })
+        )
+      );
+    } catch (error) {
+      console.error('Error marking product(s) as sold:', error);
+    }
+  }
+
   static async updateMultipleProductStock(productIds: string[], inStock: boolean): Promise<void> {
     try {
       await Promise.all(
