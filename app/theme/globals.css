@@ -105,11 +105,9 @@ body {
     url('/stoneBg.jpeg');
   background-size: cover, 100% auto;
   background-repeat: no-repeat, repeat-y;
-  background-attachment: scroll; /* ✅ SAFE DEFAULT */
+  background-attachment: fixed;
   background-blend-mode: normal;
   color: var(--foreground);
-  font-size: 1.075rem;
-  line-height: 1.6;
 }
 
 /* Desktop only */
@@ -190,15 +188,17 @@ url('/stoneBg.jpeg');
   body::before { content: none; }
 
   /* Restore layered desktop background with vertical-only repeat */
-  body {
-    background-image:
-      linear-gradient(0deg, rgba(255,255,255,0.5), rgba(255,255,255,0.5)),
-      url('/stoneBg.jpeg');
-    background-position: center top, center top;
-    background-repeat: no-repeat, repeat-y;
-    background-size: cover, 100% auto;
-    background-attachment: scroll;
-  }
+body {
+  background: var(--background);
+  background-image:
+    linear-gradient(0deg, rgba(255,255,255,0.5), rgba(255,255,255,0.5)),
+    url('/stoneBg.jpeg');
+  background-size: cover, 100% auto;
+  background-repeat: no-repeat, repeat-y;
+  background-attachment: fixed;
+  background-blend-mode: normal;
+  color: var(--foreground);
+}
 
   /* Ensure sections also use non-rotated texture */
   .stoneBg {

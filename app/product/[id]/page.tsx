@@ -12,12 +12,14 @@ export default function ProductPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <ProductCard
-        product={product}
-        expanded={true}      // affiche toutes les infos
-        useFullImg={true}    // image haute qualité
-        showAddToCart={true} // bouton Ajouter au panier
-      />
+      <div className="container mx-auto px-4 py-8 relative z-10">
+        <ProductCard
+          product={product}
+          expanded={true}
+          useFullImg={true}
+          showAddToCart={true}
+        />
+      </div>
     </div>
   );
 }

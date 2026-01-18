@@ -39,11 +39,13 @@ export default function ProductCard({
     >
       {/* Image */}
       <div className={`overflow-hidden ${expanded ? 'h-auto' : 'h-64'}`}>
-        <img
-          src={useFullImg ? product.image || '/placeholder.png' : product.imageThumbnail || product.image || '/placeholder.png'}
-          alt={product.title}
-          className={useFullImg ? 'w-full object-contain max-h-[600px]' : 'w-full h-full object-cover'}
-        />
+        <div className="w-full h-auto max-h-[600px] overflow-hidden relative">
+          <img
+            src={useFullImg ? product.image : product.imageThumbnail || '/placeholder.png'}
+            alt={product.title}
+            className={useFullImg ? 'w-full object-contain max-h-[600px]' : 'w-full h-full object-cover'}
+          />
+        </div>
       </div>
 
       {/* Infos */}
