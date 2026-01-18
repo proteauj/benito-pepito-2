@@ -8,6 +8,7 @@ import { useProductTranslations } from '../hooks/useProductTranslations';
 import ArtworkSquare from './ArtworkSquare';
 import SafeImage from './SafeImage';
 import { Product } from '../../lib/db/types';
+import ProductCard from '../products/ProductCard';
 
 interface CategorySlideshowProps {
   category: string;
@@ -46,11 +47,12 @@ export default function CategorySlideshow({ category, products }: CategorySlides
           >
             <div className="absolute inset-0 bg-white/70 rounded-md shadow-sm transform group-hover:scale-[0.98] transition-transform duration-300" />
             <div className="relative w-full h-full overflow-hidden rounded-md border-2 border-white/70">
-              <img
-                src={currentProduct.image}
-                alt={currentProduct.title}
-                className="object-cover w-full h-full"
-                sizes="(max-width: 768px) 100vw, 50vw"
+              <ProductCard
+                product={currentProduct}
+                onClick={() => {}}
+                useFullImg={false}                  // true si full image
+                expanded={false}                         // galerie compacte
+                keepImgProportions={true}  // garder proportions exactes si nécessaire
               />
             </div>
           </Link>
