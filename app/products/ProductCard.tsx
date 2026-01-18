@@ -64,30 +64,30 @@ export default function ProductCard({
         />
       </div>
 
-      <div
-        className={`bg-white/90 p-2 ${
-          expanded ? 'mt-4' : 'absolute bottom-0 left-0 right-0'
-        }`}
-      >
-        <p className="font-bold text-sm truncate">{product.titleFr || product.title}</p>
-        {expanded && <p className="text-xs">{product.materialFr || product.material}</p>}
-        <p className="text-xs">{product.size}</p>
-        <p className="text-xs font-semibold">{product.price} $</p>
+      {expanded && (
+        <div
+          className={`bg-white/90 p-2 mt-2`}
+        >
+          <p className="font-bold text-sm truncate">{product.titleFr || product.title}</p>
+          <p className="text-xs">{product.materialFr || product.material}</p>
+          <p className="text-xs">{product.size}</p>
+          <p className="text-xs font-semibold">{product.price} $</p>
 
-        {showAddToCart && (
-          <button
-            onClick={handleAddToCart}
-            className={`mt-2 block w-full text-center py-3 font-semibold transition-colors ${
-              added
-                ? 'bg-[var(--gold-dark)] text-black cursor-default'
-                : 'bg-[var(--gold)] text-black hover:bg-[var(--gold-dark)]'
-            }`}
-            disabled={added}
-          >
-            {added ? 'Ajouté au panier' : 'Ajouter au panier'}
-          </button>
-        )}
-      </div>
+          {showAddToCart && (
+            <button
+              onClick={handleAddToCart}
+              className={`mt-2 block w-full text-center py-3 font-semibold transition-colors ${
+                added
+                  ? 'bg-[var(--gold-dark)] text-black cursor-default'
+                  : 'bg-[var(--gold)] text-black hover:bg-[var(--gold-dark)]'
+              }`}
+              disabled={added}
+            >
+              {added ? 'Ajouté au panier' : 'Ajouter au panier'}
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
