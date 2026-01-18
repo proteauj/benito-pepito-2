@@ -10,21 +10,6 @@ import { products } from './data/products';
 
 type ProductsByCategory = Record<string, Product[]>;
 
-import { prisma } from "../prisma.config";
-
-async function main() {
-  const users = await prisma.user.findMany();
-  console.log(users);
-}
-
-main();
-
-main()
-  .catch((e) => console.error(e))
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
-
 export default function HomePage() {
   const { t } = useI18n();
   const [productsByCategory, setProductsByCategory] = useState<ProductsByCategory>({});
