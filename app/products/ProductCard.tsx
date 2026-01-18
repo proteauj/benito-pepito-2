@@ -22,8 +22,8 @@ export default function ProductCard({
   }
 
   const imageSrc = useFullImage
-    ? product.image || product.imageThumbnail || '/placeholder.png'
-    : product.imageThumbnail || product.image || '/placeholder.png';
+    ? product && (product.image || product.imageThumbnail || '/placeholder.png')
+    : product && (product.imageThumbnail || product.image || '/placeholder.png');
 
   return (
     <div
