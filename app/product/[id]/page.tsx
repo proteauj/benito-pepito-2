@@ -1,86 +1,82 @@
 'use client';
 
-import { products } from '../../data/products';
-import { useParams } from 'next/navigation';
+import { Product } from '../../../lib/db/types';
 import { useCart } from '../../contexts/CartContext';
 import { useState } from 'react';
 
-export default function ProductPage() {
-  const params = useParams();
+interface ProductCardProps {
+  product: Product;
+  variant?: 'grid' | 'detail';
+  onClick?: () => void;
+}
+
+export default function ProductCard({
+  product,
+  variant = 'grid',
+  onClick,
+}: ProductCardProps) {
   const { addToCart } = useCart();
   const [added, setAdded] = useState(false);
 
-  const product = products.find(p => p.id === params.id);
-
-  if (!product) {
+  if (variant === 'detail') {
     return (
-      <div className="container mx-auto px-4 py-20 bg-white">
-        <p>Produit introuvable</p>
-      </div>
-    );
-  }
-
-  const handleAddToCart = () => {
-    addToCart(product);
-    setAdded(true);
-  };
-
-  return (
-    <div className="relative z-10 bg-white">
-      <div className="container mx-auto px-4 py-12">
-
-        {/* IMAGE */}
-        <div className="flex justify-center mb-10">
+      <div className="bg-white p-6 rounded shadow">
+        {/* IMAGE FULL */}
+        <div className="flex justify-center mb-6">
           <img
             src={product.image || '/placeholder.png'}
             alt={product.title}
-            className="
-              max-h-[70vh]
-              w-auto
-              object-contain
-              rounded
-              shadow-lg
-            "
+            className="max-h-[600px] object-contain"
           />
         </div>
 
         {/* INFOS */}
-        <div className="max-w-xl mx-auto bg-white p-6 rounded shadow">
-          <h1 className="text-2xl font-semibold mb-4">
-            {product.titleFr || product.title}
-          </h1>
+        <h1 className="text-2xl font-bold mb-2">
+          {product.titleFr || product.title}
+        </h1>
 
-          <p className="mb-2">
-            <strong>Matériel :</strong> {product.materialFr || product.material}
-          </p>
+        <p><strong>Matériel :</strong> {product.materialFr || product.material}</p>
+        <p><strong>Taille :</strong> {product.size}</p>
+        <p className="mb-4"><strong>Prix :</strong> {product.price} $</p>
 
-          <p className="mb-2">
-            <strong>Taille :</strong> {product.size}
-          </p>
+        {/* BOUTON */}
+        <button
+          onClick={() => {
+            addToCart(product);
+            setAdded(true);
+          }}
+          disabled={added}
+          className={`block w-full text-center py-3 font-semibold transition
+            ${added
+              ? 'bg-[var(--gold-dark)] text-black'
+              : 'bg-[var(--gold)] text-black hover:bg-white hover:text-[var(--leaf)]'}
+          `}
+        >
+          {added ? 'Ajouté au panier' : 'Ajouter au panier'}
+        </button>
+      </div>
+    );
+  }
 
-          <p className="mb-6 text-lg font-semibold">
-            {product.price} $
-          </p>
+  // 🔹 MODE GRID (Products / Accueil)
+  return (
+    <div
+      className="cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition"
+      onClick={onClick}
+    >
+      <div className="w-full h-64 overflow-hidden">
+        <img
+          src={product.imageThumbnail || product.image || '/placeholder.png'}
+          alt={product.title}
+          className="w-full h-full object-cover"
+        />
+      </div>
 
-          {/* BOUTON */}
-          <button
-            onClick={handleAddToCart}
-            disabled={added}
-            className={`
-              block w-full text-center
-              py-3 font-semibold
-              transition
-              ${
-                added
-                  ? 'bg-[var(--gold-dark)] text-black cursor-default'
-                  : 'bg-[var(--gold)] text-black hover:bg-white hover:text-[var(--leaf)]'
-              }
-            `}
-          >
-            {added ? 'Ajouté au panier' : 'Ajouter au panier'}
-          </button>
-        </div>
-
+      <div className="bg-white p-2">
+        <p className="font-bold text-sm truncate">
+          {product.titleFr || product.title}
+        </p>
+        <p className="text-xs">{product.price} $</p>
       </div>
     </div>
   );
