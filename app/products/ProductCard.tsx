@@ -39,7 +39,7 @@ export default function ProductCard({
     >
       {/* Image */}
       <div className={`overflow-hidden ${expanded ? 'h-auto' : 'h-64'}`}>
-        <div className="w-full h-auto max-h-[600px] overflow-hidden relative">
+        <div className="bg-white w-full h-auto max-h-[600px] overflow-hidden relative">
           <img
             src={useFullImg ? product.image : product.imageThumbnail || '/placeholder.png'}
             alt={product.title}
