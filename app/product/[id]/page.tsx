@@ -36,8 +36,8 @@ export default function ProductPage() {
           <button
             className={`block w-full text-center py-3 font-semibold rounded ${
               added
-                ? 'bg-green-500 text-black cursor-default'
-                : 'bg-[var(--gold)] text-black hover:bg-white hover:text-[var(--leaf)]'
+              ? 'bg-[var(--gold-dark)] text-black cursor-default' // doré foncé quand ajouté
+              : 'bg-[var(--gold)] text-black hover:bg-white hover:text-[var(--leaf)]'
             }`}
             onClick={handleAddToCart}
             disabled={added}
