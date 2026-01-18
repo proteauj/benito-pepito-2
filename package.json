@@ -19,23 +19,25 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@prisma/client": "^6.16.2",
+    "@prisma/adapter-pg": "^7.2.0",
+    "@prisma/client": "^7.2.0",
     "@tanstack/react-virtual": "^3.13.18",
     "@vercel/postgres": "^0.10.0",
+    "dotenv": "^17.2.3",
     "next": "^16.1.2",
-    "prisma": "^6.16.2",
+    "pg": "^8.17.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-window": "^2.2.5",
     "resend": "^6.1.0",
     "stripe": "^18.5.0",
-    "swiper": "^12.0.3",
-    "tsx": "^4.20.5"
+    "swiper": "^12.0.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20.19.30",
+    "@types/pg": "^8.16.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/react-virtualized": "^9.22.3",
@@ -43,9 +45,20 @@
     "@types/react-window": "^1.8.8",
     "@types/swiper": "^5.4.3",
     "eslint-config-next": "15.5.3",
+    "prisma": "^7.2.0",
     "react-virtuoso": "^4.18.1",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
-  }
+  },
+  "type": "module",
+  "description": "This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).",
+  "main": "sync-product-stock.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
