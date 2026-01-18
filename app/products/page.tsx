@@ -77,13 +77,13 @@ export default function ProductsPage() {
 
       {/* GRID Desktop */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <ProductCard
             key={product.id}
             product={product}
             onClick={() => router.push(`/product/${product.id}`)}
             useFullImg={false}            // gallery → thumbnails
-            showDetails={false}               // pas le mode page détail
+            showDetails={false}            // pas le mode page détail
             keepImgProportions={product.keepImgProportions || false}
           />
         ))}
