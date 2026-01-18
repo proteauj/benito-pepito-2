@@ -100,19 +100,23 @@ html, body, #__next {
 
 body {
   background: var(--background);
-  /* Stone + white overlay layered in the background itself */
   background-image:
     linear-gradient(0deg, rgba(255,255,255,0.5), rgba(255,255,255,0.5)),
     url('/stoneBg.jpeg');
-  /* gradient covers; texture spans full width and only repeats vertically */
   background-size: cover, 100% auto;
   background-repeat: no-repeat, repeat-y;
-  background-attachment: fixed;
-  background-blend-mode: normal; /* keep texture visible */
+  background-attachment: scroll; /* ✅ SAFE DEFAULT */
+  background-blend-mode: normal;
   color: var(--foreground);
-  /* Use system serif font instead of Nooa */
-  font-size: 1.075rem; /* larger for Mouly readability */
-  line-height: 1.6; /* a bit more leading for clarity */
+  font-size: 1.075rem;
+  line-height: 1.6;
+}
+
+/* Desktop only */
+@media (min-width: 768px) {
+  body {
+    background-attachment: fixed;
+  }
 }
 
 /* Utility: Apply stone background anywhere */

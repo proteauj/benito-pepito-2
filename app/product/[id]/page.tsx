@@ -1,10 +1,9 @@
 'use client';
 
 import { products } from '../../data/products';
+import { useParams } from 'next/navigation';
 import { useCart } from '../../contexts/CartContext';
 import { useState } from 'react';
-import { useParams } from 'next/navigation';
-import ProductCard from '../../products/ProductCard';
 
 export default function ProductPage() {
   const params = useParams();
@@ -13,7 +12,13 @@ export default function ProductPage() {
 
   const product = products.find(p => p.id === params.id);
 
-  if (!product) return <p className="text-center py-8">Produit introuvable</p>;
+  if (!product) {
+    return (
+      <div className="container mx-auto px-4 py-20 bg-white">
+        <p>Produit introuvable</p>
+      </div>
+    );
+  }
 
   const handleAddToCart = () => {
     addToCart(product);
@@ -21,30 +26,61 @@ export default function ProductPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        {/* ProductCard en mode full + expanded */}
-        <ProductCard
-          product={product}
-          useFullImg={true}
-          expanded={true}
-          onClick={() => {}}
-        />
+    <div className="relative z-10 bg-white">
+      <div className="container mx-auto px-4 py-12">
 
-        {/* Bouton Ajouter au panier doré */}
-        <div className="mt-4">
+        {/* IMAGE */}
+        <div className="flex justify-center mb-10">
+          <img
+            src={product.image || '/placeholder.png'}
+            alt={product.title}
+            className="
+              max-h-[70vh]
+              w-auto
+              object-contain
+              rounded
+              shadow-lg
+            "
+          />
+        </div>
+
+        {/* INFOS */}
+        <div className="max-w-xl mx-auto bg-white p-6 rounded shadow">
+          <h1 className="text-2xl font-semibold mb-4">
+            {product.titleFr || product.title}
+          </h1>
+
+          <p className="mb-2">
+            <strong>Matériel :</strong> {product.materialFr || product.material}
+          </p>
+
+          <p className="mb-2">
+            <strong>Taille :</strong> {product.size}
+          </p>
+
+          <p className="mb-6 text-lg font-semibold">
+            {product.price} $
+          </p>
+
+          {/* BOUTON */}
           <button
-            className={`block w-full text-center py-3 font-semibold rounded ${
-              added
-              ? 'bg-[var(--gold-dark)] text-black cursor-default' // doré foncé quand ajouté
-              : 'bg-[var(--gold)] text-black hover:bg-white hover:text-[var(--leaf)]'
-            }`}
             onClick={handleAddToCart}
             disabled={added}
+            className={`
+              block w-full text-center
+              py-3 font-semibold
+              transition
+              ${
+                added
+                  ? 'bg-[var(--gold-dark)] text-black cursor-default'
+                  : 'bg-[var(--gold)] text-black hover:bg-white hover:text-[var(--leaf)]'
+              }
+            `}
           >
             {added ? 'Ajouté au panier' : 'Ajouter au panier'}
           </button>
         </div>
+
       </div>
     </div>
   );
