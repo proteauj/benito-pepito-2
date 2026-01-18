@@ -10,9 +10,6 @@ export default function ContactPage() {
         <div className="leafy-divider pb-3 mb-6">
           <h1 className="text-4xl font-bold">{t('contact.title')}</h1>
         </div>
-        <p className="text-lg text-black/80 leading-relaxed mb-8">
-          {t('contact.description')}
-        </p>
 
         <form className="grid grid-cols-1 gap-6 bg-white border border-[#cfc9c0] p-6">
           <div>
@@ -44,7 +41,7 @@ export default function ContactPage() {
           </div>
 
           <div className="flex items-center justify-between">
-            <p className="text-black/70">{t('contact.direct')} <a href="mailto:info@benitopepito.art" className="underline">info@benitopepito.art</a></p>
+            <p className="text-black/70">{t('contact.direct')} <a href="mailto:benitopepitoartiste@gmail.com" className="underline">benitopepitoartiste@gmail.com</a></p>
             <button
               type="submit"
               className="inline-flex items-center bg-[var(--gold)] text-black font-semibold px-6 py-3 hover:bg-[var(--gold-dark)]"
@@ -57,16 +54,12 @@ export default function ContactPage() {
         <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white border border-[#cfc9c0] p-6">
             <h2 className="text-xl font-semibold mb-2">{t('contact.gallery')}</h2>
-            <p className="text-black/80">Mon–Sat, 10:00–18:00</p>
-            <p className="text-black/80">123 Stone Avenue, Montreal, QC</p>
+            <p className="text-black/80">Lun-Ven, 09:00–17:00</p>
+            <p className="text-black/80">4 rue Dufresne, Saint-Jean-sur-Richelieu, J2W 1K9</p>
           </div>
           <div className="bg-white border border-[#cfc9c0] p-6">
-            <h2 className="text-xl font-semibold mb-2">{t('contact.press')}</h2>
-            <p className="text-black/80">press@benitopepito.art</p>
-          </div>
-          <div className="bg-white border border-[#cfc9c0] p-6">
-            <h2 className="text-xl font-semibold mb-2">{t('contact.sales')}</h2>
-            <p className="text-black/80">sales@benitopepito.art</p>
+            <h2 className="text-xl font-semibold mb-2">{t('contact.form.email')}</h2>
+            <p className="text-black/80">benitopepitoartiste@gmail.com</p>
           </div>
         </div>
       </div>
