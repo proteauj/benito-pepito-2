@@ -1,14 +1,13 @@
-'use client';
-
-import { Product } from '../../lib/db/types';
+import { Product } from "@/lib/db/types";
 
 interface ProductCardProps {
   product: Product;
   onClick?: () => void;
-  expanded?: boolean;          // mode page détail
-  useFullImg?: boolean;        // utiliser image pleine ou thumbnail
-  showAddToCart?: boolean;     // bouton Ajouter au panier
-  keepImgProportions?: boolean;// respecter proportions réelles dans la galerie
+  expanded?: boolean;
+  useFullImg?: boolean;
+  keepImgProportions?: boolean;
+  onAddToCart?: (product: Product) => void;
+  added?: boolean;
 }
 
 export default function ProductCard({
@@ -16,40 +15,49 @@ export default function ProductCard({
   onClick,
   expanded = false,
   useFullImg = false,
-  showAddToCart = false,
   keepImgProportions = false,
+  onAddToCart,
+  added = false,
 }: ProductCardProps) {
   return (
     <div
-      className={`cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition ${expanded ? 'max-w-3xl mx-auto' : ''}`}
+      className={`cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition`}
       onClick={onClick}
     >
       <div
-        className={`w-full overflow-hidden relative ${
-          expanded || keepImgProportions
-            ? 'h-auto'       // conserver proportions exactes
-            : 'h-64'         // galerie standard
+        className={`relative w-full overflow-hidden ${
+          useFullImg ? 'h-auto max-h-[600px]' : 'h-64'
         }`}
       >
         <img
-          src={useFullImg ? product.image : product.imageThumbnail || '/placeholder.png'}
+          src={useFullImg ? product.image : product.imageThumbnail || product.image}
           alt={product.title}
-          className={`w-full ${expanded || keepImgProportions ? 'h-auto object-contain' : 'h-full object-cover'}`}
+          className={`w-full h-full ${
+            keepImgProportions || useFullImg ? 'object-contain' : 'object-cover'
+          }`}
         />
       </div>
 
-      <div className="bg-white p-2">
-        <p className="font-bold text-sm truncate">{product.titleFr || product.title}</p>
-        <p className="text-xs">{product.price} $</p>
+      {expanded && (
+        <div className="bg-white p-2">
+          <p className="font-bold text-sm truncate">{product.titleFr || product.title}</p>
+          <p className="text-xs">{product.price} $</p>
+          <p><strong>Matériel:</strong> {product.materialFr || product.material}</p>
+          <p><strong>Taille:</strong> {product.size}</p>
 
-        {showAddToCart && (
-          <button
-            className={`block w-full text-center bg-[var(--gold)] text-black py-3 font-semibold hover:bg-white hover:text-[var(--leaf)] mt-2`}
-          >
-            Ajouter au panier
-          </button>
-        )}
-      </div>
+          {onAddToCart && (
+            <button
+              className={`block w-full text-center bg-[var(--gold)] text-black py-3 font-semibold hover:bg-[var(--gold-dark)] hover:text-[var(--leaf)] mt-2 ${
+                added ? 'bg-[var(--gold-dark)] cursor-default' : ''
+              }`}
+              onClick={() => onAddToCart(product)}
+              disabled={added}
+            >
+              {added ? 'Ajouté au panier' : 'Ajouter au panier'}
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
