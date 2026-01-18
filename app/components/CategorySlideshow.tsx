@@ -40,13 +40,10 @@ export default function CategorySlideshow({ category, products }: CategorySlides
       <h2 className="text-3xl font-bold text-black mb-6 px-4 sm:px-0">{t(`category.${category}`)}</h2>
       
       <div className="relative bg-white border border-[#cfc9c0] overflow-hidden mx-auto w-full max-w-full rounded-sm">
-        <div className="relative w-full aspect-square p-2">
           <Link 
             href={`/product/${currentProduct.id}`}
             className="block w-full h-full relative group"
           >
-            <div className="absolute inset-0 bg-white/70 rounded-md shadow-sm transform group-hover:scale-[0.98] transition-transform duration-300" />
-            
             <ProductCard
               product={currentProduct}
               onClick={() => {}}
@@ -75,6 +72,5 @@ export default function CategorySlideshow({ category, products }: CategorySlides
           </div>
         </div>
       </div>
-    </div>
   );
 }
