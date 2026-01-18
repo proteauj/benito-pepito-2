@@ -49,6 +49,7 @@ export default function ProductCard({
         <div className="p-4 flex flex-col gap-2">
           <p className="font-bold text-lg truncate">{product.titleFr || product.title}</p>
           <p className="text-sm">{product.size}</p>
+          <p className="text-sm">{product.materialFr}</p>
           <p className="text-sm">{product.price} $</p>
 
           {onAddToCart && (
