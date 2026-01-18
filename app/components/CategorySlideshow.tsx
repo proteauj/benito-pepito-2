@@ -46,15 +46,14 @@ export default function CategorySlideshow({ category, products }: CategorySlides
             className="block w-full h-full relative group"
           >
             <div className="absolute inset-0 bg-white/70 rounded-md shadow-sm transform group-hover:scale-[0.98] transition-transform duration-300" />
-            <div className="relative w-full h-full overflow-hidden rounded-md border-2 border-white/70">
-              <ProductCard
-                product={currentProduct}
-                onClick={() => {}}
-                useFullImg={false}                  // true si full image
-                expanded={false}                         // galerie compacte
-                keepImgProportions={true}  // garder proportions exactes si nécessaire
-              />
-            </div>
+            
+            <ProductCard
+              product={currentProduct}
+              onClick={() => {}}
+              useFullImg={false}                  // true si full image
+              expanded={false}                         // galerie compacte
+              keepImgProportions={true}  // garder proportions exactes si nécessaire
+            />
           </Link>
           {!currentProduct.inStock && (
             <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
