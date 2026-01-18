@@ -23,7 +23,7 @@ export default function ProductPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center px-4 py-8">
+    <div className="min-h-screen bg-white flex flex-col items-center px-4 py-8 stoneBg">
       
       {/* ProductCard avec image pleine et bandeau */}
       <div className="w-full max-w-3xl">
