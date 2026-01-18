@@ -12,7 +12,7 @@ export default function ProductsPage() {
   const [sizeFilter, setSizeFilter] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  // Filtrage et tri simples
+  // Filtrage et tri
   const filteredProducts = products
     .filter(p => (materialFilter ? p.material?.toLowerCase() === materialFilter.toLowerCase() : true))
     .filter(p => (sizeFilter ? p.size?.toLowerCase() === sizeFilter.toLowerCase() : true))
@@ -75,16 +75,16 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      {/* GRID Desktop */}
+      {/* GRID Galerie */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.map((product) => (
           <ProductCard
             key={product.id}
             product={product}
             onClick={() => router.push(`/product/${product.id}`)}
-            useFullImg={false}            // gallery → thumbnails
-            showDetails={false}            // pas le mode page détail
-            keepImgProportions={product.keepImgProportions || false}
+            useFullImg={false}            // galerie → thumbnails
+            showDetails={false}            // pas de bandeau
+            keepImgProportions={product.keepImgProportions || false} // respecter certaines proportions
           />
         ))}
       </div>
