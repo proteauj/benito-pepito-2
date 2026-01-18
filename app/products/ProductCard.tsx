@@ -28,20 +28,31 @@ export default function ProductCard({
     >
       {/* Image */}
       <div
-        className={`w-full ${
-          useFullImg
-            ? 'max-h-[600px]'
-            : 'h-64'
-        } overflow-hidden relative`}
-        style={keepImgProportions ? { height: 'auto' } : undefined}
+        className={`bg-white cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition
+          ${useFullImg ? '' : 'h-64 sm:h-80'} // hauteur fixe pour les miniatures
+        `}
+        onClick={onClick}
       >
-        <img
-          src={useFullImg ? product.image : product.imageThumbnail || product.image || '/placeholder.png'}
-          alt={product.title}
-          className={`w-full h-full object-cover ${
-            keepImgProportions ? 'object-contain' : ''
-          }`}
-        />
+        <div className={`w-full ${
+                useFullImg
+                  ? 'max-h-[600px]'
+                  : 'h-64'
+              } overflow-hidden relative`}>
+          <img
+            src={useFullImg ? product.image : product.imageThumbnail || product.image || '/placeholder.png'}
+            alt={product.title}
+            className={`w-full h-full ${
+              keepImgProportions ? 'object-contain' : 'object-cover'
+            }`}
+          />
+        </div>
+
+        {showDetails && (
+          <div className="bg-white p-2">
+            <p className="font-bold text-sm truncate">{product.titleFr || product.title}</p>
+            <p className="text-xs">{product.price} $</p>
+          </div>
+        )}
       </div>
 
       {/* Bandeau sous l'image */}
