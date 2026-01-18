@@ -19,7 +19,7 @@ export default function ProductsPage() {
             product={product}
             onClick={() => router.push(`/product/${product.id}`)}
             useFullImg={false}            // gallery → thumbnails
-            expanded={false}               // pas le mode page détail
+            expanded={true}               // pas le mode page détail
             keepImgProportions={product.keepImgProportions || false}
           />
         ))}
