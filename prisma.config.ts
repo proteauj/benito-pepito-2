@@ -17,5 +17,5 @@ const { PrismaClient } = require("./node_modules/@prisma/client");
 
 export const prisma = new PrismaClient({
   adapter: "postgresql",
-  url: process.env.DATABASE_URL,
+  url: process.env.benitoPepito_DATABASE_URL,
 });
