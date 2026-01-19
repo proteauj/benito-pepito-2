@@ -1,105 +1,70 @@
 // app/api/square/webhook/route.ts
-import { NextRequest, NextResponse } from 'next/server';
-import crypto from 'crypto';
-import prisma from '../../../../lib/prisma';
+export const runtime = "nodejs"; // requis pour Prisma et crypto
 
-export const runtime = 'nodejs'; // nécessaire pour @prisma/client et fetch
-
-// Fonction pour vérifier la signature du webhook Square
-function verifySquareSignature(signature: string | null, body: string) {
-  if (!signature) return false;
-  const key = process.env.SQUARE_WEBHOOK_SIGNATURE_KEY;
-  if (!key) throw new Error('SQUARE_WEBHOOK_SIGNATURE_KEY not set');
-
-  const hmac = crypto.createHmac('sha1', key);
-  hmac.update(body);
-  const hash = hmac.digest('base64');
-
-  return crypto.timingSafeEqual(Buffer.from(hash), Buffer.from(signature));
-}
+import { NextRequest, NextResponse } from "next/server";
+import crypto from "crypto";
+import { prisma } from "@/lib/prisma"; // singleton Prisma
 
 export async function POST(req: NextRequest) {
-  const bodyText = await req.text();
-  const signature = req.headers.get('x-square-signature');
-
-  if (!verifySquareSignature(signature, bodyText)) {
-    return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
-  }
-
-  const body = JSON.parse(bodyText);
-
   try {
-    // Exemple pour un paiement réussi
-    if (body.type === 'payment.updated' && body.data?.object?.payment?.status === 'COMPLETED') {
-      const payment = body.data.object.payment;
+    // Lire le body brut pour vérifier la signature
+    const bodyText = await req.text();
+    const signature = req.headers.get("x-square-signature");
 
-      // Récupérer infos utiles
-      const customerEmail = payment.customer_details?.email_address || null;
-      const billingAddress = payment.customer_details?.address || null;
-      const shippingAddress = payment.order?.fulfillments?.[0]?.shipment_details?.recipient || null;
-      const totalAmount = payment.amount_money?.amount || 0;
-      const currency = payment.amount_money?.currency || 'CAD';
-      const productIds: string[] = payment.order?.line_items?.map((li: any) => li.catalog_object_id) || [];
-
-      // Créer ou mettre à jour la commande
-      const order = await prisma.order.upsert({
-        where: { squarePaymentId: payment.id },
-        update: {
-          customerEmail,
-          totalAmount,
-          currency,
-          status: 'completed',
-          productIds,
-        },
-        create: {
-          squarePaymentId: payment.id,
-          customerEmail,
-          totalAmount,
-          currency,
-          status: 'completed',
-          productIds,
-        },
-      });
-
-      // Sauvegarder les adresses si présentes
-      if (billingAddress) {
-        const billingAddr = await prisma.customerAddress.create({
-          data: {
-            type: 'billing',
-            line1: billingAddress.address_line_1 || '',
-            line2: billingAddress.address_line_2 || null,
-            city: billingAddress.locality || '',
-            state: billingAddress.administrative_district_level_1 || null,
-            postalCode: billingAddress.postal_code || '',
-            country: billingAddress.country || '',
-            orderId: order.id,
-          },
-        });
-      }
-
-      if (shippingAddress) {
-        const shippingAddr = await prisma.customerAddress.create({
-          data: {
-            type: 'shipping',
-            line1: shippingAddress.address_line_1 || '',
-            line2: shippingAddress.address_line_2 || null,
-            city: shippingAddress.locality || '',
-            state: shippingAddress.administrative_district_level_1 || null,
-            postalCode: shippingAddress.postal_code || '',
-            country: shippingAddress.country || '',
-            orderId: order.id,
-          },
-        });
-      }
-
-      return NextResponse.json({ success: true });
+    if (!signature || !process.env.SQUARE_WEBHOOK_SIGNATURE_KEY) {
+      console.warn("Missing signature or webhook key");
+      return NextResponse.json({ error: "Webhook misconfigured" }, { status: 500 });
     }
 
-    // Si événement non traité
-    return NextResponse.json({ success: true, message: 'Event ignored' });
+    // Vérification HMAC SHA1
+    const hmac = crypto
+      .createHmac("sha1", process.env.SQUARE_WEBHOOK_SIGNATURE_KEY)
+      .update(bodyText)
+      .digest("base64");
 
-  } catch (error) {
-    console.error('❌ Webhook processing error:', error);
-    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+    if (hmac !== signature) {
+      console.warn("Invalid webhook signature");
+      return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
+    }
+
+    // Parser le body après validation
+    const body = JSON.parse(bodyText);
+    const payment = body?.data?.object?.payment;
+
+    if (!payment) {
+      return NextResponse.json({ error: "No payment data" }, { status: 400 });
+    }
+
+    // Calculer le total à partir des line_items
+    const totalAmount =
+      payment.line_items?.reduce(
+        (sum: number, item: { base_price_money: { amount: number }; quantity: number }) =>
+          sum + (item.base_price_money?.amount || 0) * (item.quantity || 1),
+        0
+      ) || payment.total_money?.amount || 0;
+
+    // Créer la commande dans la DB
+    const order = await prisma.order.create({
+      data: {
+        stripeSessionId: payment.id, // tu peux renommer pour Square
+        customerEmail: payment.customer_email || "",
+        productIds: payment.line_items?.map((i: any) => i.name) || [],
+        totalAmount,
+        currency: payment.total_money?.currency || "CAD",
+        status: payment.status || "pending",
+        billingAddressId: payment.billing_address
+          ? JSON.stringify(payment.billing_address)
+          : null,
+        shippingAddressId: payment.shipping_address
+          ? JSON.stringify(payment.shipping_address)
+          : null,
+      },
+    });
+
+    console.log("Order saved from Square webhook:", order.id);
+    return NextResponse.json({ ok: true, orderId: order.id });
+  } catch (err) {
+    console.error("Square webhook error:", err);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
