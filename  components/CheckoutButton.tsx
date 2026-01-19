@@ -1,5 +1,4 @@
 'use client';
-
 import { useCart } from '../app/contexts/CartContext';
 
 export default function CheckoutButton() {
@@ -9,12 +8,12 @@ export default function CheckoutButton() {
     const res = await fetch('/api/square/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items })
+      body: JSON.stringify({ items }),
     });
 
     const data = await res.json();
     if (data.squareUrl) {
-      window.location.href = data.squareUrl;
+      window.location.href = data.squareUrl; // Redirection vers Square
     } else {
       alert('Erreur lors de la création du paiement');
     }
