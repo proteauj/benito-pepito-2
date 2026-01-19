@@ -7,10 +7,11 @@ import { useCart } from '../contexts/CartContext';
 import { useI18n } from '@/i18n/I18nProvider';
 
 export default function CartPage() {
-  const { items, total, itemCount, updateQuantity, removeFromCart, clearCart } = useCart();
+  const { items, itemCount, updateQuantity, removeFromCart, clearCart } = useCart();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { t } = useI18n();
+  let total = 0;
 
   const line_items = items.map(it => ({
     price_data: {
@@ -19,23 +20,36 @@ export default function CartPage() {
       unit_amount: Math.round(Number(it.price) * 100),
     },
     quantity: Math.max(1, Number(it.quantity) || 1),
+    line_total: Math.round(Number(it.price) * 100) * Math.max(1, Number(it.quantity) || 1)
   }));
 
-
+  // app/cart/CartPage.tsx
   const handleCheckout = async () => {
-    if (line_items.some(li => li.price_data.unit_amount > 0)) {
-      const total = line_items.reduce(
-        (sum, item) => sum + item.price_data.unit_amount * item.quantity,
-        0
-      );
-    }
-
     setLoading(true);
-    setError(null);
     try {
-      window.open("https://square.link/u/J0elT0Hw", "_blank");
-    } catch (e: any) {
-      setError(e.message || 'An error occurred');
+      // Crée la commande “pending” et récupère le lien Square
+      const res = await fetch('/api/square/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: items.map(it => ({
+            id: it.id,
+            title: it.titleFr,
+            quantity: Math.max(1, it.quantity),
+            price: it.price,
+            line_total: Math.round(it.price * 100) * Math.max(1, it.quantity),
+          })),
+        }),
+      });
+
+      const data = await res.json();
+      if (!data.squareUrl) throw new Error('Square URL not received');
+
+      // Redirection vers Square
+      window.location.href = data.squareUrl;
+
+    } catch (err: any) {
+      setError(err.message || 'Erreur lors du checkout');
     } finally {
       setLoading(false);
     }

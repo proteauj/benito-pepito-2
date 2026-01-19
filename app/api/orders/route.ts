@@ -50,6 +50,8 @@ export async function POST(request: NextRequest) {
   }
 
   const order = await DatabaseService.createOrder({
+    stripeSessionId: `square_${crypto.randomUUID()}`, // placeholder
+    customerEmail: '', // sera rempli via webhook
     productIds,
     totalAmount,
     currency: currency || 'CAD',
