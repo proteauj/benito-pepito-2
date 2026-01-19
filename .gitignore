@@ -57,3 +57,5 @@ next-env.d.ts
 id_ed25519
 
 /generated/prisma
+
+/generated/prisma

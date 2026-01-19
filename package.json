@@ -13,24 +13,21 @@
     "test:full": "node test-final-fixes.js",
     "db:init": "npx tsx scripts/init-db.ts",
     "db:migrate": "npx tsx lib/db/migrate.ts",
-    "db:seed": "npx tsx prisma/seed.ts",
     "db:sync-products": "node sync-products-complete.js",
     "db:sync-stock": "node sync-product-stock.js"
   },
   "dependencies": {
-    "@prisma/adapter-pg": "^7.2.0",
-    "@prisma/client": "^6.19.2",
+    "@prisma/client": "^7.2.0",
     "@tanstack/react-virtual": "^3.13.18",
     "@vercel/postgres": "^0.10.0",
     "dotenv": "^17.2.3",
     "next": "^16.1.2",
     "pg": "^8.17.1",
-    "prisma": "^6.19.2",
+    "prisma": "^7.2.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-window": "^2.2.5",
     "resend": "^6.1.0",
-    "stripe": "^18.5.0",
     "swiper": "^12.0.3"
   },
   "devDependencies": {

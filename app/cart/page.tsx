@@ -25,14 +25,7 @@ export default function CartPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/create-checkout-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: lineItems }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to create checkout session');
-      window.location.href = data.url;
+      window.open("https://square.link/u/J0elT0Hw", "_blank");
     } catch (e: any) {
       setError(e.message || 'An error occurred');
     } finally {

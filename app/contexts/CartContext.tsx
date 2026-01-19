@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import { Product } from '../../lib/db/types';
+import { DatabaseService } from '@/lib/db/service';
 
 interface CartItem extends Product {
   quantity: number;

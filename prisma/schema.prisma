@@ -1,17 +1,15 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+datasource db {
+  provider = "postgresql"
+}
 
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output = "../src/generated"
 }
 
-datasource db {
-  provider = "postgresql"
-  url = env("benitoPepito_DATABASE_URL")
+model User {
+  id   String @id @default(cuid())
+  name String
 }
 
 model Order {
@@ -32,7 +30,7 @@ model Order {
 
 model CustomerAddress {
   id         String   @id @default(cuid())
-  type       String // 'billing' or 'shipping'
+  type       String   // 'billing' ou 'shipping'
   line1      String?
   line2      String?
   city       String?
@@ -61,8 +59,8 @@ model Migration {
 
 model PageVisit {
   id        String   @id @default(cuid())
-  page      String // 'homepage', 'products', etc.
-  visitorIP String? // Optional for privacy
-  userAgent String? // Optional browser info
+  page      String   // 'homepage', 'products', etc.
+  visitorIP String?  // Optionnel
+  userAgent String?  // Optionnel
   visitedAt DateTime @default(now())
 }
