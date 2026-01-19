@@ -12,16 +12,24 @@ export default function CartPage() {
   const [error, setError] = useState<string | null>(null);
   const { t } = useI18n();
 
-  const lineItems = useMemo(() =>
-    items.map((it) => ({
-      id: it.id,
-      name: it.title,
-      price: it.price,
-      quantity: it.quantity,
-    })),
-  [items]);
+  const line_items = items.map(it => ({
+    price_data: {
+      currency: 'cad',
+      product_data: { name: it.titleFr },
+      unit_amount: Math.round(Number(it.price) * 100),
+    },
+    quantity: Math.max(1, Number(it.quantity) || 1),
+  }));
+
 
   const handleCheckout = async () => {
+    if (line_items.some(li => li.price_data.unit_amount > 0)) {
+      const total = line_items.reduce(
+        (sum, item) => sum + item.price_data.unit_amount * item.quantity,
+        0
+      );
+    }
+
     setLoading(true);
     setError(null);
     try {
