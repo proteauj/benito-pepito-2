@@ -1,11 +1,9 @@
 // app/api/square/webhook/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../../../../lib/prisma';
 
 export const runtime = 'nodejs'; // nécessaire pour @prisma/client et fetch
-
-const prisma = new PrismaClient();
 
 // Fonction pour vérifier la signature du webhook Square
 function verifySquareSignature(signature: string | null, body: string) {
