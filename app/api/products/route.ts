@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { products } from '@/data/products';
 import { Product } from '../../../lib/db/types';
+export const runtime = 'nodejs';
 
 let DatabaseService: any = null;
 try {

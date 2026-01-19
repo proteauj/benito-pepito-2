@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+export const runtime = 'nodejs';
 
 // Try to import database services
 let DatabaseService: any = null;

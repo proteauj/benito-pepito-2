@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "npx prisma generate && next dev",
     "dev:test": "node test-automated.js && next dev",
     "build": "next build",
     "build:test": "node test-automated.js && next build",
