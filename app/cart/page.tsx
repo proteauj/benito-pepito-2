@@ -28,6 +28,11 @@ export default function CartPage() {
 
   // app/cart/CartPage.tsx
   const handleCheckout = async () => {
+    console.log("ENV:", {
+      DATABASE_URL: !!process.env.DATABASE_URL,
+      SQUARE_ACCESS_TOKEN: !!process.env.SQUARE_ACCESS_TOKEN
+    });
+
     setLoading(true);
     try {
       // Crée la commande “pending” et récupère le lien Square
