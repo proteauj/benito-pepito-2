@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
-import { PaymentsClient } from 'square/api/resources/payments/client/Client';
+import { SquareClient, SquareEnvironment } from "square";
 
-const client = new PaymentsClient({
+const client = new SquareClient({
   token: process.env.SQUARE_ACCESS_TOKEN!,
-  environment: "Environment.Production",
+  environment: SquareEnvironment.Production,
 });
 
 export async function POST(req: NextRequest) {
@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Nonce ou total manquant' }, { status: 400 });
     }
 
-    const paymentResponse = await client.create({
+    const paymentResponse = await client.payments.create({
       sourceId,
       idempotencyKey: crypto.randomUUID(),
       amountMoney: {
