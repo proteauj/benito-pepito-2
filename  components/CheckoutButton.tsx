@@ -29,11 +29,7 @@ export default function CheckoutButton() {
       });
 
       const data = await res.json();
-      if (data.squareUrl) {
-        window.location.href = data.squareUrl; // Redirection vers Square
-      } else {
-        setError(data.error || 'Erreur lors de la création du checkout');
-      }
+      window.location.href = 'https://square.link/u/J0elT0Hw';// Redirection vers Square
     } catch (e: any) {
       setError(e.message || 'Erreur serveur');
     } finally {
