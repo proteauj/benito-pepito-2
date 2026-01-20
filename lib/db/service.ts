@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/db/client';
+import { getPrisma } from '@/lib/db/client';
 import { Order, ProductStock } from './types';
 
 export class DatabaseService {

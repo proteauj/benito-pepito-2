@@ -3,7 +3,6 @@ export const runtime = "nodejs"; // requis pour Prisma et crypto
 
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
-import { prisma } from "@/lib/prisma"; // singleton Prisma
 
 export async function POST(req: NextRequest) {
   try {

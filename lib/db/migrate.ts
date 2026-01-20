@@ -1,5 +1,3 @@
-import { prisma } from '@/lib/db/client';
-
 export async function runMigrations() {
   try {
     console.log('🚀 Starting database migrations...');

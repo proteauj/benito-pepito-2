@@ -1,3 +1,12 @@
-import { prisma } from '@/lib/prisma';
+// lib/db/client.ts
+import type { PrismaClient } from "@prisma/client";
 
-export { prisma };
+let prisma: PrismaClient | null = null;
+
+export async function getPrisma() {
+  if (!prisma) {
+    const { PrismaClient } = await import("@prisma/client");
+    prisma = new PrismaClient();
+  }
+  return prisma;
+}

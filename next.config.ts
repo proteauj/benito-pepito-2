@@ -1,9 +1,7 @@
 import type { NextConfig } from "next";
 import path from "path";
 
-// next.config.ts
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
     disableStaticImages: true,
@@ -11,13 +9,14 @@ const nextConfig = {
   experimental: {
     disableOptimizedLoading: true,
   },
-  turbopack: {},
-  webpack: (config: { module: { rules: any[]; }; resolve: { alias: any; }; }) => {
+  
+  webpack: (config) => {
     // Désactiver le loader d'image de Next.js
     config.module.rules = config.module.rules.filter(
-      (rule: { loader: string | string[]; }) => !rule.loader?.includes('next-image-loader')
+      (rule: { loader: string | string[] }) =>
+        !rule.loader?.includes("next-image-loader")
     );
-    
+
     // Alias pour faciliter les imports
     config.resolve.alias = {
       ...config.resolve.alias,
@@ -29,6 +28,6 @@ const nextConfig = {
 
     return config;
   },
-}
+};
 
 export default nextConfig;
