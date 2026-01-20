@@ -5,7 +5,6 @@ import Link from 'next/link';
 import SafeImage from '@/components/SafeImage';
 import { useCart } from '../contexts/CartContext';
 import { useI18n } from '@/i18n/I18nProvider';
-import { env } from 'node:process';
 
 export default function CartPage() {
   const { items, itemCount, updateQuantity, removeFromCart, clearCart } = useCart();
@@ -29,9 +28,6 @@ export default function CartPage() {
 
   // app/cart/CartPage.tsx
   const handleCheckout = async () => {
-    console.log("process.ENV", process.env)
-    console.log("ENV:", env);
-
     setLoading(true);
     try {
       // Crée la commande “pending” et récupère le lien Square
