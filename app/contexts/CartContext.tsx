@@ -19,7 +19,7 @@ type CartAction =
   | { type: 'REMOVE_FROM_CART'; payload: string }
   | { type: 'UPDATE_QUANTITY'; payload: { id: string; quantity: number } }
   | { type: 'CLEAR_CART' }
-  | { type: 'LOAD_CART'; payload: CartState }
+  | { type: 'LOAD_CART'; payload: { items: CartItem[] } } // seulement les items
   | { type: 'OPEN_CART' }
   | { type: 'CLOSE_CART' }
   | { type: 'TOGGLE_CART' };
@@ -31,19 +31,21 @@ const initialState: CartState = {
   isOpen: false,
 };
 
-function cartReducer(state: CartState, action: CartAction): CartState {
-  const calculateTotals = (items: CartItem[]) => ({
+function calculateTotals(items: CartItem[]) {
+  return {
     total: items.reduce((sum, item) => sum + item.price * item.quantity, 0),
     itemCount: items.reduce((sum, item) => sum + item.quantity, 0),
-  });
+  };
+}
 
+function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case 'ADD_TO_CART': {
-      const { product } = action.payload;
+      const { product, quantity } = action.payload;
       const existing = state.items.find((i) => i.id === product.id);
       const newItems = existing
-        ? state.items.map((i) => (i.id === product.id ? { ...i, quantity: 1 } : i))
-        : [...state.items, { ...product, quantity: 1 }];
+        ? state.items.map((i) => (i.id === product.id ? { ...i, quantity: i.quantity + quantity } : i))
+        : [...state.items, { ...product, quantity }];
       return { ...state, items: newItems, ...calculateTotals(newItems) };
     }
 
@@ -64,8 +66,10 @@ function cartReducer(state: CartState, action: CartAction): CartState {
     case 'CLEAR_CART':
       return { ...initialState };
 
-    case 'LOAD_CART':
-      return { ...action.payload, isOpen: false };
+    case 'LOAD_CART': {
+      const items = action.payload.items || [];
+      return { items, ...calculateTotals(items), isOpen: false };
+    }
 
     case 'OPEN_CART':
       return { ...state, isOpen: true };
@@ -94,18 +98,21 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, initialState);
 
+  // Charger seulement les items depuis le localStorage
   useEffect(() => {
     const saved = localStorage.getItem('cart');
     if (saved) {
       try {
-        dispatch({ type: 'LOAD_CART', payload: JSON.parse(saved) });
+        const parsed = JSON.parse(saved);
+        dispatch({ type: 'LOAD_CART', payload: { items: parsed.items || [] } });
       } catch {}
     }
   }, []);
 
+  // Sauvegarder uniquement les items
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(state));
-  }, [state]);
+    localStorage.setItem('cart', JSON.stringify({ items: state.items }));
+  }, [state.items]);
 
   const addToCart = (product: Product, quantity = 1) => {
     dispatch({ type: 'ADD_TO_CART', payload: { product, quantity } });
