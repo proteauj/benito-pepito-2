@@ -1,5 +1,6 @@
 // lib/prisma.ts
 import { PrismaClient } from "@prisma/client";
+export const runtime = 'nodejs';
 
 declare global {
   var prisma: PrismaClient | undefined;

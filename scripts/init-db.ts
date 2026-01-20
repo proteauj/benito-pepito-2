@@ -7,6 +7,7 @@
 
 import { runMigrations } from '../lib/db/migrate';
 import { initializeProductStock } from '../lib/db/init';
+export const runtime = 'nodejs';
 
 async function main() {
   console.log('🚀 Initialisation de la base de données Vercel Postgres...\n');

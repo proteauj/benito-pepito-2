@@ -7,6 +7,7 @@ import CategorySlideshow from './components/CategorySlideshow';
 import { useI18n } from './i18n/I18nProvider';
 import { Product } from '../lib/db/types';
 import { products } from './data/products';
+import { env } from 'node:process';
 
 type ProductsByCategory = Record<string, Product[]>;
 
@@ -19,9 +20,10 @@ export default function HomePage() {
 
   // Track homepage visit
   useEffect(() => {
+    const baseUrl = env.NEXT_PUBLIC_BASE_URL;
     const trackVisit = async () => {
       try {
-        await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/analytics/track?page=homepage'`, {
+        await fetch(`${baseUrl}/api/analytics/track?page=homepage`, {
           method: 'POST',
         });
       } catch (error) {
