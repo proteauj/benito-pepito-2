@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
       idempotencyKey: crypto.randomUUID(),
       sourceId: body.sourceId || 'cnon:card-nonce-ok', // nonce de test
       amountMoney: {
-        amount: totalAmount,
+        amount: BigInt(Math.round(totalAmount * 100)),
         currency: 'CAD',
       },
       locationId: process.env.SQUARE_LOCATION_ID!,
