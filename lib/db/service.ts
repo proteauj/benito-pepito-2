@@ -7,7 +7,7 @@ export class DatabaseService {
     const prisma = await getPrisma();
     const order = await prisma.order.create({
       data: {
-        stripeSessionId: orderData.stripeSessionId,
+        squarePaymentId: orderData.squarePaymentId,
         customerEmail: orderData.customerEmail,
         productIds: orderData.productIds,
         totalAmount: orderData.totalAmount,
@@ -19,11 +19,11 @@ export class DatabaseService {
     return this.mapOrderToOrder(order);
   }
 
-  static async updateOrderStatus(stripeSessionId: string, status: Order['status']): Promise<Order | null> {
+  static async updateOrderStatus(squarePaymentId: string, status: Order['status']): Promise<Order | null> {
     try {
       const prisma = await getPrisma();
       const order = await prisma.order.update({
-        where: { stripeSessionId },
+        where: { squarePaymentId: squarePaymentId, id : crypto.randomUUID() },
         data: { status, updatedAt: new Date() }
       });
       return this.mapOrderToOrder(order);
@@ -32,11 +32,11 @@ export class DatabaseService {
     }
   }
 
-  static async getOrderBySessionId(stripeSessionId: string): Promise<Order | null> {
+  static async getOrderBySessionId(squarePaymentId: string): Promise<Order | null> {
     try {
       const prisma = await getPrisma();
       const order = await prisma.order.findUnique({
-        where: { stripeSessionId }
+        where: { squarePaymentId: squarePaymentId, id : crypto.randomUUID() }
       });
       return order ? this.mapOrderToOrder(order) : null;
     } catch (error) {
@@ -120,7 +120,7 @@ export class DatabaseService {
   private static mapOrderToOrder(prismaOrder: any): Order {
     return {
       id: prismaOrder.id,
-      stripeSessionId: prismaOrder.stripeSessionId,
+      squarePaymentId: prismaOrder.squarePaymentId,
       customerEmail: prismaOrder.customerEmail,
       productIds: prismaOrder.productIds,
       totalAmount: prismaOrder.totalAmount,
@@ -134,7 +134,7 @@ export class DatabaseService {
   private static mapOrderRow(row: any): Order {
     return {
       id: row.id,
-      stripeSessionId: row.stripe_session_id,
+      squarePaymentId: row.sqaure_payment_id,
       customerEmail: row.customer_email,
       productIds: row.product_ids,
       totalAmount: row.total_amount,

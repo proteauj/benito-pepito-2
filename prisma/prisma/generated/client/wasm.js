@@ -129,7 +129,7 @@ exports.Prisma.UserScalarFieldEnum = {
 
 exports.Prisma.OrderScalarFieldEnum = {
   id: 'id',
-  stripeSessionId: 'stripeSessionId',
+  squarePaymentId: 'squarePaymentId',
   customerEmail: 'customerEmail',
   productIds: 'productIds',
   totalAmount: 'totalAmount',

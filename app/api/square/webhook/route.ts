@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
     // Créer la commande dans la DB
     const order = await prisma.order.create({
       data: {
-        stripeSessionId: payment.id, // tu peux renommer pour Square
+        squarePaymentId: payment.id,
         customerEmail: payment.customer_email || "",
         productIds: payment.line_items?.map((i: any) => i.name) || [],
         totalAmount,

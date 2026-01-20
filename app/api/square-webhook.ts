@@ -33,7 +33,7 @@ export async function POST(request: Request) {
       // Sauvegarde dans la table order
       await prisma.order.create({
         data: {
-          stripeSessionId: '',
+          squarePaymentId: '',
           totalAmount: payment.amount_money?.amount || 0,
           currency: payment.amount_money?.currency || 'CAD',
           status: payment.status,

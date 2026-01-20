@@ -2176,7 +2176,7 @@ export namespace Prisma {
 
   export type OrderMinAggregateOutputType = {
     id: string | null
-    stripeSessionId: string | null
+    squarePaymentId: string | null
     customerEmail: string | null
     totalAmount: number | null
     currency: string | null
@@ -2189,7 +2189,7 @@ export namespace Prisma {
 
   export type OrderMaxAggregateOutputType = {
     id: string | null
-    stripeSessionId: string | null
+    squarePaymentId: string | null
     customerEmail: string | null
     totalAmount: number | null
     currency: string | null
@@ -2202,7 +2202,7 @@ export namespace Prisma {
 
   export type OrderCountAggregateOutputType = {
     id: number
-    stripeSessionId: number
+    squarePaymentId: number
     customerEmail: number
     productIds: number
     totalAmount: number
@@ -2226,7 +2226,7 @@ export namespace Prisma {
 
   export type OrderMinAggregateInputType = {
     id?: true
-    stripeSessionId?: true
+    squarePaymentId?: true
     customerEmail?: true
     totalAmount?: true
     currency?: true
@@ -2239,7 +2239,7 @@ export namespace Prisma {
 
   export type OrderMaxAggregateInputType = {
     id?: true
-    stripeSessionId?: true
+    squarePaymentId?: true
     customerEmail?: true
     totalAmount?: true
     currency?: true
@@ -2252,7 +2252,7 @@ export namespace Prisma {
 
   export type OrderCountAggregateInputType = {
     id?: true
-    stripeSessionId?: true
+    squarePaymentId?: true
     customerEmail?: true
     productIds?: true
     totalAmount?: true
@@ -2353,7 +2353,7 @@ export namespace Prisma {
 
   export type OrderGroupByOutputType = {
     id: string
-    stripeSessionId: string
+    squarePaymentId: string
     customerEmail: string | null
     productIds: string[]
     totalAmount: number
@@ -2386,7 +2386,7 @@ export namespace Prisma {
 
   export type OrderSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    stripeSessionId?: boolean
+    squarePaymentId?: boolean
     customerEmail?: boolean
     productIds?: boolean
     totalAmount?: boolean
@@ -2402,7 +2402,7 @@ export namespace Prisma {
 
   export type OrderSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    stripeSessionId?: boolean
+    squarePaymentId?: boolean
     customerEmail?: boolean
     productIds?: boolean
     totalAmount?: boolean
@@ -2418,7 +2418,7 @@ export namespace Prisma {
 
   export type OrderSelectScalar = {
     id?: boolean
-    stripeSessionId?: boolean
+    squarePaymentId?: boolean
     customerEmail?: boolean
     productIds?: boolean
     totalAmount?: boolean
@@ -2447,7 +2447,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      stripeSessionId: string
+      squarePaymentId: string
       customerEmail: string | null
       productIds: string[]
       totalAmount: number
@@ -2853,7 +2853,7 @@ export namespace Prisma {
    */ 
   interface OrderFieldRefs {
     readonly id: FieldRef<"Order", 'String'>
-    readonly stripeSessionId: FieldRef<"Order", 'String'>
+    readonly squarePaymentId: FieldRef<"Order", 'String'>
     readonly customerEmail: FieldRef<"Order", 'String'>
     readonly productIds: FieldRef<"Order", 'String[]'>
     readonly totalAmount: FieldRef<"Order", 'Int'>
@@ -6867,7 +6867,7 @@ export namespace Prisma {
 
   export const OrderScalarFieldEnum: {
     id: 'id',
-    stripeSessionId: 'stripeSessionId',
+    squarePaymentId: 'squarePaymentId',
     customerEmail: 'customerEmail',
     productIds: 'productIds',
     totalAmount: 'totalAmount',
@@ -7064,7 +7064,7 @@ export namespace Prisma {
     OR?: OrderWhereInput[]
     NOT?: OrderWhereInput | OrderWhereInput[]
     id?: StringFilter<"Order"> | string
-    stripeSessionId?: StringFilter<"Order"> | string
+    squarePaymentId?: StringFilter<"Order"> | string
     customerEmail?: StringNullableFilter<"Order"> | string | null
     productIds?: StringNullableListFilter<"Order">
     totalAmount?: IntFilter<"Order"> | number
@@ -7080,7 +7080,7 @@ export namespace Prisma {
 
   export type OrderOrderByWithRelationInput = {
     id?: SortOrder
-    stripeSessionId?: SortOrder
+    squarePaymentId?: SortOrder
     customerEmail?: SortOrderInput | SortOrder
     productIds?: SortOrder
     totalAmount?: SortOrder
@@ -7096,7 +7096,7 @@ export namespace Prisma {
 
   export type OrderWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    stripeSessionId?: string
+    squarePaymentId?: string
     AND?: OrderWhereInput | OrderWhereInput[]
     OR?: OrderWhereInput[]
     NOT?: OrderWhereInput | OrderWhereInput[]
@@ -7111,11 +7111,11 @@ export namespace Prisma {
     shippingAddressId?: StringNullableFilter<"Order"> | string | null
     billingAddress?: XOR<CustomerAddressNullableRelationFilter, CustomerAddressWhereInput> | null
     shippingAddress?: XOR<CustomerAddressNullableRelationFilter, CustomerAddressWhereInput> | null
-  }, "id" | "stripeSessionId">
+  }, "id" | "squarePaymentId">
 
   export type OrderOrderByWithAggregationInput = {
     id?: SortOrder
-    stripeSessionId?: SortOrder
+    squarePaymentId?: SortOrder
     customerEmail?: SortOrderInput | SortOrder
     productIds?: SortOrder
     totalAmount?: SortOrder
@@ -7137,7 +7137,7 @@ export namespace Prisma {
     OR?: OrderScalarWhereWithAggregatesInput[]
     NOT?: OrderScalarWhereWithAggregatesInput | OrderScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Order"> | string
-    stripeSessionId?: StringWithAggregatesFilter<"Order"> | string
+    squarePaymentId?: StringWithAggregatesFilter<"Order"> | string
     customerEmail?: StringNullableWithAggregatesFilter<"Order"> | string | null
     productIds?: StringNullableListFilter<"Order">
     totalAmount?: IntWithAggregatesFilter<"Order"> | number
@@ -7405,7 +7405,7 @@ export namespace Prisma {
 
   export type OrderCreateInput = {
     id?: string
-    stripeSessionId: string
+    squarePaymentId: string
     customerEmail?: string | null
     productIds?: OrderCreateproductIdsInput | string[]
     totalAmount: number
@@ -7419,7 +7419,7 @@ export namespace Prisma {
 
   export type OrderUncheckedCreateInput = {
     id?: string
-    stripeSessionId: string
+    squarePaymentId: string
     customerEmail?: string | null
     productIds?: OrderCreateproductIdsInput | string[]
     totalAmount: number
@@ -7433,7 +7433,7 @@ export namespace Prisma {
 
   export type OrderUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    stripeSessionId?: StringFieldUpdateOperationsInput | string
+    squarePaymentId?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     productIds?: OrderUpdateproductIdsInput | string[]
     totalAmount?: IntFieldUpdateOperationsInput | number
@@ -7447,7 +7447,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    stripeSessionId?: StringFieldUpdateOperationsInput | string
+    squarePaymentId?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     productIds?: OrderUpdateproductIdsInput | string[]
     totalAmount?: IntFieldUpdateOperationsInput | number
@@ -7461,7 +7461,7 @@ export namespace Prisma {
 
   export type OrderCreateManyInput = {
     id?: string
-    stripeSessionId: string
+    squarePaymentId: string
     customerEmail?: string | null
     productIds?: OrderCreateproductIdsInput | string[]
     totalAmount: number
@@ -7475,7 +7475,7 @@ export namespace Prisma {
 
   export type OrderUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    stripeSessionId?: StringFieldUpdateOperationsInput | string
+    squarePaymentId?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     productIds?: OrderUpdateproductIdsInput | string[]
     totalAmount?: IntFieldUpdateOperationsInput | number
@@ -7487,7 +7487,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    stripeSessionId?: StringFieldUpdateOperationsInput | string
+    squarePaymentId?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     productIds?: OrderUpdateproductIdsInput | string[]
     totalAmount?: IntFieldUpdateOperationsInput | number
@@ -7843,7 +7843,7 @@ export namespace Prisma {
 
   export type OrderCountOrderByAggregateInput = {
     id?: SortOrder
-    stripeSessionId?: SortOrder
+    squarePaymentId?: SortOrder
     customerEmail?: SortOrder
     productIds?: SortOrder
     totalAmount?: SortOrder
@@ -7861,7 +7861,7 @@ export namespace Prisma {
 
   export type OrderMaxOrderByAggregateInput = {
     id?: SortOrder
-    stripeSessionId?: SortOrder
+    squarePaymentId?: SortOrder
     customerEmail?: SortOrder
     totalAmount?: SortOrder
     currency?: SortOrder
@@ -7874,7 +7874,7 @@ export namespace Prisma {
 
   export type OrderMinOrderByAggregateInput = {
     id?: SortOrder
-    stripeSessionId?: SortOrder
+    squarePaymentId?: SortOrder
     customerEmail?: SortOrder
     totalAmount?: SortOrder
     currency?: SortOrder
@@ -8503,7 +8503,7 @@ export namespace Prisma {
 
   export type OrderCreateWithoutBillingAddressInput = {
     id?: string
-    stripeSessionId: string
+    squarePaymentId: string
     customerEmail?: string | null
     productIds?: OrderCreateproductIdsInput | string[]
     totalAmount: number
@@ -8516,7 +8516,7 @@ export namespace Prisma {
 
   export type OrderUncheckedCreateWithoutBillingAddressInput = {
     id?: string
-    stripeSessionId: string
+    squarePaymentId: string
     customerEmail?: string | null
     productIds?: OrderCreateproductIdsInput | string[]
     totalAmount: number
@@ -8539,7 +8539,7 @@ export namespace Prisma {
 
   export type OrderCreateWithoutShippingAddressInput = {
     id?: string
-    stripeSessionId: string
+    squarePaymentId: string
     customerEmail?: string | null
     productIds?: OrderCreateproductIdsInput | string[]
     totalAmount: number
@@ -8552,7 +8552,7 @@ export namespace Prisma {
 
   export type OrderUncheckedCreateWithoutShippingAddressInput = {
     id?: string
-    stripeSessionId: string
+    squarePaymentId: string
     customerEmail?: string | null
     productIds?: OrderCreateproductIdsInput | string[]
     totalAmount: number
@@ -8594,7 +8594,7 @@ export namespace Prisma {
     OR?: OrderScalarWhereInput[]
     NOT?: OrderScalarWhereInput | OrderScalarWhereInput[]
     id?: StringFilter<"Order"> | string
-    stripeSessionId?: StringFilter<"Order"> | string
+    squarePaymentId?: StringFilter<"Order"> | string
     customerEmail?: StringNullableFilter<"Order"> | string | null
     productIds?: StringNullableListFilter<"Order">
     totalAmount?: IntFilter<"Order"> | number
@@ -8624,7 +8624,7 @@ export namespace Prisma {
 
   export type OrderCreateManyBillingAddressInput = {
     id?: string
-    stripeSessionId: string
+    squarePaymentId: string
     customerEmail?: string | null
     productIds?: OrderCreateproductIdsInput | string[]
     totalAmount: number
@@ -8637,7 +8637,7 @@ export namespace Prisma {
 
   export type OrderCreateManyShippingAddressInput = {
     id?: string
-    stripeSessionId: string
+    squarePaymentId: string
     customerEmail?: string | null
     productIds?: OrderCreateproductIdsInput | string[]
     totalAmount: number
@@ -8650,7 +8650,7 @@ export namespace Prisma {
 
   export type OrderUpdateWithoutBillingAddressInput = {
     id?: StringFieldUpdateOperationsInput | string
-    stripeSessionId?: StringFieldUpdateOperationsInput | string
+    squarePaymentId?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     productIds?: OrderUpdateproductIdsInput | string[]
     totalAmount?: IntFieldUpdateOperationsInput | number
@@ -8663,7 +8663,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateWithoutBillingAddressInput = {
     id?: StringFieldUpdateOperationsInput | string
-    stripeSessionId?: StringFieldUpdateOperationsInput | string
+    squarePaymentId?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     productIds?: OrderUpdateproductIdsInput | string[]
     totalAmount?: IntFieldUpdateOperationsInput | number
@@ -8676,7 +8676,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateManyWithoutBillingAddressInput = {
     id?: StringFieldUpdateOperationsInput | string
-    stripeSessionId?: StringFieldUpdateOperationsInput | string
+    squarePaymentId?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     productIds?: OrderUpdateproductIdsInput | string[]
     totalAmount?: IntFieldUpdateOperationsInput | number
@@ -8689,7 +8689,7 @@ export namespace Prisma {
 
   export type OrderUpdateWithoutShippingAddressInput = {
     id?: StringFieldUpdateOperationsInput | string
-    stripeSessionId?: StringFieldUpdateOperationsInput | string
+    squarePaymentId?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     productIds?: OrderUpdateproductIdsInput | string[]
     totalAmount?: IntFieldUpdateOperationsInput | number
@@ -8702,7 +8702,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateWithoutShippingAddressInput = {
     id?: StringFieldUpdateOperationsInput | string
-    stripeSessionId?: StringFieldUpdateOperationsInput | string
+    squarePaymentId?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     productIds?: OrderUpdateproductIdsInput | string[]
     totalAmount?: IntFieldUpdateOperationsInput | number
@@ -8715,7 +8715,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateManyWithoutShippingAddressInput = {
     id?: StringFieldUpdateOperationsInput | string
-    stripeSessionId?: StringFieldUpdateOperationsInput | string
+    squarePaymentId?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     productIds?: OrderUpdateproductIdsInput | string[]
     totalAmount?: IntFieldUpdateOperationsInput | number

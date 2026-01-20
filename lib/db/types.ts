@@ -1,6 +1,6 @@
 export interface Order {
   id: string;
-  stripeSessionId: string;
+  squarePaymentId: string;
   customerEmail?: string;
   productIds: string[];
   totalAmount: number;

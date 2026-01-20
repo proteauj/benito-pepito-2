@@ -902,7 +902,7 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 export const OrderScalarFieldEnum = {
   id: 'id',
-  stripeSessionId: 'stripeSessionId',
+  squarePaymentId: 'squarePaymentId',
   customerEmail: 'customerEmail',
   productIds: 'productIds',
   totalAmount: 'totalAmount',

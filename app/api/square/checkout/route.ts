@@ -1,15 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 import { getPrisma } from '@/lib/db/client';
 import { SquareClient } from 'square';
-
-export const runtime = 'nodejs';
+export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   try {
-    const prisma = await getPrisma();
     const body = await req.json();
     const items = body.items;
-
+    
     if (!items || items.length === 0) {
       return NextResponse.json({ error: 'No items provided' }, { status: 400 });
     }
@@ -19,14 +17,17 @@ export async function POST(req: NextRequest) {
       0
     );
 
-    const squareClient = new SquareClient({
+    const prisma = (await import("@/lib/prisma")).default;
+
+    const square = new SquareClient({
       environment:
-        process.env.SQUARE_ENVIRONMENT === 'production' ? 'Production' : 'Sandbox',
-        token: process.env.SQUARE_ACCESS_TOKEN,
+        process.env.SQUARE_ENVIRONMENT === "production"
+          ? "Production"
+          : "Sandbox",
+      token: process.env.SQUARE_ACCESS_TOKEN!,
     });
 
-    // Crée un paiement Square
-    const paymentResponse = await squareClient.payments.create({
+    const paymentResponse = await square.payments.create({
       idempotencyKey: crypto.randomUUID(),
       sourceId: body.sourceId || 'cnon:card-nonce-ok', // nonce de test
       amountMoney: {
@@ -41,8 +42,7 @@ export async function POST(req: NextRequest) {
     });
 
     const payment = paymentResponse.payment;
-
-    // Sauvegarde la commande dans Prisma
+    
     await prisma.order.create({
       data: {
         productIds: items.map((it: any) => it.id),
@@ -54,9 +54,9 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({ payment });
+    return NextResponse.json({ ok: true });
   } catch (err: any) {
-    console.error('❌ Checkout error:', err);
+    console.error(err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

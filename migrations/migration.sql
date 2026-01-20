@@ -1,7 +1,7 @@
 -- Migration: Create orders and product_stock tables
 CREATE TABLE IF NOT EXISTS orders (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  stripe_session_id VARCHAR(255) UNIQUE NOT NULL,
+  square_payment_id VARCHAR(255) UNIQUE NOT NULL,
   customer_email VARCHAR(255),
   product_ids JSONB NOT NULL,
   total_amount INTEGER NOT NULL,
