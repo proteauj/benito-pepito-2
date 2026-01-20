@@ -20,10 +20,7 @@ export async function POST(req: NextRequest) {
     const prisma = (await import("@/lib/prisma")).default;
 
     const square = new SquareClient({
-      environment:
-        process.env.SQUARE_ENVIRONMENT === "production"
-          ? "Production"
-          : "Sandbox",
+      environment: "Production",
       token: process.env.SQUARE_ACCESS_TOKEN!,
     });
 
