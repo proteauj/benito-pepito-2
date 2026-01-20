@@ -11,8 +11,7 @@ export default function CartPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { t } = useI18n();
-  let total = 0;
-
+  
   const line_items = items.map(it => ({
     price_data: {
       currency: 'cad',
@@ -22,6 +21,10 @@ export default function CartPage() {
     quantity: Math.max(1, Number(it.quantity) || 1),
     line_total: Math.round(Number(it.price) * 100) * Math.max(1, Number(it.quantity) || 1)
   }));
+
+  const total = useMemo(() => {
+    return line_items.reduce((sum, item) => sum + item.line_total, 0);
+  }, [line_items]);
 
   // app/cart/CartPage.tsx
   const handleCheckout = async () => {
