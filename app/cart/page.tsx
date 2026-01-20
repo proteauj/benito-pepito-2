@@ -29,7 +29,7 @@ export default function CartPage() {
   // app/cart/CartPage.tsx
   const handleCheckout = async () => {
     console.log("ENV:", {
-      DATABASE_URL: !!process.env.DATABASE_URL,
+      DATABASE_URL: !!process.env.benitoPepito_DATABASE_URL,
       SQUARE_ACCESS_TOKEN: !!process.env.SQUARE_ACCESS_TOKEN
     });
 
