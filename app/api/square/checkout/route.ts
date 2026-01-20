@@ -3,11 +3,17 @@ import { getPrisma } from "@/lib/db/client";
 
 export const dynamic = "force-dynamic"; // 👈 CRUCIAL
 
-export async function POST(req: NextRequest) {
-  try {
-    const prisma = await getPrisma(); // 👈 ICI SEULEMENT
 
+export async function POST(req: Request) {
+  console.log("=== ENV CHECK ===");
+  console.log("DATABASE_URL:", process.env.DATABASE_URL);
+  console.log("SQUARE_ACCESS_TOKEN:", process.env.SQUARE_ACCESS_TOKEN);
+
+  try {
     const body = await req.json();
+    console.log("Request body:", body);
+
+    const prisma = await getPrisma();
     const { productIds, totalAmount, currency } = body;
 
     if (!productIds || !Array.isArray(productIds) || !totalAmount) {

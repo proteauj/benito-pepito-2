@@ -45,7 +45,7 @@ export default function CartPage() {
             title: it.titleFr,
             quantity: Math.max(1, it.quantity),
             price: it.price,
-            line_total: Math.round(it.price * 100) * Math.max(1, it.quantity),
+            line_total: Math.round(it.price) * Math.max(1, it.quantity),
           })),
         }),
       });

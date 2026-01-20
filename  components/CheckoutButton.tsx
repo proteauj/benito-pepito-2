@@ -19,7 +19,7 @@ export default function CheckoutButton() {
         title: it.title,
         price: it.price,
         quantity: it.quantity,
-        line_total: Math.round(Number(it.price) * 100) * Math.max(1, Number(it.quantity) || 1),
+        line_total: Math.round(Number(it.price)) * Math.max(1, Number(it.quantity) || 1),
       }));
 
       const res = await fetch('/api/square/checkout', {
