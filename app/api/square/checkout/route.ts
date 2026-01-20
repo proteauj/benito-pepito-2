@@ -5,8 +5,10 @@ export const dynamic = "force-dynamic"; // 👈 CRUCIAL
 
 
 export async function POST(req: Request) {
+  console.log("Process", process);
+  console.log("process.env", process.env);
   console.log("=== ENV CHECK ===");
-  console.log("DATABASE_URL:", process.env.DATABASE_URL);
+  console.log("DATABASE_URL:", process.env.benitoPepito_DATABASE_URL);
   console.log("SQUARE_ACCESS_TOKEN:", process.env.SQUARE_ACCESS_TOKEN);
 
   try {
