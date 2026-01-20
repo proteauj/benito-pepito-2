@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npx prisma generate && next dev",
+    "dev": "next dev",
     "dev:test": "node test-automated.js && next dev",
-    "build": "npx prisma generate && next build --webpack",
+    "build": "next build --webpack",
     "build:test": "node test-automated.js && next build",
     "start": "next start",
     "lint": "eslint",
@@ -14,7 +14,8 @@
     "db:init": "npx tsx scripts/init-db.ts",
     "db:migrate": "npx tsx lib/db/migrate.ts",
     "db:sync-products": "node sync-products-complete.js",
-    "db:sync-stock": "node sync-product-stock.js"
+    "db:sync-stock": "node sync-product-stock.js",
+    "postinstall": "npx prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
