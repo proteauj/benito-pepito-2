@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import getPrisma from '@/lib/prisma';
+import { getPrisma } from '@/lib/db/client';
 import { SquareClient } from 'square';
 
 export const runtime = 'nodejs';
@@ -14,17 +14,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'No items provided' }, { status: 400 });
     }
 
-    const client = new SquareClient({
-      environment: process.env.SQUARE_ENVIRONMENT === 'production' ? 'production' : 'sandbox',
-      token: process.env.SQUARE_ACCESS_TOKEN!
+    const totalAmount = items.reduce(
+      (sum: number, it: any) => sum + it.price * it.quantity,
+      0
+    );
+
+    const squareClient = new SquareClient({
+      environment:
+        process.env.SQUARE_ENVIRONMENT === 'production' ? 'Production' : 'Sandbox',
+        token: process.env.SQUARE_ACCESS_TOKEN,
     });
 
-    const totalAmount = items.reduce((sum: number, it: any) => sum + it.price * it.quantity, 0);
-
-    // Création du paiement directement
-    const paymentResponse = await client.payments.create({
+    // Crée un paiement Square
+    const paymentResponse = await squareClient.payments.create({
       idempotencyKey: crypto.randomUUID(),
-      sourceId: body.sourceId || 'cnon:card-nonce-ok', // à remplacer par le vrai card nonce
+      sourceId: body.sourceId || 'cnon:card-nonce-ok', // nonce de test
       amountMoney: {
         amount: totalAmount,
         currency: 'CAD',
@@ -38,7 +42,7 @@ export async function POST(req: NextRequest) {
 
     const payment = paymentResponse.payment;
 
-    // Sauvegarde dans Prisma
+    // Sauvegarde la commande dans Prisma
     await prisma.order.create({
       data: {
         productIds: items.map((it: any) => it.id),

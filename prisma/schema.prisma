@@ -4,8 +4,8 @@ datasource db {
 }
 
 generator client {
-  provider        = "prisma-client-js"
-  output          = "./prisma/generated/client" // output custom pour Prisma 7
+  provider = "prisma-client-js"
+  output   = "./node_modules/@prisma/client" // default path
   previewFeatures = ["clientExtensions"]
 }
 

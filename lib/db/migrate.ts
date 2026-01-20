@@ -1,5 +1,8 @@
+import { getPrisma } from "@/lib/db/client";
+
 export async function runMigrations() {
   try {
+    const prisma = await getPrisma();
     console.log('🚀 Starting database migrations...');
 
     // Check if migration already executed

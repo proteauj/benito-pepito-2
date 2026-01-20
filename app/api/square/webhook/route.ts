@@ -2,10 +2,12 @@
 export const runtime = "nodejs"; // requis pour Prisma et crypto
 
 import { NextRequest, NextResponse } from "next/server";
+import { getPrisma } from "@/lib/db/client";
 import crypto from "crypto";
 
 export async function POST(req: NextRequest) {
   try {
+    const prisma = await getPrisma();
     // Lire le body brut pour vérifier la signature
     const bodyText = await req.text();
     const signature = req.headers.get("x-square-signature");

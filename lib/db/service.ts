@@ -4,6 +4,7 @@ import { Order, ProductStock } from './types';
 export class DatabaseService {
   // Orders
   static async createOrder(orderData: Omit<Order, 'id' | 'createdAt' | 'updatedAt'>): Promise<Order> {
+    const prisma = await getPrisma();
     const order = await prisma.order.create({
       data: {
         stripeSessionId: orderData.stripeSessionId,
@@ -20,6 +21,7 @@ export class DatabaseService {
 
   static async updateOrderStatus(stripeSessionId: string, status: Order['status']): Promise<Order | null> {
     try {
+      const prisma = await getPrisma();
       const order = await prisma.order.update({
         where: { stripeSessionId },
         data: { status, updatedAt: new Date() }
@@ -32,6 +34,7 @@ export class DatabaseService {
 
   static async getOrderBySessionId(stripeSessionId: string): Promise<Order | null> {
     try {
+      const prisma = await getPrisma();
       const order = await prisma.order.findUnique({
         where: { stripeSessionId }
       });
@@ -44,6 +47,7 @@ export class DatabaseService {
   // Product Stock
   static async getProductStock(productId: string): Promise<boolean> {
     try {
+      const prisma = await getPrisma();
       const stock = await prisma.productStock.findUnique({
         where: { productId }
       });
@@ -55,6 +59,7 @@ export class DatabaseService {
 
   static async updateProductStock(productId: string, inStock: boolean): Promise<void> {
     try {
+      const prisma = await getPrisma();
       await prisma.productStock.upsert({
         where: { productId },
         update: { inStock, updatedAt: new Date() },
@@ -72,6 +77,7 @@ export class DatabaseService {
     const ids = Array.isArray(productIds) ? productIds : [productIds];
 
     try {
+      const prisma = await getPrisma();
       await Promise.all(
         ids.map(productId =>
           prisma.productStock.upsert({
@@ -95,6 +101,7 @@ export class DatabaseService {
 
   static async updateMultipleProductStock(productIds: string[], inStock: boolean): Promise<void> {
     try {
+      const prisma = await getPrisma();
       await Promise.all(
         productIds.map(productId =>
           prisma.productStock.upsert({

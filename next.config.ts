@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
   experimental: {
     disableOptimizedLoading: true,
   },
-  
+
   webpack: (config) => {
     // Désactiver le loader d'image de Next.js
     config.module.rules = config.module.rules.filter(
@@ -28,6 +28,9 @@ const nextConfig: NextConfig = {
 
     return config;
   },
+
+  // Ajouté pour forcer Next.js à prendre le bon root et éviter l'erreur Prisma
+  outputFileTracingRoot: __dirname,
 };
 
 export default nextConfig;

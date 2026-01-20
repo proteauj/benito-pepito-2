@@ -7,6 +7,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.text();
     const signature = request.headers.get('x-square-signature');
+    const prisma = await getPrisma();
 
     // Vérifier la signature (Square recommande HMAC-SHA1)
     if (!SQUARE_WEBHOOK_SIGNATURE_KEY || !signature) {
@@ -52,6 +53,7 @@ export async function POST(request: Request) {
 
 // Fonction utilitaire pour sauvegarder une adresse
 async function saveAddress(addr: any, type: 'billing' | 'shipping') {
+  const prisma = await getPrisma();
   if (!prisma) return null;
 
   const address = await prisma.customerAddress.create({
