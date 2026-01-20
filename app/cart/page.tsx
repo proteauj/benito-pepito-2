@@ -1,17 +1,33 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import SafeImage from '@/components/SafeImage';
 import { useCart } from '../contexts/CartContext';
 import { useI18n } from '@/i18n/I18nProvider';
+import { Card, Payments } from "@square/web-sdk";
 
 export default function CartPage() {
   const { items, itemCount, updateQuantity, removeFromCart, clearCart } = useCart();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { t } = useI18n();
+  const cardRef = useRef(null);
+  const [payments, setPayments] = useState<Payments | null>(null);
+  const [card, setCard] = useState<Card | null>(null);
   
+  useEffect(() => {
+    async function initSquare() {
+      const payments = Payments("REPLACE_WITH_YOUR_APP_ID", "sandbox");
+      setPayments(payments);
+
+      const card = await payments.card();
+      await card.attach("#card-container");
+      setCard(card);
+    }
+    initSquare();
+  }, []);
+
   const line_items = items.map(it => ({
     price_data: {
       currency: 'cad',
@@ -29,28 +45,36 @@ export default function CartPage() {
   // app/cart/CartPage.tsx
   const handleCheckout = async () => {
     setLoading(true);
+
+
     try {
-      // Crée la commande “pending” et récupère le lien Square
-      const res = await fetch('/api/square/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          items: items.map(it => ({
-            id: it.id,
-            title: it.titleFr,
-            quantity: Math.max(1, it.quantity),
-            price: it.price,
-            line_total: Math.round(it.price) * Math.max(1, it.quantity),
-          })),
-        }),
-      });
+      if (!card) return;
+      const result = await card.tokenize();
+      if (result.status === "OK") {
+        const nonce = result.token;
+        
+        // Crée la commande “pending” et récupère le lien Square
+        const res = await fetch('/api/square/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            items: items.map(it => ({
+              id: it.id,
+              title: it.titleFr,
+              quantity: Math.max(1, it.quantity),
+              price: it.price,
+              line_total: Math.round(it.price) * Math.max(1, it.quantity)
+            })),
+            nonce: nonce,  
+          }),
+        });
 
-      const data = await res.json();
-      if (!data.squareUrl) throw new Error('Square URL not received');
+        const data = await res.json();
+        if (!data.squareUrl) throw new Error('Square URL not received');
 
-      // Redirection vers Square
-      window.location.href = data.squareUrl;
-
+        // Redirection vers Square
+        window.location.href = data.squareUrl;
+      }
     } catch (err: any) {
       setError(err.message || 'Erreur lors du checkout');
     } finally {
