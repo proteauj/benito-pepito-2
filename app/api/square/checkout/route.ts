@@ -1,82 +1,58 @@
-import { NextResponse } from 'next/server';
-import { getPrisma } from "@/lib/db/client";
+import { NextRequest, NextResponse } from 'next/server';
+import getPrisma from '@/lib/prisma';
+import { SquareClient } from 'square';
+
 export const runtime = 'nodejs';
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const prisma = await getPrisma();
-    console.log('🟢 checkout route hit + prisma', prisma);
+    const body = await req.json();
+    const items = body.items;
 
-    const body = await req.json();  
-    const { productIds, totalAmount, currency } = body;
-    const order = await prisma.order.create({
+    if (!items || items.length === 0) {
+      return NextResponse.json({ error: 'No items provided' }, { status: 400 });
+    }
+
+    const client = new SquareClient({
+      environment: process.env.SQUARE_ENVIRONMENT === 'production' ? 'production' : 'sandbox',
+      token: process.env.SQUARE_ACCESS_TOKEN!
+    });
+
+    const totalAmount = items.reduce((sum: number, it: any) => sum + it.price * it.quantity, 0);
+
+    // Création du paiement directement
+    const paymentResponse = await client.payments.create({
+      idempotencyKey: crypto.randomUUID(),
+      sourceId: body.sourceId || 'cnon:card-nonce-ok', // à remplacer par le vrai card nonce
+      amountMoney: {
+        amount: totalAmount,
+        currency: 'CAD',
+      },
+      locationId: process.env.SQUARE_LOCATION_ID!,
+      autocomplete: true,
+      customerId: body.customerId,
+      referenceId: body.referenceId || '',
+      note: body.note || 'Order payment',
+    });
+
+    const payment = paymentResponse.payment;
+
+    // Sauvegarde dans Prisma
+    await prisma.order.create({
       data: {
-        productIds,
+        productIds: items.map((it: any) => it.id),
         totalAmount,
-        currency: currency || "CAD",
-        status: "pending",
-        stripeSessionId: "", // ou null selon ton schema
-        customerEmail: "",
+        currency: 'CAD',
+        status: payment?.status === 'COMPLETED' ? 'completed' : 'pending',
+        squarePaymentId: payment?.id || '',
+        customerEmail: body.customerEmail || '',
       },
     });
 
-    return NextResponse.json(order);
+    return NextResponse.json({ payment });
   } catch (err: any) {
-    console.error('🔴 Square checkout error:', err);
-    return NextResponse.json(
-      { error: err.message || 'Internal server error' },
-      { status: 500 }
-    );
+    console.error('❌ Checkout error:', err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
-
-// import { NextRequest, NextResponse } from "next/server";
-// import { getPrisma } from "@/lib/db/client";
-
-// export const dynamic = "force-dynamic"; // 👈 CRUCIAL
-// export const runtime = 'nodejs';
-
-// export async function POST(req: Request) {
-//   try {
-//     console.log('🟡 /api/square/checkout called');
-
-//     const body = await req.json();
-//     console.log('🟡 Body received:', body);
-
-//     console.log('🟡 ENV check:', {
-//       DATABASE_URL: !!process.env.DATABASE_URL,
-//       SQUARE_ACCESS_TOKEN: !!process.env.SQUARE_ACCESS_TOKEN,
-//     });
-
-//     console.log("Request body:", body);
-
-//     const prisma = await getPrisma();
-//     const { productIds, totalAmount, currency } = body;
-
-//     if (!productIds || !Array.isArray(productIds) || !totalAmount) {
-//       return NextResponse.json(
-//         { error: "Missing productIds or totalAmount" },
-//         { status: 400 }
-//       );
-//     }
-
-//     const order = await prisma.order.create({
-//       data: {
-//         productIds,
-//         totalAmount,
-//         currency: currency || "CAD",
-//         status: "pending",
-//         stripeSessionId: "", // ou null selon ton schema
-//         customerEmail: "",
-//       },
-//     });
-
-//     return NextResponse.json(order);
-//    } catch (err: any) {
-//     console.error('🔴 Square checkout error:', err);
-//     return NextResponse.json(
-//       { error: err.message || 'Internal server error' },
-//       { status: 500 }
-//     );
-//   }
-// }
