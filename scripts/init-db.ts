@@ -14,7 +14,7 @@ async function main() {
 
   try {
     // Vérifier les variables d'environnement
-    if (!process.env.benitoPepito_POSTGRES_URL) {
+    if (!process.env.POSTGRES_URL) {
       throw new Error('POSTGRES_URL is not defined. Please check your .env.local file.');
     }
 
