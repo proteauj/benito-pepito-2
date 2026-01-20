@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getPrisma } from "@/lib/db/client";
 
 export const dynamic = "force-dynamic"; // 👈 CRUCIAL
-
+export const runtime = 'nodejs';
 
 export async function POST(req: Request) {
   console.log("Process", process);
