@@ -19,7 +19,7 @@ export default function CartPage() {
       unit_amount: Math.round(Number(it.price) * 100),
     },
     quantity: Math.max(1, Number(it.quantity) || 1),
-    line_total: Math.round(Number(it.price) * 100) * Math.max(1, Number(it.quantity) || 1)
+    line_total: Math.round(Number(it.price)) * Math.max(1, Number(it.quantity) || 1)
   }));
 
   const total = useMemo(() => {
