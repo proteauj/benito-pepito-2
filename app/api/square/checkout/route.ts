@@ -24,8 +24,8 @@ export async function POST(req: Request) {
     }
 
     console.log("ENV:", {
-      DATABASE_URL: !!process.env.benitoPepito_DATABASE_URL,
-      SQUARE_ACCESS_TOKEN: !!process.env.SQUARE_ACCESS_TOKEN
+      DATABASE_URL: process.env.benitoPepito_DATABASE_URL,
+      SQUARE_ACCESS_TOKEN: process.env.SQUARE_ACCESS_TOKEN
     });
 
     const order = await prisma.order.create({
