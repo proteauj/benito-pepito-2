@@ -5,14 +5,17 @@ export const dynamic = "force-dynamic"; // 👈 CRUCIAL
 export const runtime = 'nodejs';
 
 export async function POST(req: Request) {
-  console.log("Process", process);
-  console.log("process.env", process.env);
-  console.log("=== ENV CHECK ===");
-  console.log("DATABASE_URL:", process.env.benitoPepito_DATABASE_URL);
-  console.log("SQUARE_ACCESS_TOKEN:", process.env.SQUARE_ACCESS_TOKEN);
-
   try {
+    console.log('🟡 /api/square/checkout called');
+
     const body = await req.json();
+    console.log('🟡 Body received:', body);
+
+    console.log('🟡 ENV check:', {
+      DATABASE_URL: !!process.env.DATABASE_URL,
+      SQUARE_ACCESS_TOKEN: !!process.env.SQUARE_ACCESS_TOKEN,
+    });
+
     console.log("Request body:", body);
 
     const prisma = await getPrisma();
@@ -24,11 +27,6 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-
-    console.log("ENV:", {
-      DATABASE_URL: process.env.benitoPepito_DATABASE_URL,
-      SQUARE_ACCESS_TOKEN: process.env.SQUARE_ACCESS_TOKEN
-    });
 
     const order = await prisma.order.create({
       data: {
@@ -42,8 +40,11 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(order);
-  } catch (err) {
-    console.error("Checkout error:", err);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+   } catch (err: any) {
+    console.error('🔴 Square checkout error:', err);
+    return NextResponse.json(
+      { error: err.message || 'Internal server error' },
+      { status: 500 }
+    );
   }
 }
