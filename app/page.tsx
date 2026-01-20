@@ -21,17 +21,16 @@ export default function HomePage() {
   useEffect(() => {
     const trackVisit = async () => {
       try {
-        await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/analytics/track?page=homepage'`, {
+        await fetch('/api/analytics/track?page=homepage', {
           method: 'POST',
         });
       } catch (error) {
-        // Silently fail if tracking fails - don't break the user experience
         console.debug('Analytics tracking failed:', error);
       }
     };
 
     trackVisit();
-  }, []); // Empty dependency array - only run once on mount
+  }, []);
 
   useEffect(() => {
     async function fetchProducts() {
