@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPrisma } from '@/lib/db/client';
-import { SquareClient } from 'square';
+import { SquareClient, SquareEnvironment } from 'square';
 export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     const prisma = (await import("@/lib/prisma")).default;
 
     const square = new SquareClient({
-      environment: "Production",
+      environment: SquareEnvironment.Production,
       token: process.env.SQUARE_ACCESS_TOKEN!,
     });
 
