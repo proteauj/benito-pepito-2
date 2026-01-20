@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
-
+import { getPrisma } from "@/lib/db/client";
 export const runtime = 'nodejs';
 
 export async function POST(req: Request) {
   try {
-    console.log('🟢 checkout route hit');
+    const prisma = await getPrisma();
+    console.log('🟢 checkout route hit + prisma', prisma);
 
     const body = await req.json();  
     const { productIds, totalAmount, currency } = body;
