@@ -33,35 +33,33 @@ export default function CartPage() {
   }, []);
 
   useEffect(() => {
+    console.log('App ID:', process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID);
+    console.log('Location ID:', process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID);
+  }, []);
+
+  useEffect(() => {
     const initCard = async () => {
       if (!squareLoaded) return;
+      if (!window.Square || !window.Square.payments) {
+        setError('Square.js non disponible après chargement');
+        return;
+      }
 
       const appId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID;
       const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID;
-
       if (!appId || !locationId) {
         setError('Variables d’environnement manquantes');
         return;
       }
 
-      if (!window.Square?.payments) {
-        setError('Square.js non disponible après chargement');
-        return;
-      }
-
-      try {
-        const payments = window.Square.payments(appId, 'sandbox');
-        const cardInstance = await payments.card();
-        await cardInstance.attach('#card-container');
-        setCard(cardInstance);
-      } catch (e: any) {
-        setError(e.message || 'Erreur d’initialisation de la carte');
-      }
+      const payments = window.Square.payments(appId, 'sandbox');
+      const cardInstance = await payments.card();
+      await cardInstance.attach('#card-container');
+      setCard(cardInstance);
     };
 
     initCard();
   }, [squareLoaded]);
-
 
   const line_items = items.map(it => ({
     price_data: {
