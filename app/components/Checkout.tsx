@@ -7,23 +7,19 @@ export default function Checkout({ items }: { items: any[] }) {
   const [card, setCard] = useState<any>(null);
 
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://sandbox.web.squarecdn.com/v1/square.js";
-    script.async = true;
-    document.body.appendChild(script);
-
-    script.onload = async () => {
+    async function initSquare() {
       if (!window.Square) return;
 
-      const payments = window.Square.payments(
+      const payments = await window.Square?.payments(
         process.env.NEXT_PUBLIC_SQUARE_APP_ID!,
-        SquareEnvironment.Production
+        process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID!
       );
-
       const card = await payments.card();
       await card.attach("#card-container");
       setCard(card);
-    };
+    }
+
+    initSquare();
   }, []);
 
   const handleCheckout = async () => {
