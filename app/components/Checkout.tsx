@@ -28,7 +28,7 @@ export default function Checkout({ items }: { items: any[] }) {
     const result = await card.tokenize();
     if (result.status === "OK") {
       const nonce = result.token;
-      const total = items.reduce((sum, it) => sum + it.price * it.quantity, 0);
+      const total = items.reduce((sum, it) => sum + it.price, 0);
 
       const res = await fetch("/api/square/checkout", {
         method: "POST",

@@ -3,8 +3,8 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import { Product } from '@/lib/db/types';
 
-interface CartItem extends Product {
-  quantity: number;
+export interface CartItem extends Product {
+  price: number;    // prix actuel (on peut le copier depuis Product.price)
 }
 
 interface CartState {
@@ -15,9 +15,9 @@ interface CartState {
 }
 
 type CartAction =
-  | { type: 'ADD_TO_CART'; payload: { product: Product; quantity: number } }
+  | { type: 'ADD_TO_CART'; payload: { product: Product; } }
   | { type: 'REMOVE_FROM_CART'; payload: string }
-  | { type: 'UPDATE_QUANTITY'; payload: { id: string; quantity: number } }
+  | { type: 'UPDATE_QUANTITY'; payload: { id: string; } }
   | { type: 'CLEAR_CART' }
   | { type: 'LOAD_CART'; payload: { items: CartItem[] } } // seulement les items
   | { type: 'OPEN_CART' }
@@ -33,19 +33,19 @@ const initialState: CartState = {
 
 function calculateTotals(items: CartItem[]) {
   return {
-    total: items.reduce((sum, item) => sum + item.price * item.quantity, 0),
-    itemCount: items.reduce((sum, item) => sum + item.quantity, 0),
+    total: items.reduce((sum, item) => sum + item.price, 0),
+    itemCount: 1,
   };
 }
 
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case 'ADD_TO_CART': {
-      const { product, quantity } = action.payload;
+      const { product } = action.payload;
       const existing = state.items.find((i) => i.id === product.id);
       const newItems = existing
-        ? state.items.map((i) => (i.id === product.id ? { ...i, quantity: i.quantity + quantity } : i))
-        : [...state.items, { ...product, quantity }];
+        ? state.items.map((i) => (i.id === product.id ? { ...i } : i))
+        : [...state.items, { ...product }];
       return { ...state, items: newItems, ...calculateTotals(newItems) };
     }
 
@@ -75,7 +75,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 }
 
 interface CartContextType extends CartState {
-  addToCart: (product: Product, quantity?: number) => void;
+  addToCart: (product: Product) => void;
   removeFromCart: (id: string) => void;
   clearCart: () => void;
   openCart: () => void;
@@ -104,8 +104,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('cart', JSON.stringify({ items: state.items }));
   }, [state.items]);
 
-  const addToCart = (product: Product, quantity = 1) => {
-    dispatch({ type: 'ADD_TO_CART', payload: { product, quantity } });
+  const addToCart = (product: Product) => {
+    dispatch({ type: 'ADD_TO_CART', payload: { product } });
     dispatch({ type: 'OPEN_CART' });
   };
   const removeFromCart = (id: string) => dispatch({ type: 'REMOVE_FROM_CART', payload: id });

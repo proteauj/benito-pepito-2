@@ -12,7 +12,7 @@ export default function SiteHeader() {
   const { t } = useI18n();
   const [mobileOpen, setMobileOpen] = useState(false);
   const itemCount = isMounted 
-    ? items.reduce((total, item) => total + item.quantity, 0)
+    ? items.reduce((total, item) => total, 0)
     : 0;
 
   useEffect(() => {

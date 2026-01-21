@@ -68,8 +68,7 @@ export default function CartPage() {
       product_data: { name: it.titleFr },
       unit_amount: Math.round(Number(it.price)),
     },
-    quantity: Math.max(1, Number(it.quantity) || 1),
-    line_total: Math.round(Number(it.price)) * Math.max(1, Number(it.quantity) || 1)
+    line_total: Math.round(Number(it.price))
   }));
 
   const total = useMemo(() => {
@@ -160,7 +159,6 @@ export default function CartPage() {
 
                   <div className="flex items-center gap-3 mt-3">
                     <span>${item.price}</span>
-                    <span>{item.quantity}</span>
                     <button onClick={() => removeFromCart(item.id)} className="text-red-600">
                       {t('actions.remove')}
                     </button>

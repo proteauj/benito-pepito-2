@@ -61,9 +61,6 @@ export default function MiniCartDrawer() {
                   </div>
                   <div className="flex items-center justify-between mt-2">
                     <span className="font-semibold">${item.price}</span>
-                    <div className="flex items-center border rounded border-[#2a2f2d]">
-                      <span className="px-3 py-1 border-l border-r border-[#2a2f2d]">{item.quantity}</span>
-                    </div>
                   </div>
                 </div>
               </div>

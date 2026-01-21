@@ -39,8 +39,8 @@ export async function POST(req: NextRequest) {
     // Calculer le total à partir des line_items
     const totalAmount =
       payment.line_items?.reduce(
-        (sum: number, item: { base_price_money: { amount: number }; quantity: number }) =>
-          sum + (item.base_price_money?.amount || 0) * (item.quantity || 1),
+        (sum: number, item: { base_price_money: { amount: number }; }) =>
+          sum + (item.base_price_money?.amount || 0),
         0
       ) || payment.total_money?.amount || 0;
 
