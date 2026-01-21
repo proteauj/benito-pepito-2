@@ -38,9 +38,11 @@ export default function ProductCard({
         className={`cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition ${className}`}
         onClick={onClick}
       >
-        <div className={`h-auto overflow-hidden ${
-            !useFullImg && !keepImgProportions ? 'aspect-square' : ''
-          }`}
+        <div
+          className={`
+            w-36 overflow-hidden mx-auto
+            ${!useFullImg && !keepImgProportions ? 'aspect-square' : ''}
+          `}
         >
           <img
             src={useFullImg ? product.image : product.imageThumbnail || product.image || '/placeholder.png'}
