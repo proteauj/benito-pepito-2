@@ -46,7 +46,7 @@ export default function MiniCartDrawer() {
           {items.length === 0 ? (
             <p className="text-[var(--foreground)]/70">{t('minicart.empty')}</p>
           ) : (
-            items.map((item) => (
+            (items || []).map((item) => (
               <div key={item.id} className="flex bg-white border border-[#cfc9c0] p-3">
                 <div className="relative w-20 h-20 mr-3">
                   <SafeImage src={item.image} alt={item.title} className="object-cover" />

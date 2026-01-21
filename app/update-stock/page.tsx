@@ -8,7 +8,7 @@ export default function UpdateStockPage() {
   const [loading, setLoading] = useState(false);
 
   const markAsSold = async () => {
-    const ids = productIds.split(',').map(id => id.trim()).filter(id => id);
+    const ids = (productIds.split(',') || []).map(id => id.trim()).filter(id => id);
     if (ids.length === 0) {
       setResult('❌ Veuillez entrer au moins un ID de produit');
       return;
@@ -45,7 +45,7 @@ Details: ${data.details || 'No details available'}`);
   };
 
   const markAsAvailable = async () => {
-    const ids = productIds.split(',').map(id => id.trim()).filter(id => id);
+    const ids = (productIds.split(',') || []).map(id => id.trim()).filter(id => id);
     if (ids.length === 0) {
       setResult('❌ Veuillez entrer au moins un ID de produit');
       return;

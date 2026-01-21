@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
     await DatabaseService.createOrder({
       squarePaymentId: payment.id!,
       customerEmail: customerEmail ?? null,
-      productIds: items.map((i: any) => i.id),
+      productIds: (items || []).map((i: any) => i.id),
       totalAmount: Number(total),
       currency: 'CAD',
       status: 'completed',
@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
 
     // 3️⃣ Marquer les produits comme vendus
     await DatabaseService.markProductAsSold(
-      items.map((i: any) => i.id)
+      (items || []).map((i: any) => i.id)
     );
 
     // 4️⃣ Réponse SAFE (pas de BigInt)

@@ -49,7 +49,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 
       const existing = state.items.find((i) => i.id === product.id);
       const newItems = existing
-        ? state.items.map((i) => (i.id === product.id ? { ...i } : i))
+        ? (state.items || []).map((i) => (i.id === product.id ? { ...i } : i))
         : [...state.items, { ...product }];
 
       return { ...state, items: newItems, ...calculateTotals(newItems) };
