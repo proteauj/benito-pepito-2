@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
       sourceId,
       idempotencyKey: crypto.randomUUID(),
       amountMoney: {
-        amount: total,
+        amount: BigInt(total),
         currency: 'USD',
       },
     });
