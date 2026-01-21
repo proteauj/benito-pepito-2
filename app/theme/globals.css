@@ -39,6 +39,8 @@ html, body, #__next {
 
 /* Opaque granite background for side drawers */
 .drawerBg {
+  position: relative; /* ou absolute/fixed selon ton layout */
+  z-index: 0;  
   background-color: var(--background);
   background-image:
     linear-gradient(0deg, rgba(255,255,255,0.5), rgba(255,255,255,0.5)),
