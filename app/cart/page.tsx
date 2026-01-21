@@ -36,20 +36,21 @@ export default function CartPage() {
     const initCard = async () => {
       if (!squareLoaded) return;
 
-      if (!window.Square || !window.Square.payments) {
-        setError('Square.js non disponible après chargement');
-        return;
-      }
-
       const appId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID;
       const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID;
+
       if (!appId || !locationId) {
         setError('Variables d’environnement manquantes');
         return;
       }
 
+      if (!window.Square?.payments) {
+        setError('Square.js non disponible après chargement');
+        return;
+      }
+
       try {
-        const payments = window.Square.payments(appId, 'sandbox'); // ou 'production'
+        const payments = window.Square.payments(appId, 'sandbox');
         const cardInstance = await payments.card();
         await cardInstance.attach('#card-container');
         setCard(cardInstance);
@@ -60,6 +61,7 @@ export default function CartPage() {
 
     initCard();
   }, [squareLoaded]);
+
 
   const line_items = items.map(it => ({
     price_data: {
