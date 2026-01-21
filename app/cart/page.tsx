@@ -116,7 +116,8 @@ export default function CartPage() {
   /* ------------------------------------------------------------------
      5️⃣ Panier vide
   ------------------------------------------------------------------ */
-  if (items.length === 0) {
+  const safeItems = items ?? [];
+  if (safeItems.length === 0) {
     return (
       <div className="min-h-screen stoneBg text-center py-16">
         <h1 className="text-3xl font-bold mb-4">{t('cart.emptyTitle')}</h1>

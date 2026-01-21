@@ -7,7 +7,7 @@ import ProductCard from '../../products/ProductCard';
 import { useCart } from '../../contexts/CartContext';
 import { ParamValue } from 'next/dist/server/request/params';
 
-export default async function ProductPage() {
+export default function ProductPage() {
   const params = useParams();
   const { addToCart } = useCart();
   const [added, setAdded] = useState(false);
