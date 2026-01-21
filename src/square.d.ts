@@ -7,11 +7,20 @@ declare global {
         appId: string,
         locationId: string
       ) => {
-        card: () => Promise<{
+        card: (
+          options?: {
+            postalCode?: boolean;
+            style?: Record<string, any>;
+          }
+        ) => Promise<{
           attach: (element: HTMLElement | string) => Promise<void>;
-          tokenize: () => Promise<any>;
+          tokenize: () => Promise<{
+            status: string;
+            token?: string;
+            errors?: any[];
+          }>;
         }>;
-      };
+      }
     };
   }
 }

@@ -50,9 +50,13 @@ export default function CartPage() {
         process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID!
       );
 
-      const cardInstance = await payments.card();
-      await cardInstance.attach(el);
+      const cardInstance = await payments.card({
+        postalCode: false, 
+      });
+
+      await cardInstance.attach('#card-container');
       setCard(cardInstance);
+
     };
 
     init();
