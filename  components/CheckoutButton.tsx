@@ -51,7 +51,7 @@ export default function CheckoutButton() {
       }
 
       try {
-        const payments = window.Square.payments(appId, 'sandbox'); // ou 'production'
+        const payments = window.Square.payments(appId, process.env.NODE_ENV); // ou 'production'
         const cardInstance = await payments.card();
         await cardInstance.attach('#card-container');
         setCard(cardInstance);

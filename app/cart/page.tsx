@@ -47,9 +47,9 @@ export default function CartPage() {
 
       const payments = window.Square.payments(
         process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID!,
-        process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID!
+        process.env.NODE_ENV
       );
-
+      
       const cardInstance = await payments.card({
         postalCode: false, 
       });
