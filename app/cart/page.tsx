@@ -181,11 +181,16 @@ export default function CartPage() {
           </div>
 
           {/* Summary */}
-          <div className="bg-white rounded shadow p-6 h-fit">
-            <h3 className="text-xl font-semibold mb-4">{t('cart.orderSummary')}</h3>
+          <div className="bg-white rounded-sm shadow p-6 h-fit">
+            <h3 className="text-xl font-semibold mb-4">
+              {t('cart.orderSummary')}
+            </h3>
 
-            {/* 👇 CONTENEUR SQUARE */}
-            <div id="card-container" className="mb-4"></div>
+            {/* ✅ CONTENEUR SQUARE */}
+            <div
+              id="card-container"
+              className="mb-4 p-3 border rounded bg-white"
+            />
 
             <div className="flex justify-between mb-4">
               <span>{t('cart.total')}</span>
@@ -194,8 +199,8 @@ export default function CartPage() {
 
             <button
               onClick={handleCheckout}
-              disabled={loading}
-              className="w-full bg-[var(--gold)] py-3 font-semibold rounded-sm disabled:bg-gray-400"
+              disabled={loading || !card}
+              className="w-full bg-[var(--gold)] text-black py-3 rounded-sm font-semibold"
             >
               {loading ? t('cart.processing') : t('cart.checkout')}
             </button>
