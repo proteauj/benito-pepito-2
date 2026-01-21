@@ -145,7 +145,7 @@ export default function CartPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Items */}
           <div className="lg:col-span-2 space-y-4">
-            {items.map(item => (
+            {(items || []).map(item => (
               <div key={item.id} className="flex bg-white p-4 rounded shadow">
                 <div className="w-24 h-24 mr-4">
                   <SafeImage src={item.image} alt={item.title} />
