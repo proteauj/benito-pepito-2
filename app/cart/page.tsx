@@ -1,168 +1,179 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import SafeImage from '@/components/SafeImage';
 import { useCart } from '../contexts/CartContext';
 import { useI18n } from '@/i18n/I18nProvider';
-import { Card, Payments } from "@square/web-sdk";
-import { SquareEnvironment } from "square";
 
 export default function CartPage() {
   const { items, itemCount, updateQuantity, removeFromCart, clearCart } = useCart();
+  const { t } = useI18n();
+
+  const [squareLoaded, setSquareLoaded] = useState(false);
+  const [card, setCard] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { t } = useI18n();
-  const cardRef = useRef(null);
-  const [payments, setPayments] = useState<Payments | null>(null);
-  const [card, setCard] = useState<Card | null>(null);
-  const [squareLoaded, setSquareLoaded] = useState(false);
-  
+
+  /* ------------------------------------------------------------------
+     1️⃣ Charger Square.js (sandbox)
+  ------------------------------------------------------------------ */
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://sandbox.web.squarecdn.com/v1/square.js";
+    if (typeof window === 'undefined') return;
+
+    const script = document.createElement('script');
+    script.src = 'https://sandbox.web.squarecdn.com/v1/square.js';
     script.async = true;
     script.onload = () => setSquareLoaded(true);
     script.onerror = () => setError('Échec du chargement de Square.js');
+
     document.body.appendChild(script);
 
-    // Fonction de nettoyage
     return () => {
       document.body.removeChild(script);
     };
   }, []);
 
+  /* ------------------------------------------------------------------
+     2️⃣ Initialiser la carte APRÈS rendu du conteneur
+  ------------------------------------------------------------------ */
   useEffect(() => {
-    console.log('Process:', process);
-    console.log('Process.env:', process.env);
-  }, []);
-
-  useEffect(() => {
-  const initCard = async () => {
     if (!squareLoaded) return;
-    const container = document.querySelector('#card-container');
-    if (!container) {
-      setError('Le conteneur de carte n’a pas été trouvé');
+
+    const initCard = async () => {
+      try {
+        if (!window.Square) {
+          setError('Square.js non disponible');
+          return;
+        }
+
+        const appId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID;
+        const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID;
+
+        if (!appId || !locationId) {
+          setError('Variables Square manquantes');
+          return;
+        }
+
+        const container = document.getElementById('card-container');
+        if (!container) {
+          setError('Conteneur carte introuvable');
+          return;
+        }
+
+        const payments = window.Square.payments(appId, locationId);
+        const cardInstance = await payments.card();
+        await cardInstance.attach(container);
+
+        setCard(cardInstance);
+      } catch (err: any) {
+        console.error(err);
+        setError(err.message || 'Erreur lors de l’initialisation Square');
+      }
+    };
+
+    initCard();
+  }, [squareLoaded]);
+
+  /* ------------------------------------------------------------------
+     3️⃣ Calcul total
+  ------------------------------------------------------------------ */
+  const total = useMemo(() => {
+    return items.reduce(
+      (sum, item) => sum + Number(item.price) * Math.max(1, item.quantity),
+      0
+    );
+  }, [items]);
+
+  /* ------------------------------------------------------------------
+     4️⃣ Paiement
+  ------------------------------------------------------------------ */
+  const handleCheckout = async () => {
+    if (!card) {
+      setError('Carte non initialisée');
       return;
     }
 
-    try {
-      const appId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID!;
-      const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID!;
-      const payments = await window.Square?.payments(appId, 'sandbox');
-      const cardInstance = await payments?.card();
-      await cardInstance?.attach('#card-container');
-      if (cardInstance) {
-        setCard(cardInstance);
-      }
-    } catch (e: any) {
-      setError(e.message || 'Erreur lors de l’initialisation de la carte');
-    }
-  };
-
-  initCard();
-}, [squareLoaded]);
-
-
-  const line_items = items.map(it => ({
-    price_data: {
-      currency: 'cad',
-      product_data: { name: it.titleFr },
-      unit_amount: Math.round(Number(it.price) * 100),
-    },
-    quantity: Math.max(1, Number(it.quantity) || 1),
-    line_total: Math.round(Number(it.price)) * Math.max(1, Number(it.quantity) || 1)
-  }));
-
-  const total = useMemo(() => {
-    return line_items.reduce((sum, item) => sum + item.line_total, 0);
-  }, [line_items]);
-
-  // app/cart/CartPage.tsx
-    const handleCheckout = async () => {
-    if (!card) return setError('Carte non initialisée');
     setLoading(true);
     setError(null);
 
     try {
       const result = await card.tokenize();
-      if (result.status !== 'OK') throw new Error('Tokenization failed');
-
-      const nonce = result.token;
-      const totalCents = Math.round(total * 100);
+      if (result.status !== 'OK') {
+        throw new Error(result.errors?.[0]?.message || 'Tokenization failed');
+      }
 
       const res = await fetch('/api/square/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          sourceId: nonce,
-          items,
-          total: totalCents,
+          sourceId: result.token,
+          total: Math.round(total * 100),
         }),
       });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erreur paiement');
 
-      alert('Paiement réussi !');
-    } catch (e: any) {
-      setError(e.message || 'Erreur serveur');
+      alert('Paiement réussi 🎉');
+      clearCart();
+    } catch (err: any) {
+      setError(err.message || 'Erreur serveur');
     } finally {
       setLoading(false);
     }
   };
 
+  /* ------------------------------------------------------------------
+     5️⃣ Panier vide
+  ------------------------------------------------------------------ */
   if (items.length === 0) {
     return (
-      <div className="min-h-screen stoneBg text-[var(--foreground)]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-          <h1 className="text-3xl font-bold mb-4">{t('cart.emptyTitle')}</h1>
-          <p className="text-black/70 mb-8">{t('cart.emptySubtitle')}</p>
-          <Link href="/" className="inline-block bg-[var(--gold)] text-black px-6 py-3 rounded-sm font-semibold hover:bg-[var(--gold-dark)]">
-            {t('cart.emptyCta')}
-          </Link>
-        </div>
+      <div className="min-h-screen stoneBg text-center py-16">
+        <h1 className="text-3xl font-bold mb-4">{t('cart.emptyTitle')}</h1>
+        <p className="mb-8">{t('cart.emptySubtitle')}</p>
+        <Link href="/" className="bg-[var(--gold)] px-6 py-3 rounded-sm font-semibold">
+          {t('cart.emptyCta')}
+        </Link>
       </div>
     );
   }
 
+  /* ------------------------------------------------------------------
+     6️⃣ Rendu principal
+  ------------------------------------------------------------------ */
   return (
-    <div id="card-container-checkout" className="min-h-screen stoneBg text-[var(--foreground)]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen stoneBg text-[var(--foreground)]">
+      <div className="max-w-6xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">{t('cart.title')}</h1>
 
         {error && (
-          <div className="mb-4 p-3 rounded bg-red-100 text-red-800">{error}</div>
+          <div className="mb-4 p-3 rounded bg-red-100 text-red-800">
+            {error}
+          </div>
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Items */}
           <div className="lg:col-span-2 space-y-4">
-            {items.map((item) => (
-              <div key={item.id} className="flex bg-white rounded-sm shadow p-4">
-                <div className="relative w-24 h-24 mr-4">
-                  <SafeImage src={item.image} alt={item.title} className="object-cover rounded" />
+            {items.map(item => (
+              <div key={item.id} className="flex bg-white p-4 rounded shadow">
+                <div className="w-24 h-24 mr-4">
+                  <SafeImage src={item.image} alt={item.title} />
                 </div>
+
                 <div className="flex-1">
-                  <h2 className="text-lg font-semibold">{item.title}</h2>
+                  <h2 className="font-semibold">{item.title}</h2>
                   <p className="text-gray-600">{item.category}</p>
-                  <div className="flex items-center mt-3 space-x-3">
-                    <span className="font-semibold">${item.price}</span>
-                    <div className="flex items-center border rounded">
-                      <button
-                        className="px-2 py-1"
-                        onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
-                      >-</button>
-                      <span className="px-3 py-1 border-l border-r">{item.quantity}</span>
-                      <button
-                        className="px-2 py-1"
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      >+</button>
-                    </div>
-                    <button
-                      className="text-red-600 hover:underline"
-                      onClick={() => removeFromCart(item.id)}
-                    >{t('actions.remove')}</button>
+
+                  <div className="flex items-center gap-3 mt-3">
+                    <span>${item.price}</span>
+                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
+                    <span>{item.quantity}</span>
+                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+                    <button onClick={() => removeFromCart(item.id)} className="text-red-600">
+                      {t('actions.remove')}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -170,28 +181,23 @@ export default function CartPage() {
           </div>
 
           {/* Summary */}
-          <div className="bg-white rounded-sm shadow p-6 h-fit">
+          <div className="bg-white rounded shadow p-6 h-fit">
             <h3 className="text-xl font-semibold mb-4">{t('cart.orderSummary')}</h3>
-            <div className="flex justify-between mb-2">
-              <span>{t('cart.items')}</span>
-              <span>{itemCount}</span>
-            </div>
+
+            {/* 👇 CONTENEUR SQUARE */}
+            <div id="card-container" className="mb-4"></div>
+
             <div className="flex justify-between mb-4">
               <span>{t('cart.total')}</span>
               <span className="text-2xl font-bold">${total.toFixed(2)}</span>
             </div>
+
             <button
               onClick={handleCheckout}
               disabled={loading}
-              className="w-full bg-[var(--gold)] text-black py-3 rounded-sm font-semibold hover:bg-[var(--gold-dark)] disabled:bg-gray-400 disabled:cursor-not-allowed"
+              className="w-full bg-[var(--gold)] py-3 font-semibold rounded-sm disabled:bg-gray-400"
             >
               {loading ? t('cart.processing') : t('cart.checkout')}
-            </button>
-            <button
-              onClick={clearCart}
-              className="w-full mt-3 border border-[#cfc9c0] text-black py-3 rounded-sm font-semibold hover:bg-white"
-            >
-              {t('cart.clear')}
             </button>
           </div>
         </div>
