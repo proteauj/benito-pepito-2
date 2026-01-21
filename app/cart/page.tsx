@@ -41,7 +41,7 @@ export default function CartPage() {
         return;
       }
 
-      const appId = process.env.NEXT_PUBLIC_SQUARE_APP_ID;
+      const appId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID;
       const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID;
       if (!appId || !locationId) {
         setError('Variables d’environnement manquantes');
