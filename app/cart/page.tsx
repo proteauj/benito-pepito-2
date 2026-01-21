@@ -50,10 +50,7 @@ export default function CartPage() {
         process.env.NODE_ENV
       );
       
-      const cardInstance = await payments.card({
-        postalCode: false, 
-      });
-
+      const cardInstance = await payments.card();
       await cardInstance.attach('#card-container');
       setCard(cardInstance);
 
