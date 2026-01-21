@@ -50,6 +50,7 @@ export default function CategorySlideshow({ category, products }: CategorySlides
               useFullImg={false}                  // true si full image
               expanded={false}                         // galerie compacte
               keepImgProportions={true}  // garder proportions exactes si nécessaire
+              className="w-36 mx-auto"
             />
           </Link>
           {!currentProduct.inStock && (
