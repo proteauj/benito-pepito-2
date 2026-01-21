@@ -38,28 +38,31 @@ export default function CartPage() {
   }, []);
 
   useEffect(() => {
-    const initCard = async () => {
-      if (!squareLoaded) return;
-      if (!window.Square || !window.Square.payments) {
-        setError('Square.js non disponible après chargement');
-        return;
+  const initCard = async () => {
+    if (!squareLoaded) return;
+    const container = document.querySelector('#card-container');
+    if (!container) {
+      setError('Le conteneur de carte n’a pas été trouvé');
+      return;
+    }
+
+    try {
+      const appId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID!;
+      const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID!;
+      const payments = await window.Square?.payments(appId, 'sandbox');
+      const cardInstance = await payments?.card();
+      await cardInstance?.attach('#card-container');
+      if (cardInstance) {
+        setCard(cardInstance);
       }
+    } catch (e: any) {
+      setError(e.message || 'Erreur lors de l’initialisation de la carte');
+    }
+  };
 
-      const appId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID;
-      const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID;
-      if (!appId || !locationId) {
-        setError('Variables d’environnement manquantes');
-        return;
-      }
+  initCard();
+}, [squareLoaded]);
 
-      const payments = window.Square.payments(appId, 'sandbox');
-      const cardInstance = await payments.card();
-      await cardInstance.attach('#card-container');
-      setCard(cardInstance);
-    };
-
-    initCard();
-  }, [squareLoaded]);
 
   const line_items = items.map(it => ({
     price_data: {
@@ -124,7 +127,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen stoneBg text-[var(--foreground)]">
+    <div id="card-container-checkout" className="min-h-screen stoneBg text-[var(--foreground)]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-3xl font-bold mb-6">{t('cart.title')}</h1>
 
