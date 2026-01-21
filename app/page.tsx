@@ -1,32 +1,18 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from "next/link";
-import { useCart } from './contexts/CartContext';
-import CategorySlideshow from './components/CategorySlideshow';
 import { useI18n } from './i18n/I18nProvider';
 import { Product } from '../lib/db/types';
 import { products } from './data/products';
-  // app/page.tsx ou GalleryPage.tsx
-import { getPrisma } from '@/lib/db/client';
 
 type ProductsByCategory = Record<string, Product[]>;
+import HomeClient from './HomeClient';
 
-export async function getServerSideProps() {
-  const prisma = await getPrisma();
-  const products: Product[] = await prisma.product.findMany({
-    orderBy: { createdAt: 'desc' },
-  });
-
-  return { props: { products } };
-}
-
-export default function HomePage() {
+export default async function HomePage() {
   const { t } = useI18n();
   const [productsByCategory, setProductsByCategory] = useState<ProductsByCategory>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { itemCount, toggleCart } = useCart();
 
   // Track homepage visit
   useEffect(() => {
@@ -85,30 +71,5 @@ export default function HomePage() {
     );
   }
 
-  return (
-    <div className="min-h-screen stoneBg text-[var(--foreground)]">
-
-      {/* Category Slideshows: two side-by-side on md+ */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex justify-between items-center mb-6">
-          <div className="leafy-divider">
-            <h1 className="text-4xl font-bold">{t('nav.home')}</h1>
-          </div>
-          <Link href="/products" className="bg-[var(--gold)] text-black px-6 py-2 font-semibold hover:bg-[var(--gold-dark)] transition-colors text-center">
-            {t('nav.allWorks')}
-          </Link>
-        </div>
-        <p className="text-lg font-semibold text-[var(--leaf)] mb-6 text-shadow-white">{t('home.tagline')}</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-          {Object.entries(productsByCategory).map(([category, products]) => (
-            <CategorySlideshow
-              key={category}
-              category={category}
-              products={products}
-            />
-          ))}
-        </div>
-      </main>
-    </div>
-  );
+  return <HomeClient products={products} />;
 }

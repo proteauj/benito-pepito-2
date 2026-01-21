@@ -5,17 +5,12 @@ import { useParams } from 'next/navigation';
 import { products } from '../../data/products';
 import ProductCard from '../../products/ProductCard';
 import { useCart } from '../../contexts/CartContext';
-import { getPrisma } from '@/lib/db/client';
 import { ParamValue } from 'next/dist/server/request/params';
 
 export default async function ProductPage() {
   const params = useParams();
   const { addToCart } = useCart();
   const [added, setAdded] = useState(false);
-  const prisma = await getPrisma();
-  const products = await prisma.product.findMany({
-    orderBy: { createdAt: 'desc' },
-  });
 
   // Cherche le produit par ID
   const product = products.find((p: { id: ParamValue; }) => p.id === params.id);

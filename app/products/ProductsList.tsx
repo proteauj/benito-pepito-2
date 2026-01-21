@@ -5,7 +5,6 @@ import { useSearchParams } from 'next/navigation';
 import ProductCard from './ProductCard';
 import { Product } from '@/lib/db/types';
 import { useRouter } from 'next/navigation';
-import { products } from '../data/products';
 
 export default function ProductsList() {
   const router = useRouter();
