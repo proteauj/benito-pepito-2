@@ -42,13 +42,18 @@ function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case 'ADD_TO_CART': {
       const { product } = action.payload;
+      if (!product || !product.id) {
+        console.warn('Cart: product missing id', product);
+        return state; // ignore cet item
+      }
+
       const existing = state.items.find((i) => i.id === product.id);
       const newItems = existing
         ? state.items.map((i) => (i.id === product.id ? { ...i } : i))
         : [...state.items, { ...product }];
+
       return { ...state, items: newItems, ...calculateTotals(newItems) };
     }
-
     case 'REMOVE_FROM_CART': {
       const newItems = state.items.filter((i) => i.id !== action.payload);
       return { ...state, items: newItems, ...calculateTotals(newItems) };
