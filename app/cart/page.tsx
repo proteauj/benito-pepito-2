@@ -41,35 +41,17 @@ export default function CartPage() {
     if (!squareLoaded) return;
 
     const initCard = async () => {
-      try {
-        if (!window.Square) {
-          setError('Square.js non disponible');
-          return;
-        }
+      const container = document.getElementById('card-container');
+      if (!container) return;
 
-        const appId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID;
-        const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID;
+      const appId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID!;
+      const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID!;
 
-        if (!appId || !locationId) {
-          setError('Variables Square manquantes');
-          return;
-        }
+      const payments = window.Square.payments(appId, locationId);
+      const cardInstance = await payments.card();
 
-        const container = document.getElementById('card-container');
-        if (!container) {
-          setError('Conteneur carte introuvable');
-          return;
-        }
-
-        const payments = window.Square.payments(appId, locationId);
-        const cardInstance = await payments.card();
-        await cardInstance.attach(container);
-
-        setCard(cardInstance);
-      } catch (err: any) {
-        console.error(err);
-        setError(err.message || 'Erreur lors de l’initialisation Square');
-      }
+      await cardInstance.attach(container);
+      setCard(cardInstance);
     };
 
     initCard();
