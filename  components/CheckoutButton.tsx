@@ -9,8 +9,9 @@ export default function CheckoutButton() {
   const [error, setError] = useState<string | null>(null);
   const [squareLoaded, setSquareLoaded] = useState(false);
   const [card, setCard] = useState<any>(null);
-  
-useEffect(() => {
+
+  // Charger Square.js
+  useEffect(() => {
     if (typeof window === 'undefined') return;
 
     const script = document.createElement('script');
@@ -21,22 +22,30 @@ useEffect(() => {
     document.body.appendChild(script);
 
     return () => {
-      document.body.removeChild(script); // TS comprend que c'est void maintenant
+      document.body.removeChild(script);
     };
   }, []);
 
+  // Initialiser la carte une fois Square chargé
   useEffect(() => {
     const initCard = async () => {
       if (!squareLoaded) return;
-      if (!window.Square) return setError('Square.js non disponible après chargement');
+
+      if (!window.Square) {
+        setError('Square.js non disponible après chargement');
+        return;
+      }
 
       const appId = process.env.NEXT_PUBLIC_SQUARE_APP_ID;
       const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID;
 
-      if (!appId || !locationId) return setError('Variables d’environnement manquantes');
+      if (!appId || !locationId) {
+        setError('Variables NEXT_PUBLIC_SQUARE_APP_ID ou NEXT_PUBLIC_SQUARE_LOCATION_ID manquantes');
+        return;
+      }
 
       try {
-        const payments = window.Square.payments(appId, 'sandbox');
+        const payments = window.Square.payments(appId, 'sandbox'); // ou 'production'
         const cardInstance = await payments.card();
         await cardInstance.attach('#card-container');
         setCard(cardInstance);
@@ -50,6 +59,7 @@ useEffect(() => {
 
   const handleCheckout = async () => {
     if (!card) return setError('Carte non initialisée');
+
     setLoading(true);
     setError(null);
 
@@ -65,7 +75,7 @@ useEffect(() => {
         body: JSON.stringify({
           sourceId: nonce,
           items,
-          total: total * 100, // en cents
+          total: total * 100,
         }),
       });
 
