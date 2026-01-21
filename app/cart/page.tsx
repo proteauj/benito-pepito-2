@@ -172,42 +172,35 @@ export default function CartPage() {
               {t('cart.orderSummary')}
             </h3>
 
-            {/* ✅ CONTENEUR SQUARE */}
-            {squareLoaded && (
+            <div className="bg-white rounded-sm shadow p-6 h-fit">
+              <h3 className="text-xl font-semibold mb-4">Récapitulatif</h3>
+
+              {/* Conteneur Square visible */}
               <div
-                id="square-overlay"
+                id="card-container"
                 style={{
-                  position: 'fixed',
-                  inset: 0,
-                  zIndex: 99999
+                  width: '100%',
+                  maxWidth: 420,
+                  margin: '16px 0',
+                  background: 'white',
+                  padding: 16,
+                  borderRadius: 6,
                 }}
-              >
-                <div
-                  id="card-container"
-                  style={{
-                    width: '100%',
-                    maxWidth: 420,
-                    margin: '100px auto',
-                    background: 'white',
-                    padding: 16,
-                    pointerEvents: 'auto', // ← CRUCIAL
-                  }}
-                />
+              />
+
+              <div className="flex justify-between mb-4">
+                <span>{t('cart.total')}</span>
+                <span className="text-2xl font-bold">${total.toFixed(2)}</span>
               </div>
-            )}
 
-            <div className="flex justify-between mb-4">
-              <span>{t('cart.total')}</span>
-              <span className="text-2xl font-bold">${total.toFixed(2)}</span>
+              <button
+                onClick={handleCheckout}
+                disabled={loading || !card}
+                className="w-full bg-[var(--gold)] text-black py-3 rounded-sm font-semibold"
+              >
+                {loading ? t('cart.processing') : t('cart.checkout')}
+              </button>
             </div>
-
-            <button
-              onClick={handleCheckout}
-              disabled={loading || !card}
-              className="w-full bg-[var(--gold)] text-black py-3 rounded-sm font-semibold"
-            >
-              {loading ? t('cart.processing') : t('cart.checkout')}
-            </button>
           </div>
         </div>
       </div>
