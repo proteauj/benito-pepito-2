@@ -12,7 +12,7 @@ export default function Checkout({ items }: { items: any[] }) {
 
       const payments = await window.Square?.payments(
         process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID!,
-        process.env.SQUARE_LOCATION_ID!
+        process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID!
       );
       const card = await payments.card();
       await card.attach("#card-container");
