@@ -7,8 +7,19 @@ import CategorySlideshow from './components/CategorySlideshow';
 import { useI18n } from './i18n/I18nProvider';
 import { Product } from '../lib/db/types';
 import { products } from './data/products';
+  // app/page.tsx ou GalleryPage.tsx
+import { getPrisma } from '@/lib/db/client';
 
 type ProductsByCategory = Record<string, Product[]>;
+
+export async function getServerSideProps() {
+  const prisma = await getPrisma();
+  const products: Product[] = await prisma.product.findMany({
+    orderBy: { createdAt: 'desc' },
+  });
+
+  return { props: { products } };
+}
 
 export default function HomePage() {
   const { t } = useI18n();
