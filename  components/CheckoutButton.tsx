@@ -15,7 +15,13 @@ export default function CheckoutButton() {
     if (typeof window === 'undefined') return;
 
     const script = document.createElement('script');
-    script.src = 'https://sandbox.web.squarecdn.com/v1/square.js';
+    script.src =
+      process.env.NODE_ENV === 'production'
+        ? 'https://web.squarecdn.com/v1/square.js'
+        : 'https://sandbox.web.squarecdn.com/v1/square.js';
+    script.async = true;
+    document.body.appendChild(script);
+
     script.async = true;
     script.onload = () => setSquareLoaded(true);
     script.onerror = () => setError('Échec du chargement de Square.js');
