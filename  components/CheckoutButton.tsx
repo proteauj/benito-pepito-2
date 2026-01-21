@@ -37,7 +37,7 @@ export default function CheckoutButton() {
       }
 
       const appId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID;
-      const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID;
+      const locationId = process.env.SQUARE_LOCATION_ID;
 
       if (!appId || !locationId) {
         setError('Variables NEXT_PUBLIC_SQUARE_APP_ID ou NEXT_PUBLIC_SQUARE_LOCATION_ID manquantes');
