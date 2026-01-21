@@ -47,10 +47,11 @@ export default function CartPage() {
 
       const payments = window.Square.payments(
         process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID!,
-        process.env.NODE_ENV
+        process.env.NEXT_PUBLIC_LOCATION_ID!
       );
       
       const cardInstance = await payments.card();
+
       await cardInstance.attach('#card-container');
       setCard(cardInstance);
 
