@@ -44,13 +44,14 @@ export default function CartPage() {
       const container = document.getElementById('card-container');
       if (!container) return;
 
-      const appId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID!;
-      const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID!;
+      const payments = window.Square.payments(
+        process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID!,
+        process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID!
+      );
 
-      const payments = window.Square.payments(appId, locationId);
       const cardInstance = await payments.card();
-
       await cardInstance.attach(container);
+
       setCard(cardInstance);
     };
 
@@ -169,10 +170,17 @@ export default function CartPage() {
             </h3>
 
             {/* ✅ CONTENEUR SQUARE */}
-            <div
-              id="card-container"
-              className="mb-4 p-3 border rounded bg-white"
-            />
+            {squareLoaded && (
+              <div
+                id="card-container"
+                style={{
+                  position: 'relative',
+                  zIndex: 9999,
+                  pointerEvents: 'auto',
+                  background: 'white',
+                }}
+              />
+            )}
 
             <div className="flex justify-between mb-4">
               <span>{t('cart.total')}</span>
