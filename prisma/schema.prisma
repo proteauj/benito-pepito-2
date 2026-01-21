@@ -14,7 +14,7 @@ model User {
 
 model Order {
   id                String           @id @default(cuid())
-  squarePaymentId   String?          // <--- ajouté
+  squarePaymentId String   @unique
   customerEmail     String?
   productIds        String[]
   totalAmount       Int
