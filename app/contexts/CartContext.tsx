@@ -31,10 +31,10 @@ const initialState: CartState = {
   isOpen: false,
 };
 
-function calculateTotals(items: CartItem[]) {
+function calculateTotals(items: CartItem[] = []) {
   return {
-    total: items.reduce((sum, item) => sum + item.price, 0),
-    itemCount: 1,
+    total: items.reduce((sum, item) => sum + (item.price || 0), 0),
+    itemCount: items.length,
   };
 }
 
