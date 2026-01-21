@@ -59,14 +59,14 @@ export default function CartPage() {
 
     init();
   }, [squareLoaded]);
-  
-  const line_items = items.map(it => ({
+
+  const line_items = (items || []).map(it => ({
     price_data: {
       currency: 'CAD',
-      product_data: { name: it.titleFr },
-      unit_amount: Math.round(Number(it.price)),
+      product_data: { name: it.titleFr || it.title },
+      unit_amount: Math.round(Number(it.price || 0)),
     },
-    line_total: Math.round(Number(it.price))
+    line_total: Math.round(Number(it.price || 0))
   }));
 
   const total = useMemo(() => {
