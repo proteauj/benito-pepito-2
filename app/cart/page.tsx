@@ -179,8 +179,7 @@ export default function CartPage() {
                 style={{
                   position: 'fixed',
                   inset: 0,
-                  zIndex: 99999,
-                  pointerEvents: 'none', // on active seulement le form
+                  zIndex: 99999
                 }}
               >
                 <div
