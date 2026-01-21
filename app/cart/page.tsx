@@ -40,9 +40,9 @@ export default function CartPage() {
   useEffect(() => {
     if (!squareLoaded) return;
 
-    const initCard = async () => {
-      const container = document.getElementById('card-container');
-      if (!container) return;
+    const init = async () => {
+      const el = document.getElementById('card-container');
+      if (!el) return;
 
       const payments = window.Square.payments(
         process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID!,
@@ -50,12 +50,11 @@ export default function CartPage() {
       );
 
       const cardInstance = await payments.card();
-      await cardInstance.attach(container);
-
+      await cardInstance.attach(el);
       setCard(cardInstance);
     };
 
-    initCard();
+    init();
   }, [squareLoaded]);
 
   /* ------------------------------------------------------------------
@@ -172,14 +171,26 @@ export default function CartPage() {
             {/* ✅ CONTENEUR SQUARE */}
             {squareLoaded && (
               <div
-                id="card-container"
+                id="square-overlay"
                 style={{
-                  position: 'relative',
-                  zIndex: 9999,
-                  pointerEvents: 'auto',
-                  background: 'white',
+                  position: 'fixed',
+                  inset: 0,
+                  zIndex: 99999,
+                  pointerEvents: 'none', // on active seulement le form
                 }}
-              />
+              >
+                <div
+                  id="card-container"
+                  style={{
+                    width: '100%',
+                    maxWidth: 420,
+                    margin: '100px auto',
+                    background: 'white',
+                    padding: 16,
+                    pointerEvents: 'auto', // ← CRUCIAL
+                  }}
+                />
+              </div>
             )}
 
             <div className="flex justify-between mb-4">
