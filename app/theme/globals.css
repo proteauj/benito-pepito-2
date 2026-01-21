@@ -119,24 +119,43 @@ body {
   }
 }
 
+.stoneBg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1; /* TOUJOURS derrière */
+  background-image:
+    linear-gradient(0deg, rgba(255,255,255,0.5), rgba(255,255,255,0.5)),
+    url('/stoneBg.jpeg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center top;
+}
+
+/* Utility: Apply stone background anywhere */
+.stoneBg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1; /* TOUJOURS derrière */
+  background-image:
+    linear-gradient(0deg, rgba(255,255,255,0.5), rgba(255,255,255,0.5)),
+    url('/stoneBg.jpeg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center top;
+}
+
 /* Utility: Apply stone background anywhere */
 .stoneBg {
   position: relative;
-  z-index: 0;        /* IMPORTANT */
+  isolation: isolate; /* 🔥 clé sur mobile */
   transform: none;   /* CRUCIAL */
   filter: none;
-  background-image: linear-gradient(
-  0deg,
-  rgba(250, 249, 247, 0.7),   /* blanc cassé plus chaud */
-  rgba(250, 249, 247, 0.7)
-),
-url('/stoneBg.jpeg');
   /* gradient covers; texture spans full width and only repeats vertically */
   background-size: cover, 100% auto;
-  background-repeat: no-repeat, repeat-y;
   background-attachment: fixed;
   background-blend-mode: normal;
-  position: relative; /* allow mobile ::before overlay */
 }
 
 /* Mobile tuning: show more of the stone texture and avoid iOS fixed-attachment jank */
@@ -178,13 +197,29 @@ url('/stoneBg.jpeg');
   }
 
   /* Make section backgrounds transparent so body::before is visible */
-  .stoneBg {
-    background: transparent; /* remove solid color fill */
-    background-image: linear-gradient(0deg, rgba(255,255,255,0.5), rgba(255,255,255,0.5)); /* gradient only */
+  .stoneBg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1; /* TOUJOURS derrière */
+    background-image:
+      linear-gradient(0deg, rgba(255,255,255,0.5), rgba(255,255,255,0.5)),
+      url('/stoneBg.jpeg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center top;
-    background-attachment: scroll;
+  }
+
+  /* Utility: Apply stone background anywhere */
+  .stoneBg {
+    position: relative;
+    isolation: isolate; /* 🔥 clé sur mobile */
+    transform: none;   /* CRUCIAL */
+    filter: none;
+    /* gradient covers; texture spans full width and only repeats vertically */
+    background-size: cover, 100% auto;
+    background-attachment: fixed;
+    background-blend-mode: normal;
   }
 }
 
@@ -207,15 +242,29 @@ body {
 }
 
   /* Ensure sections also use non-rotated texture */
-  .stoneBg {
-    background: var(--background);
+  .stoneBg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1; /* TOUJOURS derrière */
     background-image:
       linear-gradient(0deg, rgba(255,255,255,0.5), rgba(255,255,255,0.5)),
       url('/stoneBg.jpeg');
-    background-position: center top, center top;
-    background-repeat: no-repeat, repeat-y;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center top;
+  }
+
+  /* Utility: Apply stone background anywhere */
+  .stoneBg {
+    position: relative;
+    isolation: isolate; /* 🔥 clé sur mobile */
+    transform: none;   /* CRUCIAL */
+    filter: none;
+    /* gradient covers; texture spans full width and only repeats vertically */
     background-size: cover, 100% auto;
-    background-attachment: scroll;
+    background-attachment: fixed;
+    background-blend-mode: normal;
   }
 
   /* Drawer granite non-rotated in landscape */
