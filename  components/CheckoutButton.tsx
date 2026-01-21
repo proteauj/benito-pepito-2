@@ -81,7 +81,7 @@ export default function CheckoutButton() {
         body: JSON.stringify({
           sourceId: nonce,
           items,
-          total: total * 100,
+          total: total,
         }),
       });
 

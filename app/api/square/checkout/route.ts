@@ -25,7 +25,16 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({ payment: paymentResponse.payment });
+    // Convertir BigInt en string avant de renvoyer
+    const safePayment = {
+      ...paymentResponse.payment,
+      amountMoney: {
+        ...paymentResponse.payment?.amountMoney,
+        amount: paymentResponse.payment?.amountMoney?.amount?.toString(),
+      },
+    };
+
+    return NextResponse.json({ payment: safePayment });
   } catch (e: any) {
     console.error(e);
     return NextResponse.json({ error: e.message }, { status: 500 });
