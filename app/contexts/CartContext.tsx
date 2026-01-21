@@ -54,15 +54,6 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       return { ...state, items: newItems, ...calculateTotals(newItems) };
     }
 
-    case 'UPDATE_QUANTITY': {
-      const { id, quantity } = action.payload;
-      const newItems =
-        quantity <= 0
-          ? state.items.filter((i) => i.id !== id)
-          : state.items.map((i) => (i.id === id ? { ...i, quantity } : i));
-      return { ...state, items: newItems, ...calculateTotals(newItems) };
-    }
-
     case 'CLEAR_CART':
       return { ...initialState };
 
@@ -86,7 +77,6 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 interface CartContextType extends CartState {
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
   openCart: () => void;
   closeCart: () => void;
@@ -119,8 +109,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: 'OPEN_CART' });
   };
   const removeFromCart = (id: string) => dispatch({ type: 'REMOVE_FROM_CART', payload: id });
-  const updateQuantity = (id: string, quantity: number) =>
-    dispatch({ type: 'UPDATE_QUANTITY', payload: { id, quantity } });
   const clearCart = () => dispatch({ type: 'CLEAR_CART' });
   const openCart = () => dispatch({ type: 'OPEN_CART' });
   const closeCart = () => dispatch({ type: 'CLOSE_CART' });
@@ -128,7 +116,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <CartContext.Provider
-      value={{ ...state, addToCart, removeFromCart, updateQuantity, clearCart, openCart, closeCart, toggleCart }}
+      value={{ ...state, addToCart, removeFromCart, clearCart, openCart, closeCart, toggleCart }}
     >
       {children}
     </CartContext.Provider>

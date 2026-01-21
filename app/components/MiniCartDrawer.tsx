@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 
 export default function MiniCartDrawer() {
   const [isMounted, setIsMounted] = useState(false);
-  const { isOpen, items, total, itemCount, updateQuantity, removeFromCart, closeCart } = useCart();
+  const { isOpen, items, total, itemCount, removeFromCart, closeCart } = useCart();
   const { t } = useI18n();
 
   useEffect(() => {
@@ -62,9 +62,7 @@ export default function MiniCartDrawer() {
                   <div className="flex items-center justify-between mt-2">
                     <span className="font-semibold">${item.price}</span>
                     <div className="flex items-center border rounded border-[#2a2f2d]">
-                      <button className="px-2 py-1" onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}>-</button>
                       <span className="px-3 py-1 border-l border-r border-[#2a2f2d]">{item.quantity}</span>
-                      <button className="px-2 py-1" onClick={() => updateQuantity(item.id, 1)}>+</button>
                     </div>
                   </div>
                 </div>

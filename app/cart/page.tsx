@@ -7,7 +7,7 @@ import { useCart } from '../contexts/CartContext';
 import { useI18n } from '@/i18n/I18nProvider';
 
 export default function CartPage() {
-  const { items, itemCount, updateQuantity, removeFromCart, clearCart } = useCart();
+  const { items, itemCount, removeFromCart, clearCart } = useCart();
   const { t } = useI18n();
   const [squareLoaded, setSquareLoaded] = useState(false);
   const [card, setCard] = useState<any>(null);
@@ -160,9 +160,7 @@ export default function CartPage() {
 
                   <div className="flex items-center gap-3 mt-3">
                     <span>${item.price}</span>
-                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
                     <span>{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
                     <button onClick={() => removeFromCart(item.id)} className="text-red-600">
                       {t('actions.remove')}
                     </button>
