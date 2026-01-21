@@ -62,10 +62,10 @@ export default function CartPage() {
     price_data: {
       currency: 'CAD',
       product_data: { name: it.titleFr },
-      unit_amount: Math.round(Number(it.price) * 100),
+      unit_amount: Math.round(Number(it.price)),
     },
     quantity: Math.max(1, Number(it.quantity) || 1),
-    line_total: Math.round(Number(it.price) * 100) * Math.max(1, Number(it.quantity) || 1)
+    line_total: Math.round(Number(it.price)) * Math.max(1, Number(it.quantity) || 1)
   }));
 
   const total = useMemo(() => {
@@ -96,7 +96,7 @@ export default function CartPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           sourceId: nonce,
-          total: Math.round(total * 100),
+          total: Math.round(total),
         }),
       });
 
