@@ -8,55 +8,57 @@ export default function CheckoutButton() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [squareLoaded, setSquareLoaded] = useState(false);
-
-  // Charger Square.js côté client
-  useEffect(() => {
+  const [card, setCard] = useState<any>(null);
+  
+useEffect(() => {
     if (typeof window === 'undefined') return;
 
     const script = document.createElement('script');
-    script.src = 'https://sandbox.web.squarecdn.com/v1/square.js'; // Change en production si besoin
+    script.src = 'https://sandbox.web.squarecdn.com/v1/square.js';
     script.async = true;
     script.onload = () => setSquareLoaded(true);
     script.onerror = () => setError('Échec du chargement de Square.js');
     document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script); // TS comprend que c'est void maintenant
+    };
   }, []);
 
+  useEffect(() => {
+    const initCard = async () => {
+      if (!squareLoaded) return;
+      if (!window.Square) return setError('Square.js non disponible après chargement');
+
+      const appId = process.env.NEXT_PUBLIC_SQUARE_APP_ID;
+      const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID;
+
+      if (!appId || !locationId) return setError('Variables d’environnement manquantes');
+
+      try {
+        const payments = window.Square.payments(appId, 'sandbox');
+        const cardInstance = await payments.card();
+        await cardInstance.attach('#card-container');
+        setCard(cardInstance);
+      } catch (e: any) {
+        setError(e.message || 'Erreur lors de l’initialisation de la carte');
+      }
+    };
+
+    initCard();
+  }, [squareLoaded]);
+
   const handleCheckout = async () => {
-    if (!squareLoaded) {
-      setError('Square.js n’est pas encore chargé');
-      return;
-    }
-    if (!window.Square) {
-      setError("Square.js non disponible après chargement");
-      return;
-    }
-
-    const appId = process.env.NEXT_PUBLIC_SQUARE_APP_ID;
-    if (!appId) {
-      setError("NEXT_PUBLIC_SQUARE_APP_ID non défini");
-      return;
-    }
-
+    if (!card) return setError('Carte non initialisée');
     setLoading(true);
     setError(null);
 
     try {
-      const payments = await window.Square?.payments(
-        process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID!,
-        process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID!
-      );
-      const card = await payments?.card();
-      await card?.attach('#card-container');
-
-      // Tokeniser la carte
-      const result = await card?.tokenize();
-      if (result?.status !== 'OK') {
-        throw new Error('Tokenization failed');
-      }
+      const result = await card.tokenize();
+      if (result.status !== 'OK') throw new Error(result.errors?.[0]?.message || 'Tokenization failed');
 
       const nonce = result.token;
 
-      // Envoyer le nonce au serveur
       const res = await fetch('/api/square/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
