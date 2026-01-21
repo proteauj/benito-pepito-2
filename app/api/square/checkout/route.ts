@@ -2,12 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { SquareClient, SquareEnvironment } from "square";
 
-const client = new SquareClient({
-  token: process.env.SQUARE_ACCESS_TOKEN!,
-  environment: SquareEnvironment.Production,
-});
-
 export async function POST(req: NextRequest) {
+  const client = new SquareClient({
+    token: process.env.SQUARE_ACCESS_TOKEN!,
+    environment: SquareEnvironment.Production, // ou Production
+  });
+
   try {
     const body = await req.json();
     const { sourceId, total } = body;
