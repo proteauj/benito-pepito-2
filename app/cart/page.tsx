@@ -96,7 +96,7 @@ export default function CartPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           sourceId: nonce,
-          total: Math.round(total),
+          total: Number(total),
         }),
       });
 
