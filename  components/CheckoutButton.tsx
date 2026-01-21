@@ -26,6 +26,16 @@ export default function CheckoutButton() {
       setError('Square.js n’est pas encore chargé');
       return;
     }
+    if (!window.Square) {
+      setError("Square.js non disponible après chargement");
+      return;
+    }
+
+    const appId = process.env.NEXT_PUBLIC_SQUARE_APP_ID;
+    if (!appId) {
+      setError("NEXT_PUBLIC_SQUARE_APP_ID non défini");
+      return;
+    }
 
     setLoading(true);
     setError(null);
