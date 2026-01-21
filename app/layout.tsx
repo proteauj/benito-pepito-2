@@ -55,7 +55,7 @@ export default function RootLayout({
           <CartProvider>
             <div className="min-h-screen flex flex-col">
               <SiteHeader />
-              <main className="flex-1">à
+              <main className="flex-1">
                 {children}
                 <div id="square-root" />
                 <MiniCartDrawer />
