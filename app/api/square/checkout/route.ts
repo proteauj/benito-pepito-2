@@ -1,26 +1,26 @@
+// app/api/square/checkout/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
-import { SquareClient, SquareEnvironment } from "square";
+import { SquareClient, SquareEnvironment } from 'square';
 
 export async function POST(req: NextRequest) {
-  const client = new SquareClient({
-    token: process.env.SQUARE_ACCESS_TOKEN!,
-    environment: SquareEnvironment.Production, // ou Production
-  });
-
   try {
     const body = await req.json();
     const { sourceId, total } = body;
 
-    if (!sourceId || !total) {
-      return NextResponse.json({ error: 'Nonce ou total manquant' }, { status: 400 });
-    }
+    const token = process.env.SQUARE_ACCESS_TOKEN;
+    if (!token) return NextResponse.json({ error: 'SQUARE_ACCESS_TOKEN manquante' }, { status: 500 });
+
+    const client = new SquareClient({
+      token,
+      environment: process.env.NODE_ENV === 'production' ? SquareEnvironment.Production : SquareEnvironment.Sandbox,
+    });
 
     const paymentResponse = await client.payments.create({
       sourceId,
       idempotencyKey: crypto.randomUUID(),
       amountMoney: {
-        amount: total, // en cents
+        amount: total,
         currency: 'USD',
       },
     });
