@@ -9,7 +9,6 @@ import { useI18n } from '@/i18n/I18nProvider';
 export default function CartPage() {
   const { items, itemCount, updateQuantity, removeFromCart, clearCart } = useCart();
   const { t } = useI18n();
-
   const [squareLoaded, setSquareLoaded] = useState(false);
   const [card, setCard] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -34,10 +33,6 @@ export default function CartPage() {
     script.onerror = () => setError('Échec du chargement de Square.js');
 
     document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
   }, []);
 
   /* ------------------------------------------------------------------
@@ -62,16 +57,20 @@ export default function CartPage() {
 
     init();
   }, [squareLoaded]);
+  
+  const line_items = items.map(it => ({
+    price_data: {
+      currency: 'CAD',
+      product_data: { name: it.titleFr },
+      unit_amount: Math.round(Number(it.price) * 100),
+    },
+    quantity: Math.max(1, Number(it.quantity) || 1),
+    line_total: Math.round(Number(it.price) * 100) * Math.max(1, Number(it.quantity) || 1)
+  }));
 
-  /* ------------------------------------------------------------------
-     3️⃣ Calcul total
-  ------------------------------------------------------------------ */
   const total = useMemo(() => {
-    return items.reduce(
-      (sum, item) => sum + Number(item.price) * Math.max(1, item.quantity),
-      0
-    );
-  }, [items]);
+    return line_items.reduce((sum, item) => sum + item.line_total, 0);
+  }, [line_items]);
 
   /* ------------------------------------------------------------------
      4️⃣ Paiement
@@ -90,12 +89,13 @@ export default function CartPage() {
       if (result.status !== 'OK') {
         throw new Error(result.errors?.[0]?.message || 'Tokenization failed');
       }
+      const nonce = result.token;
 
       const res = await fetch('/api/square/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          sourceId: result.token,
+          sourceId: nonce,
           total: Math.round(total * 100),
         }),
       });
