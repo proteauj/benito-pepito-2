@@ -33,8 +33,8 @@ export default function CartPage() {
   }, []);
 
   useEffect(() => {
-    console.log('App ID:', process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID);
-    console.log('Location ID:', process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID);
+    console.log('Process:', process);
+    console.log('Process.env:', process.env);
   }, []);
 
   useEffect(() => {
