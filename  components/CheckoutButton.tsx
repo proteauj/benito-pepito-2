@@ -98,15 +98,34 @@ export default function CheckoutButton() {
 
   return (
     <>
-      <div id="card-container" className="mb-4"></div>
-      {error && <p className="text-red-500">{error}</p>}
-      <button
-        onClick={handleCheckout}
-        disabled={loading || items.length === 0}
-        className="w-full bg-[var(--gold)] text-black py-3 rounded-sm font-semibold hover:bg-[var(--gold-dark)] disabled:bg-gray-400 disabled:cursor-not-allowed"
+      <div
+        id="square-overlay"
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 99999
+        }}
       >
-        {loading ? 'Traitement...' : `Payer ${total.toFixed(2)}$`}
-      </button>
+        <div
+          id="card-container"
+          style={{
+            width: '100%',
+            maxWidth: 420,
+            margin: '100px auto',
+            background: 'white',
+            padding: 16,
+            pointerEvents: 'auto', // ← CRUCIAL
+          }}
+        />
+        {error && <p className="text-red-500">{error}</p>}
+        <button
+          onClick={handleCheckout}
+          disabled={loading || items.length === 0}
+          className="w-full bg-[var(--gold)] text-black py-3 rounded-sm font-semibold hover:bg-[var(--gold-dark)] disabled:bg-gray-400 disabled:cursor-not-allowed"
+        >
+          {loading ? 'Traitement...' : `Payer ${total.toFixed(2)}$`}
+        </button>
+      </div>
     </>
   );
 }
