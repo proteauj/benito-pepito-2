@@ -6,11 +6,12 @@ import { Product } from '../../lib/db/types';
 interface ProductCardProps {
   product: Product;
   onClick?: () => void;
-  useFullImg?: boolean;          // true pour page détail
-  expanded?: boolean;            // montre titre / prix
-  keepImgProportions?: boolean;  // conserve proportions
-  onAddToCart?: (product: Product) => void; // ajoute au panier
+  useFullImg?: boolean;
+  expanded?: boolean;
+  keepImgProportions?: boolean;
+  onAddToCart?: (product: Product) => void;
   added?: boolean;
+  className?: string; // <-- ajouter
 }
 
 export default function ProductCard({
@@ -19,7 +20,8 @@ export default function ProductCard({
   useFullImg = false,
   expanded = false,
   keepImgProportions = false,
-  onAddToCart
+  onAddToCart,
+  className
 }: ProductCardProps) {
   const [added, setAdded] = useState(false);
 
@@ -31,50 +33,52 @@ export default function ProductCard({
   };
 
   return (
-    <div
-      className="cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition"
-      onClick={onClick}
-    >
+    <>
       <div
-        className={`w-full overflow-hidden ${
-          !useFullImg && !keepImgProportions ? 'aspect-square' : ''
-        }`}
+        className={`cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition ${className}`}
+        onClick={onClick}
       >
-        <img
-          src={useFullImg ? product.image : product.imageThumbnail || product.image || '/placeholder.png'}
-          alt={product.title}
-          className={`w-full h-full ${keepImgProportions ? 'object-contain' : 'object-cover'}`}
-        />
-      </div>
-
-      {expanded && (
-        <div className="bg-white p-2">
-          <p className="font-bold text-sm truncate">{product.titleFr || product.title}</p>
-          <p className="text-xs mb-2">{product.size}</p>
-          <p className="text-xs mb-2">{product.materialFr}</p>
-          <p className="text-xs mb-2">{product.price} $</p>
-
-          {!product.inStock && (
-            <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-              <span className="bg-[var(--gold)] text-black px-4 py-2 font-semibold">
-                VENDU
-              </span>
-            </div>
-          )}
-
-          {onAddToCart && product.inStock && (
-            <button
-              onClick={handleAdd}
-              disabled={added}
-              className={`block w-full text-center font-semibold py-3 ${
-                added ? 'bg-[var(--gold-dark)] text-black cursor-default' : 'bg-[var(--gold)] text-black hover:bg-white hover:text-[var(--leaf)]'
-              }`}
-            >
-              {added ? 'Ajouté au panier' : 'Ajouter au panier'}
-            </button>
-          )}
+        <div
+          className={`w-full overflow-hidden ${
+            !useFullImg && !keepImgProportions ? 'aspect-square' : ''
+          }`}
+        >
+          <img
+            src={useFullImg ? product.image : product.imageThumbnail || product.image || '/placeholder.png'}
+            alt={product.title}
+            className={`w-full h-full ${keepImgProportions ? 'object-contain' : 'object-cover'}`}
+          />
         </div>
-      )}
-    </div>
+
+        {expanded && (
+          <div className="bg-white p-2">
+            <p className="font-bold text-sm truncate">{product.titleFr || product.title}</p>
+            <p className="text-xs mb-2">{product.size}</p>
+            <p className="text-xs mb-2">{product.materialFr}</p>
+            <p className="text-xs mb-2">{product.price} $</p>
+
+            {!product.inStock && (
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <span className="bg-[var(--gold)] text-black px-4 py-2 font-semibold">
+                  VENDU
+                </span>
+              </div>
+            )}
+
+            {onAddToCart && product.inStock && (
+              <button
+                onClick={handleAdd}
+                disabled={added}
+                className={`block w-full text-center font-semibold py-3 ${
+                  added ? 'bg-[var(--gold-dark)] text-black cursor-default' : 'bg-[var(--gold)] text-black hover:bg-white hover:text-[var(--leaf)]'
+                }`}
+              >
+                {added ? 'Ajouté au panier' : 'Ajouter au panier'}
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    </>
   );
 }
