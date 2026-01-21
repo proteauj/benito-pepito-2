@@ -119,6 +119,10 @@ body {
 
 /* Utility: Apply stone background anywhere */
 .stoneBg {
+  position: relative;
+  z-index: 0;        /* IMPORTANT */
+  transform: none;   /* CRUCIAL */
+  filter: none;
   background-image: linear-gradient(
   0deg,
   rgba(250, 249, 247, 0.7),   /* blanc cassé plus chaud */
