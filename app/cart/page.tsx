@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import SafeImage from '@/components/SafeImage';
 import { useCart } from '../contexts/CartContext';
 import { useI18n } from '@/i18n/I18nProvider';
@@ -9,13 +10,16 @@ import { useI18n } from '@/i18n/I18nProvider';
 export default function CartPage() {
   const { items, itemCount, removeFromCart, clearCart } = useCart();
   const { t } = useI18n();
+  const router = useRouter();
+
   const [squareLoaded, setSquareLoaded] = useState(false);
   const [card, setCard] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   /* ------------------------------------------------------------------
-     1️⃣ Charger Square.js (sandbox)
+     1️⃣ Charger Square.js (sandbox / prod)
   ------------------------------------------------------------------ */
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -25,9 +29,6 @@ export default function CartPage() {
       process.env.NODE_ENV === 'production'
         ? 'https://web.squarecdn.com/v1/square.js'
         : 'https://sandbox.web.squarecdn.com/v1/square.js';
-    script.async = true;
-    document.body.appendChild(script);
-
     script.async = true;
     script.onload = () => setSquareLoaded(true);
     script.onerror = () => setError('Échec du chargement de Square.js');
@@ -49,17 +50,18 @@ export default function CartPage() {
         process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID!,
         process.env.NEXT_PUBLIC_LOCATION_ID!
       );
-      
-      const cardInstance = await payments.card();
 
+      const cardInstance = await payments.card();
       await cardInstance.attach('#card-container');
       setCard(cardInstance);
-
     };
 
     init();
   }, [squareLoaded]);
 
+  /* ------------------------------------------------------------------
+     3️⃣ Calcul des totaux
+  ------------------------------------------------------------------ */
   const line_items = (items || []).map(it => ({
     price_data: {
       currency: 'CAD',
@@ -104,8 +106,8 @@ export default function CartPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erreur paiement');
 
-      alert('Paiement réussi 🎉');
       clearCart();
+      setSuccess(true); // ← paiement réussi
     } catch (err: any) {
       setError(err.message || 'Erreur serveur');
     } finally {
@@ -114,10 +116,23 @@ export default function CartPage() {
   };
 
   /* ------------------------------------------------------------------
-     5️⃣ Panier vide
+     5️⃣ Redirection automatique après succès
+  ------------------------------------------------------------------ */
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => {
+        router.push('/');
+      }, 2000); // redirection après 2 secondes
+
+      return () => clearTimeout(timer);
+    }
+  }, [success, router]);
+
+  /* ------------------------------------------------------------------
+     6️⃣ Panier vide
   ------------------------------------------------------------------ */
   const safeItems = items ?? [];
-  if (safeItems.length === 0) {
+  if (safeItems.length === 0 && !success) {
     return (
       <div className="min-h-screen stoneBg text-center py-16">
         <h1 className="text-3xl font-bold mb-4">{t('cart.emptyTitle')}</h1>
@@ -130,7 +145,7 @@ export default function CartPage() {
   }
 
   /* ------------------------------------------------------------------
-     6️⃣ Rendu principal
+     7️⃣ Rendu principal
   ------------------------------------------------------------------ */
   return (
     <div className="min-h-screen stoneBg text-[var(--foreground)]">
@@ -140,6 +155,12 @@ export default function CartPage() {
         {error && (
           <div className="mb-4 p-3 rounded bg-red-100 text-red-800">
             {error}
+          </div>
+        )}
+
+        {success && (
+          <div className="mb-4 p-3 rounded bg-green-100 text-green-800 text-center font-semibold">
+            Paiement réussi 🎉 Vous allez être redirigé vers l'accueil...
           </div>
         )}
 
@@ -173,7 +194,7 @@ export default function CartPage() {
               {t('cart.orderSummary')}
             </h3>
 
-            {/* Conteneur Square visible */}
+            {/* Conteneur Square */}
             <div
               id="card-container"
               style={{
@@ -193,7 +214,7 @@ export default function CartPage() {
 
             <button
               onClick={handleCheckout}
-              disabled={loading || !card}
+              disabled={loading || !card || success}
               className="w-full bg-[var(--gold)] text-black py-3 rounded-sm font-semibold"
             >
               {loading ? t('cart.processing') : t('cart.checkout')}
