@@ -23,11 +23,11 @@ export class DatabaseService {
     try {
       const prisma = await getPrisma();
       const order = await prisma.order.update({
-        where: { squarePaymentId: squarePaymentId, id : crypto.randomUUID() },
+        where: { squarePaymentId }, // ✅ uniquement la clé unique
         data: { status, updatedAt: new Date() }
       });
       return this.mapOrderToOrder(order);
-    } catch (error) {
+    } catch {
       return null;
     }
   }
@@ -36,10 +36,10 @@ export class DatabaseService {
     try {
       const prisma = await getPrisma();
       const order = await prisma.order.findUnique({
-        where: { squarePaymentId: squarePaymentId, id : crypto.randomUUID() }
+        where: { squarePaymentId }
       });
       return order ? this.mapOrderToOrder(order) : null;
-    } catch (error) {
+    } catch {
       return null;
     }
   }
