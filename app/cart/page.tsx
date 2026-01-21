@@ -30,8 +30,9 @@ export default function CartPage() {
   }, []);
 
   useEffect(() => {
+
     async function initSquare() {
-      const appId = process.env.NEXT_PUBLIC_SQUARE_APP_ID;
+      const appId = process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID;
       if (!appId) throw new Error("NEXT_PUBLIC_SQUARE_APP_ID non défini");
 
       const payments = window.Square!.payments(appId, SquareEnvironment.Production);

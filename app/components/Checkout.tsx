@@ -11,7 +11,7 @@ export default function Checkout({ items }: { items: any[] }) {
       if (!window.Square) return;
 
       const payments = await window.Square?.payments(
-        process.env.NEXT_PUBLIC_SQUARE_APP_ID!,
+        process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID!,
         process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID!
       );
       const card = await payments.card();
