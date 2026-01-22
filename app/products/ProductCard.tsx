@@ -36,7 +36,7 @@ export default function ProductCard({
   useEffect(() => {
     const fetchStock = async () => {
       try {
-        const res = await fetch(`/api/product?slug=${product.slug}`);
+        const res = await fetch(`/api/products/${product.id}`);
         const data = await res.json();
         setRealStock(data.inStock);
       } catch (err) {
