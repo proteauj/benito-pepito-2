@@ -45,18 +45,23 @@ export class DatabaseService {
   }
 
   // Product Stock
-  static async getProductStock(productId: string): Promise<boolean> {
+  static async getProductStock(productId: string | number): Promise<boolean> {
     try {
       const prisma = await getPrisma();
 
-      // récupère le stock dans ProductStock
+      const productIdStr = String(productId); // toujours string
+      console.log('Fetching stock for productId:', productIdStr);
+
       const stock = await prisma.productStock.findUnique({
-        where: { productId: productId }
+        where: { productId: productIdStr }
       });
-      
+
+      console.log('Found stock:', stock);
+
+      // si stock trouvé, retourne inStock sinon true par défaut
       return stock?.inStock ?? true;
     } catch (error) {
-      console.error('Error updating product stock:', error);
+      console.error('Error retrieving product stock:', error);
       return true;
     }
   }
