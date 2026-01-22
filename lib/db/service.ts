@@ -51,7 +51,7 @@ export class DatabaseService {
 
       // récupère le stock dans ProductStock
       const stock = await prisma.productStock.findUnique({
-        where: { productId: String(productId) }
+        where: { productId: productId }
       });
       
       return stock?.inStock ?? true;
