@@ -99,10 +99,13 @@ export default function CheckoutButton() {
         }),
       });
 
-      const updateData = await updateStockRes.json();
-      if (!updateStockRes.ok) throw new Error(updateData.error || 'Erreur mise à jour stock');
+      // const updateData = await updateStockRes.json();
+      const raw = await updateStockRes.text();
+      console.log('RAW RESPONSE:', raw);
 
-      console.log('Produits mis à jour :', updateData.productIds);
+      // if (!updateStockRes.ok) throw new Error(updateData.error || 'Erreur mise à jour stock');
+
+      console.log('Produits mis à jour :', items.map(item => item.id));
     } catch (e: any) {
       setError(e.message || 'Erreur serveur');
     } finally {
