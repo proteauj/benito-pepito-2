@@ -39,10 +39,10 @@ export default function CategorySlideshow({ category, products }: CategorySlides
     <div className="mb-12 w-full max-w-full overflow-hidden">
       <h2 className="text-3xl font-bold text-black mb-6 px-4 sm:px-0">{t(`category.${category}`)}</h2>
       
-      <div className="relative bg-white border border-[#cfc9c0] overflow-hidden mx-auto w-full max-w-full rounded-sm">
+      <div className="relative bg-white border border-[#cfc9c0] overflow-hidden mx-auto w-36 rounded-sm">
           <Link 
             href={`/product/${currentProduct.id}`}
-            className="block w-full h-full relative group"
+            className="block relative group"
           >
             <ProductCard
               product={currentProduct}
