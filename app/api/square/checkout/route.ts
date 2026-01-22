@@ -2,18 +2,27 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { SquareClient, SquareEnvironment } from 'square';
-import { DatabaseService } from '../../../../lib/db/service';
 
 export async function POST(req: NextRequest) {
   try {
-    const { sourceId, total, items, customerEmail } = await req.json();
-    console.log('CHECKOUT BODY', sourceId, total, items, customerEmail);
+    const body = await req.json();
+    console.log('CHECKOUT BODY', body);
 
-    const token = process.env.SQUARE_ACCESS_TOKEN;
-    if (!token) return NextResponse.json({ error: 'SQUARE_ACCESS_TOKEN manquante' }, { status: 500 });
+    const { sourceId, total } = body;
 
     if (!sourceId || !total) {
-      return NextResponse.json({ error: 'Nonce ou total manquant' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'sourceId ou total manquant' },
+        { status: 400 }
+      );
+    }
+
+    const token = process.env.SQUARE_ACCESS_TOKEN;
+    if (!token) {
+      return NextResponse.json(
+        { error: 'SQUARE_ACCESS_TOKEN manquant' },
+        { status: 500 }
+      );
     }
 
     const client = new SquareClient({
@@ -28,12 +37,11 @@ export async function POST(req: NextRequest) {
       sourceId,
       idempotencyKey: crypto.randomUUID(),
       amountMoney: {
-        amount: BigInt(total), // obligatoire
+        amount: BigInt(total),
         currency: 'CAD',
       },
     });
 
-    // Ne renvoyer que ce dont le front a besoin
     const payment = paymentResponse.payment;
 
     if (!payment || payment.status !== 'COMPLETED') {
@@ -43,54 +51,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const safePayment = {
-      id: payment.id,
-      status: payment.status,
-      amountMoney: {
-        amount: payment.amountMoney?.amount?.toString(),
-        currency: payment.amountMoney?.currency,
-      },
-      createdAt: payment.createdAt,
-      cardDetails: payment.cardDetails ? {
-        status: payment.cardDetails.status,
-        card: {
-          last4: payment.cardDetails.card?.last4,
-          brand: payment.cardDetails.card?.cardBrand,
-        }
-      } : undefined,
-    };
-
-    const baseUrl =
-      typeof window !== 'undefined'
-        ? window.location.origin
-        : process.env.NEXT_PUBLIC_SITE_URL;
-
-    // 2️⃣ Mettre les produits en stock=false
-    const updateStockRes = await fetch(`${baseUrl}/api/products`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        productIds: items?.map((item: { id: any; }) => item.id), // liste des IDs à mettre à jour
-      }),
+    return NextResponse.json({
+      success: true,
+      paymentId: payment.id,
     });
-
-    const updateData = await updateStockRes.json();
-    if (!updateStockRes.ok) throw new Error(updateData.error || 'Erreur mise à jour stock');
-
-    // 3 Créer la commande en DB
-    await DatabaseService.createOrder({
-      squarePaymentId: payment.id!,
-      customerEmail: customerEmail ?? null,
-      productIds: (items || [])?.map((i: any) => i.id),
-      totalAmount: Number(total),
-      currency: 'CAD',
-      status: 'completed',
-    });
-
-    // 4️⃣ Réponse SAFE (pas de BigInt)
-    return NextResponse.json({payment: safePayment});
-  } catch (e: any) {
-    console.error(e);
-    return NextResponse.json({ error: e.message }, { status: 500 });
+  } catch (err: any) {
+    console.error('CHECKOUT ERROR', err);
+    return NextResponse.json(
+      { error: err.message || 'Erreur serveur' },
+      { status: 500 }
+    );
   }
 }
