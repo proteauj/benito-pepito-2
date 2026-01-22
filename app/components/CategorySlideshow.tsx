@@ -18,6 +18,7 @@ interface CategorySlideshowProps {
 export default function CategorySlideshow({ category, products }: CategorySlideshowProps) {
   const { t } = useI18n();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   useEffect(() => {
     if (products.length === 0) return;
@@ -58,7 +59,9 @@ export default function CategorySlideshow({ category, products }: CategorySlides
           )}
           {/* Progress Indicators */}
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-1.5">
-            {products.map((_, index) => (
+            {products
+              .filter(product => !selectedCategory || product.category === selectedCategory)
+              .map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}

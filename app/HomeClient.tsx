@@ -14,12 +14,6 @@ export default function HomeClient({ productsByCategory }: Props) {
 
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Header avec logo et titre */}
-      <header className="flex flex-col sm:flex-row items-center justify-center mb-12 gap-4">
-        <h1 className="text-4xl sm:text-5xl font-bold text-center sm:text-left">
-          Benito Pepito
-        </h1>
-      </header>
 
       <div className="flex flex-wrap -mx-4">
         {categoriesToShow.map((category) => {

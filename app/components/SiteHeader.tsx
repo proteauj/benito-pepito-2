@@ -54,44 +54,9 @@ export default function SiteHeader() {
             Benito Pepito
           </Link>
           </div>
-          {/* Desktop navigation (no Home link) */}
-          {/* Desktop navigation */}
-          <nav className="hidden md:flex space-x-2 h-16">
-            {categories.map(cat => (
-              <Link 
-                key={cat.slug}
-                href={`/products?category=${cat.slug}`} 
-                className="h-full px-3 text-black hover:bg-white hover:text-[var(--leaf)] flex items-center transition-colors text-md font-semibold"
-              >
-                {cat.name}
-              </Link>
-            ))}
-            <Link 
-              href="/about" 
-              className="h-full px-3 text-black hover:bg-white hover:text-[var(--leaf)] flex items-center transition-colors text-md font-semibold"
-            >
-              {t('nav.about')}
-            </Link>
-            <Link 
-              href="/contact" 
-              className="h-full px-3 text-black hover:bg-white hover:text-[var(--leaf)] flex items-center transition-colors text-md font-semibold"
-            >
-              {t('nav.contact')}
-            </Link>
-          </nav>
 
           <div className="flex items-center space-x-2 h-16">
             <LanguageSelector />
-            {/* Mobile hamburger */}
-            <button
-              className="md:hidden h-16 w-16 text-black hover:bg-white hover:text-[var(--leaf)] flex items-center justify-center transition-colors"
-              aria-label="Open menu"
-              onClick={() => setMobileOpen(true)}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
             {/* <Link href="/products" className="h-16 w-16 text-black hover:bg-white hover:text-[var(--leaf)] flex items-center justify-center transition-colors rounded-none overflow-hidden" aria-label="Search">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -117,47 +82,45 @@ export default function SiteHeader() {
         </div>
       </div>
 
-      {/* Mobile drawer */}
-      {mobileOpen && (
-        <div className="fixed inset-0 z-50">
-          <div 
-            className="absolute inset-0 bg-black/50" 
-            onClick={() => setMobileOpen(false)}
-          />
-          <div className="absolute right-0 top-0 h-full w-64 bg-white shadow-lg">
-            <div className="p-4 border-b flex justify-between items-center">
-              <button 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setMobileOpen(false);
-                }}
-                className="text-gray-500 hover:text-gray-700"
-                aria-label="Close menu"
-              >
-                ✕
-              </button>
-            </div>
-            <nav className="p-4 space-y-4">
-              {categories.map(cat => (
-                <Link 
-                  key={cat.slug}
-                  href={`/products?category=${cat.slug}`} 
-                  className="block py-2 hover:text-[var(--leaf)]"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  {cat.name}
-                </Link>
-              ))}
-              <Link href="/about" className="block py-2 hover:text-[var(--leaf)]" onClick={() => setMobileOpen(false)}>
-                {t('nav.about')}
-              </Link>
-              <Link href="/contact" className="block py-2 hover:text-[var(--leaf)]" onClick={() => setMobileOpen(false)}>
-                {t('nav.contact')}
-              </Link>
-            </nav>
+      {/* Drawer */}
+      <div className="fixed inset-0 z-50">
+        <div 
+          className="absolute inset-0 bg-black/50" 
+          onClick={() => setMobileOpen(false)}
+        />
+        <div className="absolute right-0 top-0 h-full w-64 bg-white shadow-lg">
+          <div className="p-4 border-b flex justify-between items-center">
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                setMobileOpen(false);
+              }}
+              className="text-gray-500 hover:text-gray-700"
+              aria-label="Close menu"
+            >
+              ✕
+            </button>
           </div>
+          <nav className="p-4 space-y-4">
+            {categories.map(cat => (
+              <Link 
+                key={cat.slug}
+                href={`/products?category=${cat.slug}`} 
+                className="block py-2 hover:text-[var(--leaf)]"
+                onClick={() => setMobileOpen(false)}
+              >
+                {cat.name}
+              </Link>
+            ))}
+            <Link href="/about" className="block py-2 hover:text-[var(--leaf)]" onClick={() => setMobileOpen(false)}>
+              {t('nav.about')}
+            </Link>
+            <Link href="/contact" className="block py-2 hover:text-[var(--leaf)]" onClick={() => setMobileOpen(false)}>
+              {t('nav.contact')}
+            </Link>
+          </nav>
         </div>
-      )}
+      </div>
     </header>
   );
 }
