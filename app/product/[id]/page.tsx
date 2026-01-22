@@ -20,8 +20,8 @@ export default function ProductPage() {
         const data = await res.json();
 
         if (data.product) {
+          setRealStock(data.productStock?.inStock ?? data.product.inStock);
           setProduct(data.product);
-          setRealStock(data.productStock?.inStock ?? data.product.inStock); // priorité DB
         } else {
           setProduct(null);
           setRealStock(null);
