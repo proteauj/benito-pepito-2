@@ -19,9 +19,9 @@ export default function ProductPage() {
         const res = await fetch(`/api/products?id=${params.id}`);
         const data = await res.json();
 
-        if (data.product) {
-          setRealStock(data.productStock?.inStock ?? data.product.inStock);
-          setProduct(data.product);
+        if (data) {
+          setRealStock(data.inStock ?? true);
+          setProduct(data);
         } else {
           setProduct(null);
           setRealStock(null);
