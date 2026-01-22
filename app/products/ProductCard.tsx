@@ -49,10 +49,12 @@ export default function ProductCard({
 
   return (
     <>
-      <div
-        className={`cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition ${className}`}
-        onClick={onClick}
-      >
+        <div
+          className={`
+            relative z-10 cursor-pointer rounded overflow-hidden shadow hover:shadow-lg transition ${className}
+          `}
+          onClick={onClick}
+        >
         <div
           className={`
             w-75 overflow-hidden mx-auto
@@ -62,7 +64,10 @@ export default function ProductCard({
           <img
             src={useFullImg ? product.image : product.imageThumbnail || product.image || '/placeholder.png'}
             alt={product.titleFr}
-            className={`w-full ${keepImgProportions ? 'h-auto object-contain' : 'h-full object-cover'}`}
+            className={`
+              relative z-10 w-full
+              ${keepImgProportions ? 'h-auto object-contain' : 'h-full object-cover'}
+            `}
           />
         </div>
 

@@ -76,17 +76,21 @@ export default function ProductsPage() {
       </div>
 
       {/* GRID Galerie */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredProducts.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            onClick={() => router.push(`/product/${product.id}`)}
-            useFullImg={false}             // miniature
-            expanded={false}                // pas le bandeau
-            keepImgProportions={true}       // pour mobile et horizontales
-          />
-        ))}
+      <div className="relative min-h-screen stoneBg z-0">
+        <div className="relative z-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {filteredProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  onClick={() => router.push(`/product/${product.id}`)}
+                  useFullImg={false}             // miniature
+                  expanded={false}                // pas le bandeau
+                  keepImgProportions={true}       // pour mobile et horizontales
+                />
+              ))}
+          </div>
+        </div>
       </div>
     </div>
   );
