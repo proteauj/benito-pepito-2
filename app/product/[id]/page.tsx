@@ -1,23 +1,44 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { products } from '../../data/products';
 import ProductCard from '../../products/ProductCard';
 import { useCart } from '../../contexts/CartContext';
-import { ParamValue } from 'next/dist/server/request/params';
+import { Product } from '../../../lib/db/types';
 
 export default function ProductPage() {
   const params = useParams();
   const { addToCart } = useCart();
   const [added, setAdded] = useState(false);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [realStock, setRealStock] = useState<boolean | null>(null);
 
-  // Cherche le produit par ID
-  const product = products.find((p: { id: ParamValue; }) => p.id === params.id);
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const res = await fetch(`/api/products?id=${params.id}`);
+        const data = await res.json();
+
+        if (data.product) {
+          setProduct(data.product);
+          setRealStock(data.productStock?.inStock ?? data.product.inStock); // priorité DB
+        } else {
+          setProduct(null);
+          setRealStock(null);
+        }
+      } catch (err) {
+        console.error(err);
+        setProduct(null);
+        setRealStock(null);
+      }
+    };
+
+    fetchProduct();
+  }, [params.id]);
 
   if (!product) return <p className="text-center py-8">Produit introuvable</p>;
+  if (realStock === null) return <p className="text-center py-8">Chargement…</p>;
 
-  // Handler pour ajouter au panier
   const handleAddToCart = () => {
     addToCart(product);
     setAdded(true);
@@ -25,17 +46,15 @@ export default function ProductPage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center px-4 py-8 stoneBg">
-      
-      {/* ProductCard avec image pleine et bandeau */}
       <div className="w-full max-w-3xl">
         <ProductCard
           key={product.id}
-          product={product}
-          useFullImg={true}    // Image grande
-          expanded={true}   // Affiche titre, taille, prix et bouton
+          product={{ ...product, inStock: realStock }} // passer le stock réel
+          useFullImg={true}
+          expanded={true}
           onAddToCart={handleAddToCart}
           keepImgProportions={true}
-          added={added}        // Pour changer la couleur du bouton si déjà ajouté
+          added={added}
         />
       </div>
     </div>
