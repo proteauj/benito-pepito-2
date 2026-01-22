@@ -89,6 +89,7 @@
   "cart.processing": "Processing...",
   "cart.checkout": "Checkout",
   "cart.clear": "Clear Cart",
+  "cart.expedition": "*Shipping fees could apply after transaction or pickup is available.",
   "success.title": "Payment Successful",
   "success.message": "Thank you! Your order has been placed successfully.",
   "success.paymentVerified": "Payment verified successfully",

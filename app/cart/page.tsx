@@ -211,6 +211,7 @@ export default function CartPage() {
             <div className="flex justify-between mb-4">
               <span>{t('cart.total')}</span>
               <span className="text-2xl font-bold">${total.toFixed(2)}</span>
+              <span className="text-md">{t('cart.expedition')}</span>
             </div>
 
             <button

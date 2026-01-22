@@ -76,6 +76,7 @@
   "cart.clear": "Vider le panier",
   "cart.checkout": "Payer",
   "cart.processing": "Traitement...",
+  "cart.expeditioin": "*Des frais d'expédition peuvent s'appliquer suite à la transation, la collecte est aussi possible.",
   "success.title": "Paiement réussi",
   "success.message": "Merci ! Votre commande a été passée avec succès.",
   "success.paymentVerified": "Paiement vérifié avec succès",
