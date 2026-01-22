@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        productIds: items.map((item: { id: any; }) => item.id), // liste des IDs à mettre à jour
+        productIds: items?.map((item: { id: any; }) => item.id), // liste des IDs à mettre à jour
       }),
     });
 
@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
     await DatabaseService.createOrder({
       squarePaymentId: payment.id!,
       customerEmail: customerEmail ?? null,
-      productIds: (items || []).map((i: any) => i.id),
+      productIds: (items || [])?.map((i: any) => i.id),
       totalAmount: Number(total),
       currency: 'CAD',
       status: 'completed',

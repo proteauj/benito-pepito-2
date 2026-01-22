@@ -95,7 +95,7 @@ export default function CheckoutButton() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          productIds: items.map(item => item.id), // liste des IDs à mettre à jour
+          productIds: items?.map(item => item.id), // liste des IDs à mettre à jour
         }),
       });
 
