@@ -49,17 +49,12 @@ export class DatabaseService {
     try {
       const prisma = await getPrisma();
 
-      // récupère le produit de la table principale
-      const product = await prisma.product.findUnique({ where: { id: Number(productId) } });
-
       // récupère le stock dans ProductStock
       const stock = await prisma.productStock.findUnique({
         where: { productId: String(productId) }
       });
-
-      if (!product) return true;
       
-      return stock?.inStock ?? product.inStock // priorité DB stock
+      return stock?.inStock ?? true;
     } catch (error) {
       console.error('Error updating product stock:', error);
       return true;
