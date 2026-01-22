@@ -89,6 +89,20 @@ export default function CheckoutButton() {
       if (!res.ok) throw new Error(data.error || 'Erreur paiement');
 
       alert('Paiement réussi !');
+
+      // 2️⃣ Mettre les produits en stock=false
+      const updateStockRes = await fetch('/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productIds: items.map(item => item.id), // liste des IDs à mettre à jour
+        }),
+      });
+
+      const updateData = await updateStockRes.json();
+      if (!updateStockRes.ok) throw new Error(updateData.error || 'Erreur mise à jour stock');
+
+      console.log('Produits mis à jour :', updateData.productIds);
     } catch (e: any) {
       setError(e.message || 'Erreur serveur');
     } finally {
