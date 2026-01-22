@@ -36,8 +36,8 @@ export default function ProductPage() {
     fetchProduct();
   }, [params.id]);
 
-  if (!product) return <p className="text-center py-8">Produit introuvable</p>;
-  if (realStock === null) return <p className="text-center py-8">Chargement…</p>;
+  if (product === null && realStock === null) return <p className="text-center py-8">Chargement…</p>;
+  if (product === null) return <p className="text-center py-8">Produit introuvable</p>;
 
   const handleAddToCart = () => {
     addToCart(product);
@@ -50,7 +50,7 @@ export default function ProductPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 relative z-10">
         <ProductCard
           key={product.id}
-          product={{ ...product, inStock: realStock }} // passer le stock réel
+          product={{ ...product, inStock: realStock! }} // passer le stock réel
           useFullImg={true}
           expanded={true}
           onAddToCart={handleAddToCart}
