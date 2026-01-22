@@ -1,5 +1,6 @@
 "use client";
 
+import { DatabaseService } from "@/lib/db/service";
 import { useEffect, useState } from "react";
 import { SquareEnvironment } from "square";
 
@@ -37,6 +38,7 @@ export default function Checkout({ items }: { items: any[] }) {
           nonce,
           idempotencyKey: crypto.randomUUID(),
           amount: total,
+          items: items
         }),
       });
 
