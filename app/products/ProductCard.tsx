@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Product } from '../../lib/db/types';
 
 interface ProductCardProps {
@@ -24,6 +24,7 @@ export default function ProductCard({
   className
 }: ProductCardProps) {
   const [added, setAdded] = useState(false);
+  const [realStock, setRealStock] = useState(product.inStock);
 
   const handleAdd = () => {
     if (onAddToCart) {
@@ -31,6 +32,20 @@ export default function ProductCard({
       setAdded(true);
     }
   };
+
+  useEffect(() => {
+    const fetchStock = async () => {
+      try {
+        const res = await fetch(`/api/product/stock/${product.id}`);
+        const data = await res.json();
+        setRealStock(data.inStock);
+      } catch (err) {
+        console.error('Erreur récupération stock', err);
+      }
+    };
+
+    fetchStock();
+  }, [product.id]);
 
   return (
     <>
@@ -58,15 +73,13 @@ export default function ProductCard({
             <p className="text-xs mb-2">{product.materialFr}</p>
             <p className="text-xs mb-2">{product.price} $</p>
 
-            {!product.inStock && (
+            {!realStock && (
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                <span className="bg-[var(--gold)] text-black px-4 py-2 font-semibold">
-                  VENDU
-                </span>
+                <span className="bg-[var(--gold)] text-black px-4 py-2 font-semibold">VENDU</span>
               </div>
             )}
 
-            {onAddToCart && product.inStock && (
+            {onAddToCart && realStock && (
               <button
                 onClick={handleAdd}
                 disabled={added}
