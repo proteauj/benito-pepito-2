@@ -38,7 +38,7 @@ export default function ProductCard({
       try {
         const res = await fetch(`/api/products?id=${product.id}`);
         const data = await res.json();
-
+        console.log('product from db', data);
         // Si on trouve une ligne en DB, on prend son inStock
         // Sinon on garde product.inStock de products.ts
         if (data && typeof data.inStock === 'boolean') {
@@ -65,7 +65,7 @@ export default function ProductCard({
         >
         <div
           className={`
-            w-75 overflow-hidden mx-auto
+            w-full max-w-[300px] overflow-hidden mx-auto
             ${!useFullImg && !keepImgProportions ? 'aspect-square' : ''}
           `}
         >
@@ -73,8 +73,8 @@ export default function ProductCard({
             src={useFullImg ? product.image : product.imageThumbnail || product.image || '/placeholder.png'}
             alt={product.titleFr}
             className={`
-              relative z-10 w-full
-              ${keepImgProportions ? 'h-auto object-contain' : 'h-full object-cover'}
+              block mx-auto relative z-10
+              ${keepImgProportions ? 'h-auto object-contain' : 'h-full object-cover w-full'}
             `}
           />
         </div>
