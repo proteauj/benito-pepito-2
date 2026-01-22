@@ -1,28 +1,42 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import ProductCard from '../products/ProductCard';
 import { products } from '../data/products';
-import { useRouter } from 'next/navigation';
+import { Product } from '@/lib/db/types';
 
 export default function ProductsPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const categorySlug = searchParams.get('category'); // ex: 'galerie'
 
+  // Mapping slug → category anglaise
+  const slugToCategory: Record<string, string> = {
+    'galerie': 'Painting',
+    'maison-&-jardin': 'Home & Garden',
+    'sculpture': 'Sculpture',
+    'impression-3d': '3DPrint',
+  };
+  const category = categorySlug ? slugToCategory[categorySlug.toLowerCase()] : null;
+
+  // États pour filtres
   const [materialFilter, setMaterialFilter] = useState('');
   const [sizeFilter, setSizeFilter] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   // Filtrage et tri
   const filteredProducts = products
+    .filter(p => (category ? p.category === category : true))  // ✅ filtre par catégorie
     .filter(p => (materialFilter ? p.material?.toLowerCase() === materialFilter.toLowerCase() : true))
     .filter(p => (sizeFilter ? p.size?.toLowerCase() === sizeFilter.toLowerCase() : true))
     .sort((a, b) => (sortOrder === 'asc' ? (a.price || 0) - (b.price || 0) : (b.price || 0) - (a.price || 0)));
 
-  if (!filteredProducts.length) return <p>Aucun produit disponible</p>;
+  if (!filteredProducts.length) return <p className="text-center py-12">Aucun produit disponible</p>;
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* FILTRES */}
+      {/* Filtres */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
         <div>
           <label className="mr-2 font-semibold">Filtrer par matière:</label>
@@ -75,22 +89,23 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      {/* GRID Galerie */}
-      <div className="relative min-h-screen stoneBg z-0">
-        <div className="relative z-10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {filteredProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  onClick={() => router.push(`/product/${product.id}`)}
-                  useFullImg={false}             // miniature
-                  expanded={false}                // pas le bandeau
-                  keepImgProportions={true}       // pour mobile et horizontales
-                />
-              ))}
-          </div>
-        </div>
+      {/* Titre */}
+      <h1 className="text-3xl font-bold mb-8">
+        {categorySlug ? categorySlug.replace(/-/g, ' ') : 'Tous les produits'}
+      </h1>
+
+      {/* Grille des produits */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredProducts.map(product => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            onClick={() => router.push(`/product/${product.id}`)}
+            useFullImg={false}
+            expanded={false}
+            keepImgProportions={true}
+          />
+        ))}
       </div>
     </div>
   );
