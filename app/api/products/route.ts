@@ -87,6 +87,8 @@ export async function POST(req: NextRequest) {
     );
   }
 
+    console.log('CHECKOUT BODY', req.json());
+
   const { productIds } = await req.json();
 
   if (!Array.isArray(productIds) || productIds.length === 0) {
