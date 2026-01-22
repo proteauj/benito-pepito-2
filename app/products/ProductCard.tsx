@@ -40,7 +40,7 @@ export default function ProductCard({
       >
         <div
           className={`
-            w-36 overflow-hidden mx-auto
+            w-100 overflow-hidden mx-auto
             ${!useFullImg && !keepImgProportions ? 'aspect-square' : ''}
           `}
         >
