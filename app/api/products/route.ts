@@ -15,79 +15,30 @@ try {
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const category = searchParams.get('category');
-  const slug = searchParams.get('slug');
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+  const { id } = params;
 
-  if (slug) {
-    const product = products.find(p => p.slug === slug);
-    if (!product) {
-      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
-    }
+  // Chercher le produit dans les données statiques
+  const product = products.find(p => p.id === id);
 
-    let inStock = product.inStock; // fallback
-
-    try {
-      if (DatabaseService) {
-        inStock = await DatabaseService.getProductStock(product.id);
-      }
-    } catch (err) {
-      console.warn('Stock fallback to product data');
-    }
-
-    return NextResponse.json({
-      ...product,
-      inStock,
-    });
+  if (!product) {
+    return NextResponse.json({ error: 'Product not found' }, { status: 404 });
   }
 
-  if (category) {
-    const filtered = products.filter((p) => p.category === (category as Product['category']));
-    // Get stock status for all filtered products
-    const productsWithStock = await Promise.all(
-      filtered.map(async (product) => {
-        let inStock = true; // Default value
-        if (DatabaseService) {
-          try {
-            inStock = await DatabaseService.getProductStock(product.id);
-          } catch (error) {
-            console.log('Database error for product', product.id, error);
-          }
-        }
-        return {
-          ...product,
-          inStock
-        };
-      })
-    );
-    return NextResponse.json(productsWithStock);
+  let inStock = product.inStock; // fallback
+
+  try {
+    if (DatabaseService) {
+      inStock = await DatabaseService.getProductStock(product.id);
+    }
+  } catch (err) {
+    console.warn('Stock fallback to product data');
   }
 
-  const categories = Array.from(new Set(products.map((p) => p.category)));
-  const productsByCategory = categories.reduce(async (accPromise, cat) => {
-    const acc = await accPromise;
-    const categoryProducts = products.filter((p) => p.category === cat);
-    acc[cat] = await Promise.all(
-      categoryProducts.map(async (product) => {
-        let inStock = true; // Default value
-        if (DatabaseService) {
-          try {
-            inStock = await DatabaseService.getProductStock(product.id);
-          } catch (error) {
-            console.log('Database error for product', product.id, error);
-          }
-        }
-        return {
-          ...product,
-          inStock
-        };
-      })
-    );
-    return acc;
-  }, Promise.resolve({} as Record<string, Product[]>));
-
-  return NextResponse.json(await productsByCategory);
+  return NextResponse.json({
+    ...product,
+    inStock,
+  });
 }
 
 export async function PUT(request: NextRequest) {
