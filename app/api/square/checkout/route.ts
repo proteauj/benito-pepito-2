@@ -7,7 +7,7 @@ import { DatabaseService } from '../../../../lib/db/service';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { sourceId, total, items, customerEmail } = body;
+    const { sourceId, total, items, customerEmail, shippingMethod, shippingAddress } = body;
 
     console.log('CHECKOUT BODY', body);
 
@@ -72,7 +72,10 @@ export async function POST(req: NextRequest) {
       totalAmount: Number(total),
       currency: 'CAD',
       status: 'completed',
+      shippingMethod,           // ← nouveau
+      shippingAddress,          // ← nouveau
     });
+
 
     // 3️⃣ Réponse SAFE
     return NextResponse.json({

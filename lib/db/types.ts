@@ -8,6 +8,8 @@ export interface Order {
   status: 'pending' | 'completed' | 'failed';
   createdAt: Date;
   updatedAt: Date;
+  shippingMethod: string;
+  shippingAddress: string;
 }
 
 export interface ProductStock {

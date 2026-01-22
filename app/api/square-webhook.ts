@@ -27,8 +27,8 @@ export async function POST(request: Request) {
 
       // Email et adresses
       const email = payment.customer_details?.email_address || '';
-      const billingAddress = payment.billing_address;
-      const shippingAddress = payment.shipping_address;
+      const shippingMethod = payment.shippingMethod
+      const shippingAddress = payment.shippingAddress;
 
       // Sauvegarde dans la table order
       await prisma.order.create({
@@ -38,9 +38,9 @@ export async function POST(request: Request) {
           currency: payment.amount_money?.currency || 'CAD',
           status: payment.status,
           customerEmail: email,
-          billingAddressId: billingAddress ? await saveAddress(billingAddress, 'billing') : null,
-          shippingAddressId: shippingAddress ? await saveAddress(shippingAddress, 'shipping') : null,
-        },
+          shippingAddress: shippingAddress ? JSON.stringify(shippingAddress) : null,
+          shippingMethod: shippingMethod ? shippingMethod : null
+        }
       });
     }
 
@@ -49,26 +49,6 @@ export async function POST(request: Request) {
     console.error('Erreur Square webhook:', err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
-}
-
-// Fonction utilitaire pour sauvegarder une adresse
-async function saveAddress(addr: any, type: 'billing' | 'shipping') {
-  const prisma = await getPrisma();
-  if (!prisma) return null;
-
-  const address = await prisma.customerAddress.create({
-    data: {
-      type,
-      line1: addr.address_line_1 || '',
-      line2: addr.address_line_2 || null,
-      city: addr.locality || '',
-      state: addr.administrative_district_level_1 || null,
-      postalCode: addr.postal_code || '',
-      country: addr.country || '',
-    },
-  });
-
-  return address.id;
 }
 
 // Vérification signature HMAC-SHA1

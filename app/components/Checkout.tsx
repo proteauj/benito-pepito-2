@@ -51,20 +51,20 @@ export default function Checkout({ items }: { items: any[] }) {
 
     const total = items.reduce((sum, it) => sum + it.price, 0);
 
+    const checkoutPayload = {
+      sourceId: result.token,
+      total,
+      items,
+      customerEmail: email,
+      shippingMethod, // pickup ou shipping
+      shippingAddress: shippingMethod === 'shipping' ? address : null,
+    };
+
     // 1️⃣ Appel checkout
     const checkoutRes = await fetch('/api/square/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        sourceId: result.token,
-        total,
-        items,
-        customerEmail: email,
-        shipping: {
-          method: shippingMethod,
-          address: shippingMethod === 'shipping' ? address : null,
-        },
-      }),
+      body: JSON.stringify(checkoutPayload),
     });
 
     const checkoutData = await checkoutRes.json();
@@ -80,6 +80,14 @@ export default function Checkout({ items }: { items: any[] }) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        sourceId: result.token,
+        total,
+        items,
+        customerEmail: email,
+        shipping: {
+          method: shippingMethod,
+          address: shippingMethod === 'shipping' ? address : null,
+        },
         order: {
           squarePaymentId: checkoutData.payment.id,
           items,

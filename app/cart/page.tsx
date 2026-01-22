@@ -17,6 +17,16 @@ export default function CartPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [email, setEmail] = useState('');
+  const [shippingMethod, setShippingMethod] = useState<'pickup' | 'shipping'>('pickup');
+  const [address, setAddress] = useState({
+    name: '',
+    street: '',
+    city: '',
+    province: '',
+    postalCode: '',
+    country: 'Canada',
+  });
 
   /* ------------------------------------------------------------------
      1️⃣ Charger Square.js (sandbox / prod)
@@ -79,38 +89,55 @@ export default function CartPage() {
      4️⃣ Paiement
   ------------------------------------------------------------------ */
   const handleCheckout = async () => {
-    if (!card) {
-      setError('Carte non initialisée');
-      return;
-    }
+    if (!card) return setError('Carte non initialisée');
 
     setLoading(true);
     setError(null);
 
     try {
       const result = await card.tokenize();
-      if (result.status !== 'OK') {
-        throw new Error(result.errors?.[0]?.message || 'Tokenization failed');
-      }
+      if (result.status !== 'OK') throw new Error(result.errors?.[0]?.message || 'Tokenization failed');
+
       const nonce = result.token;
 
-      const res = await fetch('/api/square/checkout', {
+      const checkoutPayload = {
+        sourceId: result.token,
+        total,
+        items,
+        customerEmail: email,
+        shippingMethod,
+        shippingAddress: shippingMethod === 'shipping' ? address : null
+      };
+
+      const checkoutRes = await fetch('/api/square/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(checkoutPayload),
+      });
+
+      const data = await checkoutRes.json();
+      if (!checkoutRes.ok) throw new Error(data.error || 'Erreur paiement');
+
+      alert('Paiement réussi !');
+
+      // 2️⃣ Mettre les produits en stock=false
+      const updateStockRes = await fetch('/api/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          sourceId: nonce,
-          total: Number(total),
-          items
+          productIds: items.map(item => item.id)
         }),
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Erreur paiement');
+      // const updateData = await updateStockRes.json();
+      const raw = await updateStockRes.text();
+      console.log('RAW RESPONSE:', raw);
 
-      clearCart();
-      setSuccess(true); // ← paiement réussi
-    } catch (err: any) {
-      setError(err.message || 'Erreur serveur');
+      // if (!updateStockRes.ok) throw new Error(updateData.error || 'Erreur mise à jour stock');
+
+      console.log('Produits mis à jour :', items.map(item => item.id));
+    } catch (e: any) {
+      setError(e.message || 'Erreur serveur');
     } finally {
       setLoading(false);
     }
@@ -207,6 +234,66 @@ export default function CartPage() {
                 borderRadius: 6,
               }}
             />
+
+            <div
+              id="square-overlay"
+              style={{
+                position: 'fixed',
+                inset: 0,
+                zIndex: 99999
+              }}
+            >
+              <div
+                id="card-container"
+                style={{
+                  width: '100%',
+                  maxWidth: 420,
+                  margin: '100px auto',
+                  background: 'white',
+                  padding: 16,
+                  pointerEvents: 'auto', // ← CRUCIAL
+                }}
+              />
+              <div className="space-y-4">
+                <input
+                  type="email"
+                  placeholder="Adresse courriel"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="border p-2 w-full"
+                  required
+                />
+
+                <div className="flex gap-4">
+                  <label>
+                    <input
+                      type="radio"
+                      checked={shippingMethod === 'pickup'}
+                      onChange={() => setShippingMethod('pickup')}
+                    />
+                    Ramassage
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      checked={shippingMethod === 'shipping'}
+                      onChange={() => setShippingMethod('shipping')}
+                    />
+                    Livraison
+                  </label>
+                </div>
+
+                {shippingMethod === 'shipping' && (
+                  <div className="space-y-2">
+                    <input placeholder="Nom complet" value={address.name} onChange={(e) => setAddress({ ...address, name: e.target.value })} />
+                    <input placeholder="Adresse" value={address.street} onChange={(e) => setAddress({ ...address, street: e.target.value })} />
+                    <input placeholder="Ville" value={address.city} onChange={(e) => setAddress({ ...address, city: e.target.value })} />
+                    <input placeholder="Province" value={address.province} onChange={(e) => setAddress({ ...address, province: e.target.value })} />
+                    <input placeholder="Code postal" value={address.postalCode} onChange={(e) => setAddress({ ...address, postalCode: e.target.value })} />
+                  </div>
+                )}
+              </div>
+            </div>
 
             <div className="flex justify-between mb-4">
               <span>{t('cart.total')}</span>

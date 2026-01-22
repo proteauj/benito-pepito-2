@@ -13,38 +13,17 @@ model User {
 }
 
 model Order {
-  id                String           @id @default(cuid())
-  squarePaymentId String   @unique
-  customerEmail     String?
-  productIds        String[]
-  totalAmount       Int
-  currency          String           @default("CAD")
-  status            String           @default("pending")
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
-  billingAddress    CustomerAddress? @relation("OrderBillingAddress", fields: [billingAddressId], references: [id])
-  shippingAddress   CustomerAddress? @relation("OrderShippingAddress", fields: [shippingAddressId], references: [id])
-  billingAddressId  String?
-  shippingAddressId String?
-}
-
-
-
-model CustomerAddress {
-  id         String   @id @default(cuid())
-  type       String   // 'billing' ou 'shipping'
-  line1      String?
-  line2      String?
-  city       String?
-  state      String?
-  postalCode String?
-  country    String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  // Relations
-  billingOrders  Order[] @relation("OrderBillingAddress")
-  shippingOrders Order[] @relation("OrderShippingAddress")
+  id             String    @id @default(cuid())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  squarePaymentId String
+  customerEmail  String?
+  productIds     String[]
+  totalAmount    Float
+  currency       String
+  status         String
+  shippingMethod String?
+  shippingAddress String?
 }
 
 model ProductStock {

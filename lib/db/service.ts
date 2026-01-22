@@ -5,6 +5,8 @@ export class DatabaseService {
   // Orders
   static async createOrder(orderData: Omit<Order, 'id' | 'createdAt' | 'updatedAt'>): Promise<Order> {
     const prisma = await getPrisma();
+    
+    // Dans DatabaseService.createOrder
     const order = await prisma.order.create({
       data: {
         squarePaymentId: orderData.squarePaymentId,
@@ -13,32 +15,25 @@ export class DatabaseService {
         totalAmount: orderData.totalAmount,
         currency: orderData.currency,
         status: orderData.status,
+        shippingMethod: orderData.shippingMethod,
+        shippingAddress: orderData.shippingAddress
+          ? JSON.stringify(orderData.shippingAddress)
+          : null,
       }
     });
 
     return this.mapOrderToOrder(order);
   }
 
-  static async updateOrderStatus(squarePaymentId: string, status: Order['status']): Promise<Order | null> {
+
+  static async updateOrderStatus(id: string, status: Order['status']): Promise<Order | null> {
     try {
       const prisma = await getPrisma();
       const order = await prisma.order.update({
-        where: { squarePaymentId }, // ✅ uniquement la clé unique
+        where: { id }, // ✅ uniquement la clé unique
         data: { status, updatedAt: new Date() }
       });
       return this.mapOrderToOrder(order);
-    } catch {
-      return null;
-    }
-  }
-
-  static async getOrderBySessionId(squarePaymentId: string): Promise<Order | null> {
-    try {
-      const prisma = await getPrisma();
-      const order = await prisma.order.findUnique({
-        where: { squarePaymentId }
-      });
-      return order ? this.mapOrderToOrder(order) : null;
     } catch {
       return null;
     }
@@ -120,7 +115,9 @@ export class DatabaseService {
       currency: prismaOrder.currency,
       status: prismaOrder.status,
       createdAt: prismaOrder.createdAt,
-      updatedAt: prismaOrder.updatedAt
+      updatedAt: prismaOrder.updatedAt,
+      shippingMethod: prismaOrder.shippingMethod,
+      shippingAddress: prismaOrder.shippingAddress
     };
   }
 
@@ -134,7 +131,9 @@ export class DatabaseService {
       currency: row.currency,
       status: row.status,
       createdAt: row.created_at,
-      updatedAt: row.updated_at
+      updatedAt: row.updated_at,
+      shippingMethod: row.shippingMethod,
+      shippingAddress: row.shippingAddress
     };
   }
 }

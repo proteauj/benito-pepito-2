@@ -53,12 +53,8 @@ export async function POST(req: NextRequest) {
         totalAmount,
         currency: payment.total_money?.currency || "CAD",
         status: payment.status || "pending",
-        billingAddressId: payment.billing_address
-          ? JSON.stringify(payment.billing_address)
-          : null,
-        shippingAddressId: payment.shipping_address
-          ? JSON.stringify(payment.shipping_address)
-          : null,
+        shippingAddress: payment.shippingAddress,
+        shippingMethod: payment.shippingMethod
       },
     });
 
