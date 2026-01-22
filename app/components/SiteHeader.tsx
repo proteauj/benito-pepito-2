@@ -43,6 +43,11 @@ export default function SiteHeader() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
+          <img
+            src="/logo.png"   // ← ton logo
+            alt="Inukshuk"
+            className="h-16 w-auto"
+          />
           <Link 
             href="/" 
             className="h-16 flex items-center px-4 text-3xl lg:text-4xl font-extrabold text-black hover:bg-white hover:text-[var(--leaf)] transition-colors whitespace-nowrap mouly-font"

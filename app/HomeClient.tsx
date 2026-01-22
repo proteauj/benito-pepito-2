@@ -14,29 +14,22 @@ export default function HomeClient({ productsByCategory }: Props) {
 
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Titre principal */}
-      <div className="flex items-center justify-center mb-12 gap-4">
-        <img
-          src="/logo.png"
-          alt="Logo"
-          className="h-12 w-auto"
-        />
-        <h1 className="text-4xl sm:text-3xl font-bold">
+      {/* Header avec logo et titre */}
+      <header className="flex flex-col sm:flex-row items-center justify-center mb-12 gap-4">
+        <h1 className="text-4xl sm:text-5xl font-bold text-center sm:text-left">
           Benito Pepito
         </h1>
-      </div>
+      </header>
 
       <div className="flex flex-wrap -mx-4">
         {categoriesToShow.map((category) => {
           const products = productsByCategory[category] ?? [];
           if (!products.length) return null;
 
-          // Slug pour l'URL (remplacer espaces par - et tout en minuscule)
           const categorySlug = category.toLowerCase().replace(/\s+/g, '-');
 
           return (
             <div key={category} className="w-full sm:w-1/2 lg:w-1/3 px-4 mb-8">
-              {/* Titre avec lien */}
               <h2 className="text-2xl font-bold text-black mb-4 px-4 sm:px-0">
                 <Link href={`/products?category=${categorySlug}`} className="hover:text-[var(--leaf)]">
                   {category}
@@ -45,7 +38,7 @@ export default function HomeClient({ productsByCategory }: Props) {
               <CategorySlideshow
                 key={category}
                 category={category}
-                products={products ?? []}
+                products={products}
               />
             </div>
           );
