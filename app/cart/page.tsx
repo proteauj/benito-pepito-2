@@ -100,6 +100,7 @@ export default function CartPage() {
         body: JSON.stringify({
           sourceId: nonce,
           total: Number(total),
+          items
         }),
       });
 
