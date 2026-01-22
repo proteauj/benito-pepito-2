@@ -7,6 +7,7 @@ import { DatabaseService } from '../../../../lib/db/service';
 export async function POST(req: NextRequest) {
   try {
     const { sourceId, total, items, customerEmail } = await req.json();
+    console.log('CHECKOUT BODY', sourceId, total, items, customerEmail);
 
     const token = process.env.SQUARE_ACCESS_TOKEN;
     if (!token) return NextResponse.json({ error: 'SQUARE_ACCESS_TOKEN manquante' }, { status: 500 });
