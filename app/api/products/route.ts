@@ -15,30 +15,34 @@ try {
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function GET(req: NextRequest) {
+  const url = new URL(req.url);
+  const id = url.searchParams.get('id');
 
-  // Chercher le produit dans les données statiques
-  const product = products.find(p => p.id === id);
+  if (id) {
+    // Chercher le produit dans les données statiques
+    const product = products.find(p => p.id === id);
 
-  if (!product) {
-    return NextResponse.json({ error: 'Product not found' }, { status: 404 });
-  }
-
-  let inStock = product.inStock; // fallback
-
-  try {
-    if (DatabaseService) {
-      inStock = await DatabaseService.getProductStock(product.id);
+    if (!product) {
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
-  } catch (err) {
-    console.warn('Stock fallback to product data');
-  }
 
-  return NextResponse.json({
-    ...product,
-    inStock,
-  });
+    let inStock = product.inStock; // fallback
+
+    try {
+      if (DatabaseService) {
+        inStock = await DatabaseService.getProductStock(product.id);
+      }
+    } catch (err) {
+      console.warn('Stock fallback to product data');
+    }
+
+    return NextResponse.json({
+      ...product,
+      inStock,
+    });
+  }
+  return NextResponse.json(products);
 }
 
 export async function PUT(request: NextRequest) {
