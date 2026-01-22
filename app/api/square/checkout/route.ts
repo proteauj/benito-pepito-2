@@ -59,7 +59,19 @@ export async function POST(req: NextRequest) {
       } : undefined,
     };
 
-    // 2️⃣ Créer la commande en DB
+    // 2️⃣ Mettre les produits en stock=false
+    const updateStockRes = await fetch('/api/products', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        productIds: items.map((item: { id: any; }) => item.id), // liste des IDs à mettre à jour
+      }),
+    });
+
+    const updateData = await updateStockRes.json();
+    if (!updateStockRes.ok) throw new Error(updateData.error || 'Erreur mise à jour stock');
+
+    // 3 Créer la commande en DB
     await DatabaseService.createOrder({
       squarePaymentId: payment.id!,
       customerEmail: customerEmail ?? null,
@@ -68,11 +80,6 @@ export async function POST(req: NextRequest) {
       currency: 'CAD',
       status: 'completed',
     });
-
-    // 3️⃣ Marquer les produits comme vendus
-    await DatabaseService.markProductAsSold(
-      (items || []).map((i: any) => i.id)
-    );
 
     // 4️⃣ Réponse SAFE (pas de BigInt)
     return NextResponse.json({payment: safePayment});
