@@ -59,8 +59,13 @@ export async function POST(req: NextRequest) {
       } : undefined,
     };
 
+    const baseUrl =
+      typeof window !== 'undefined'
+        ? window.location.origin
+        : process.env.NEXT_PUBLIC_SITE_URL;
+
     // 2️⃣ Mettre les produits en stock=false
-    const updateStockRes = await fetch(`${window.location.origin}/api/products`, {
+    const updateStockRes = await fetch(`${baseUrl}/api/products`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
