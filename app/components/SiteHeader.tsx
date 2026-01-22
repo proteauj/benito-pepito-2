@@ -44,13 +44,12 @@ export default function SiteHeader() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
           <img
-            src="/logo.png"   // ← ton logo
+            src="../../public/images/logo.png"   // ← ton logo
             alt="Inukshuk"
-            className="h-16 w-auto"
           />
           <Link 
             href="/" 
-            className="h-16 flex items-center px-4 text-3xl lg:text-4xl font-extrabold text-black hover:bg-white hover:text-[var(--leaf)] transition-colors whitespace-nowrap mouly-font"
+            className="h-14 flex items-center px-4 text-3xl lg:text-4xl font-extrabold text-black hover:bg-white hover:text-[var(--leaf)] transition-colors whitespace-nowrap mouly-font"
           >
             Benito Pepito
           </Link>
@@ -62,20 +61,20 @@ export default function SiteHeader() {
               <Link 
                 key={cat.slug}
                 href={`/products?category=${cat.slug}`} 
-                className="h-full px-3 text-black hover:bg-white hover:text-[var(--leaf)] flex items-center transition-colors text-lg md:text-xl font-semibold"
+                className="h-full px-3 text-black hover:bg-white hover:text-[var(--leaf)] flex items-center transition-colors text-md font-semibold"
               >
                 {cat.name}
               </Link>
             ))}
             <Link 
               href="/about" 
-              className="h-full px-3 text-black hover:bg-white hover:text-[var(--leaf)] flex items-center transition-colors text-lg md:text-xl font-semibold"
+              className="h-full px-3 text-black hover:bg-white hover:text-[var(--leaf)] flex items-center transition-colors text-md font-semibold"
             >
               {t('nav.about')}
             </Link>
             <Link 
               href="/contact" 
-              className="h-full px-3 text-black hover:bg-white hover:text-[var(--leaf)] flex items-center transition-colors text-lg md:text-xl font-semibold"
+              className="h-full px-3 text-black hover:bg-white hover:text-[var(--leaf)] flex items-center transition-colors text-md font-semibold"
             >
               {t('nav.contact')}
             </Link>
