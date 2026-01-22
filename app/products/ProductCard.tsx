@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Product } from '../../lib/db/types';
+import { sizeDimensions } from '../data/dimensions';
 
 interface ProductCardProps {
   product: Product;
@@ -86,6 +87,18 @@ export default function ProductCard({
             <p className="text-xs mb-2">{product.materialFr}</p>
             <p className="text-xs mb-2">{product.price} $</p>
 
+            {product.size && sizeDimensions[product.size] && (
+              <div className="text-xs mb-2">
+                <p className="font-semibold">Dimensions</p>
+                <ul className="mt-1 space-y-0.5">
+                  {sizeDimensions[product.size].map((dim, index) => (
+                    <li key={index}>
+                      {dim.width}" × {dim.height}" {dim.unit}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {/* BADGE VENDU — TOUJOURS ACTIF */}
             {!realStock && (
