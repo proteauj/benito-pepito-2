@@ -44,8 +44,7 @@ export default function SiteHeader() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
           <img
-            src="../../public/images/logo.png"   // ← ton logo
-            alt="Inukshuk"
+            src="/images/logo.png" alt="Inukshuk" className="h-10 w-auto"
           />
           <Link 
             href="/" 
