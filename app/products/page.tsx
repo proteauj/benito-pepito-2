@@ -10,7 +10,7 @@ export default function ProductsPage() {
 
   const [materialFilter, setMaterialFilter] = useState('');
   const [sizeFilter, setSizeFilter] = useState('');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   // Filtrage et tri
   const filteredProducts = products
@@ -66,11 +66,11 @@ export default function ProductsPage() {
           <label className="mr-2 font-semibold">Trier par prix:</label>
           <select
             value={sortOrder}
-            onChange={e => setSortOrder(e.target.value as 'asc' | 'desc')}
+            onChange={e => setSortOrder(e.target.value as 'desc' | 'asc')}
             className="border px-2 py-1"
           >
-            <option value="asc">Prix croissant</option>
             <option value="desc">Prix décroissant</option>
+            <option value="asc">Prix croissant</option>
           </select>
         </div>
       </div>
