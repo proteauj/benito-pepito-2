@@ -47,15 +47,16 @@ export default function ProductPage() {
   return (
     <div className="relative z-0">
       <div className="stoneBg absolute inset-0 -z-10"></div> {/* fond derrière */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 relative z-10">
+      <div className="relative z-0 min-h-screen flex flex-col items-center px-4 py-8 stoneBg">
         <ProductCard
           key={product.id}
-          product={{ ...product, inStock: realStock! }} // passer le stock réel
+          product={{ ...product, inStock: realStock! }}
           useFullImg={true}
           expanded={true}
           onAddToCart={handleAddToCart}
           keepImgProportions={true}
           added={added}
+          className="max-w-md w-full" // limite la largeur et centre le card
         />
       </div>
     </div>
