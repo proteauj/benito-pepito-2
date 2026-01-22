@@ -38,14 +38,22 @@ export default function ProductCard({
       try {
         const res = await fetch(`/api/products?id=${product.id}`);
         const data = await res.json();
-        setRealStock(data.inStock);
+
+        // Si on trouve une ligne en DB, on prend son inStock
+        // Sinon on garde product.inStock de products.ts
+        if (data && typeof data.inStock === 'boolean') {
+          setRealStock(data.inStock);
+        } else {
+          setRealStock(product.inStock);
+        }
       } catch (err) {
         console.error('Erreur récupération stock', err);
+        setRealStock(product.inStock); // fallback
       }
     };
 
     fetchStock();
-  }, [product.id]);
+  }, [product.id, product.inStock]);
 
   return (
     <>
@@ -77,6 +85,7 @@ export default function ProductCard({
             <p className="text-xs mb-2">{product.size}</p>
             <p className="text-xs mb-2">{product.materialFr}</p>
             <p className="text-xs mb-2">{product.price} $</p>
+
 
             {/* BADGE VENDU — TOUJOURS ACTIF */}
             {!realStock && (
