@@ -36,7 +36,7 @@ export default function CategorySlideshow({ category, products }: CategorySlides
   const currentProduct = products[currentIndex];
 
   return (
-    <div className="mb-12 w-full max-w-full overflow-hidden">
+    <>
       <h2 className="text-3xl font-bold text-black mb-6 px-4 sm:px-0">{t(`category.${category}`)}</h2>
       
       <div className="relative bg-white border border-[#cfc9c0] overflow-hidden ml-0 w-100 rounded-sm">
@@ -50,7 +50,7 @@ export default function CategorySlideshow({ category, products }: CategorySlides
               useFullImg={false}                  // true si full image
               expanded={false}                         // galerie compacte
               keepImgProportions={true}  // garder proportions exactes si nécessaire
-              className="w-36 mx-auto"
+              className="w-100 mx-auto"
             />
           </Link>
           {!currentProduct.inStock && (
@@ -72,6 +72,6 @@ export default function CategorySlideshow({ category, products }: CategorySlides
             ))}
           </div>
         </div>
-      </div>
+      </>
   );
 }
