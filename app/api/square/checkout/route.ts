@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
     };
 
     // 2️⃣ Mettre les produits en stock=false
-    const updateStockRes = await fetch('/api/products', {
+    const updateStockRes = await fetch(`${window.location.origin}/api/products`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
