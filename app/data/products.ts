@@ -7,7 +7,7 @@ export const products: Product[] = [
     "title": "Phragemites dorées",
     "titleFr": "Phragemites dorées",
     "size": "XXL",
-    "price": 1,
+    "price": 275,
     "image": "/images/paint1.jpeg",
     "category": "Painting",
     "material": "Acrylic on Canvas",
