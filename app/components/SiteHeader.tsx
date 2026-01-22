@@ -15,6 +15,13 @@ export default function SiteHeader() {
     ? items.reduce((total, item) => total, 0)
     : 0;
 
+  const categories = [
+    { name: 'Galerie', slug: 'galerie' },
+    { name: 'Maison & Jardin', slug: 'maison-&-jardin' },
+    { name: 'Sculpture', slug: 'sculpture' },
+    { name: 'Impression 3D', slug: 'impression-3d' },
+  ];
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -37,20 +44,24 @@ export default function SiteHeader() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
           <Link 
-              href="/" 
-              className="h-16 flex items-center px-4 text-4xl lg:text-5xl font-extrabold text-black hover:bg-white hover:text-[var(--leaf)] transition-colors whitespace-nowrap mouly-font"
-            >
-              Benito Pepito
-            </Link>
+            href="/" 
+            className="h-16 flex items-center px-4 text-3xl lg:text-4xl font-extrabold text-black hover:bg-white hover:text-[var(--leaf)] transition-colors whitespace-nowrap mouly-font"
+          >
+            Benito Pepito
+          </Link>
           </div>
           {/* Desktop navigation (no Home link) */}
+          {/* Desktop navigation */}
           <nav className="hidden md:flex space-x-2 h-16">
-          <Link 
-              href="/products" 
-              className="h-full px-3 text-black hover:bg-white hover:text-[var(--leaf)] flex items-center transition-colors text-lg md:text-xl font-semibold"
-            >
-              {t('nav.allWorks')}
-            </Link>
+            {categories.map(cat => (
+              <Link 
+                key={cat.slug}
+                href={`/products?category=${cat.slug}`} 
+                className="h-full px-3 text-black hover:bg-white hover:text-[var(--leaf)] flex items-center transition-colors text-lg md:text-xl font-semibold"
+              >
+                {cat.name}
+              </Link>
+            ))}
             <Link 
               href="/about" 
               className="h-full px-3 text-black hover:bg-white hover:text-[var(--leaf)] flex items-center transition-colors text-lg md:text-xl font-semibold"
@@ -64,6 +75,7 @@ export default function SiteHeader() {
               {t('nav.contact')}
             </Link>
           </nav>
+
           <div className="flex items-center space-x-2 h-16">
             <LanguageSelector />
             {/* Mobile hamburger */}
@@ -122,25 +134,20 @@ export default function SiteHeader() {
               </button>
             </div>
             <nav className="p-4 space-y-4">
-              <Link 
-                href="/products" 
-                className="block py-2 hover:text-[var(--leaf)]"
-                onClick={() => setMobileOpen(false)}
-              >
-                {t('nav.allWorks')}
-              </Link>
-              <Link 
-                href="/about" 
-                className="block py-2 hover:text-[var(--leaf)]"
-                onClick={() => setMobileOpen(false)}
-              >
+              {categories.map(cat => (
+                <Link 
+                  key={cat.slug}
+                  href={`/products?category=${cat.slug}`} 
+                  className="block py-2 hover:text-[var(--leaf)]"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {cat.name}
+                </Link>
+              ))}
+              <Link href="/about" className="block py-2 hover:text-[var(--leaf)]" onClick={() => setMobileOpen(false)}>
                 {t('nav.about')}
               </Link>
-              <Link 
-                href="/contact" 
-                className="block py-2 hover:text-[var(--leaf)]"
-                onClick={() => setMobileOpen(false)}
-              >
+              <Link href="/contact" className="block py-2 hover:text-[var(--leaf)]" onClick={() => setMobileOpen(false)}>
                 {t('nav.contact')}
               </Link>
             </nav>
