@@ -19,6 +19,7 @@ export default function ProductPage() {
         const res = await fetch(`/api/products?id=${params.id}`);
         const data = await res.json();
 
+        console.log('fetchProduct data: ', data);
         if (data) {
           setRealStock(data.inStock ?? true);
           setProduct(data);
