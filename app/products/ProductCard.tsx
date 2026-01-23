@@ -46,7 +46,7 @@ export default function ProductCard({
       try {
         const res = await fetch(`/api/products?id=${product.id}`);
         const data = await res.json();
-        if (data && typeof data.inStock === 'boolean') {
+        if (data) {
           setRealStock(data.inStock);
         } else {
           setRealStock(product.inStock);
