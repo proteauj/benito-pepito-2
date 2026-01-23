@@ -101,5 +101,8 @@
   "footer.hours": "Lun–Sam, 08:00–17:00",
   "footer.rights": "Tous droits réservés.",
   "products.all": "Tous",
-  "products.allSizes": "Toutes tailles"
+  "products.allSizes": "Toutes tailles",
+  "dim.between": "Between",
+  "dim.and": "and",
+  "dim.dimensions": "Dimensions"
 }

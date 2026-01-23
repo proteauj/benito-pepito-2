@@ -101,5 +101,8 @@
   "success.verificationIssue": "Payment verification issue",
   "success.stockNotUpdated": "Stock could not be updated automatically",
   "products.all": "All",
-  "products.allSizes": "All sizes"
+  "products.allSizes": "All sizes",
+  "dim.between": "Entre",
+  "dim.and": "et",
+  "dim.dimensions": "Sizes"
 }

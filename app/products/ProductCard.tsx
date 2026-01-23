@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Product } from '../../lib/db/types';
 import { sizeDimensions } from '../data/dimensions';
+import { useI18n } from '../i18n/I18nProvider'
 
 interface ProductCardProps {
   product: Product;
@@ -26,6 +27,7 @@ export default function ProductCard({
 }: ProductCardProps) {
   const [added, setAdded] = useState(false);
   const [realStock, setRealStock] = useState(product.inStock);
+  const { t } = useI18n();
 
   const handleAdd = () => {
     if (onAddToCart) {
@@ -89,13 +91,20 @@ export default function ProductCard({
 
             {product.size && sizeDimensions[product.size] && (
               <div className="text-xs mb-2">
-                <p className="font-semibold">Dimensions</p>
+                <p className="font-semibold">{t('dim.dimensions')}</p>
                 <ul className="mt-1 space-y-0.5">
-                  {sizeDimensions[product.size].map((dim, index) => (
+                  ({t('dim.between')}
+                  {sizeDimensions[0].map((dim, index) => (
                     <li key={index}>
                       {dim.width}" × {dim.height}" {dim.unit}
                     </li>
                   ))}
+                  {t('dim.and')}
+                  {sizeDimensions[0].map((dim, index) => (
+                    <li key={index}>
+                      {dim.width}" × {dim.height}" {dim.unit}
+                    </li>
+                  ))})
                 </ul>
               </div>
             )}
