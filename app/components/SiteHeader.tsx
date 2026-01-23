@@ -48,13 +48,13 @@ export default function SiteHeader() {
           />
           <Link 
             href="/" 
-            className="h-14 flex items-center px-4 text-3xl lg:text-4xl font-extrabold text-black hover:bg-white hover:text-[var(--leaf)] transition-colors whitespace-nowrap mouly-font"
+            className="h-14 flex items-center px-4 text-2xl lg:text-3xl font-bold text-black hover:bg-white hover:text-[var(--leaf)] transition-colors whitespace-nowrap mouly-font"
           >
             Benito Pepito
           </Link>
           </div>
 
-          <div className="flex items-center space-x-2 h-16">
+          <div className="flex items-center space-x-1 h-16">
             <LanguageSelector />
             <button
               onClick={() => setMobileOpen(true)}
@@ -108,7 +108,7 @@ export default function SiteHeader() {
               </button>
             </div>
 
-            <nav className="p-4 space-y-4">
+            <nav className="p-4 space-y-1">
               {categories.map(cat => (
                 <Link
                   key={cat.slug}
