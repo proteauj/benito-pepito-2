@@ -336,9 +336,14 @@ export default function CartPage() {
               {t('cart.orderSummary')}
             </h3>
 
-            <div className="flex justify-between">
+            <div className="flex justify-between mb-2">
               <span>{t('cart.total')}</span>
               <span className="font-bold">${total.toFixed(2)}</span>
+            </div>
+
+            {/* Conteneur Square.js */}
+            <div id="card-container" className="mb-4">
+              {/* Square.js injecte le formulaire ici */}
             </div>
 
             <button
