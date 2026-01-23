@@ -10,11 +10,11 @@ type Props = {
 };
 
 export default function HomeClient({ productsByCategory }: Props) {
-  const categoriesToShow = ['Galerie', 'Maison & Jardin', 'Sculpture', 'Impression 3D'];
+  const categoriesToShow = ['Galerie', 'Maison Jardin', 'Sculpture', 'Impression 3D'];
 
   const slugMap: Record<string, string> = {
     'Galerie': 'galerie',
-    'Maison & Jardin': 'maison-jardin',  // <-- doit correspondre au slug
+    'Maison Jardin': 'maison-jardin',  // <-- doit correspondre au slug
     'Sculpture': 'sculpture',
     'Impression 3D': 'impression-3d',
   };
