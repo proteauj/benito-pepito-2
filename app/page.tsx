@@ -13,7 +13,7 @@ export default function HomePage() {
 
   const categoryMap: Record<string, string> = {
     Painting: 'Galerie',
-    'Home-Garden': 'Maison Jardin',  // <-- correspond exactement à tes données
+    'HomeGarden': 'Maison Jardin',  // <-- correspond exactement à tes données
     Sculpture: 'Sculpture',
     '3DPrint': 'Impression 3D',
   };
