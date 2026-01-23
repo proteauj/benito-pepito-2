@@ -7,7 +7,7 @@ export const products: Product[] = [
     "title": "Phragemites dorées",
     "titleFr": "Phragemites dorées",
     "size": "XXL",
-    "price": 1,//275
+    "price": 275,
     "image": "/images/paint1.jpeg",
     "category": "Painting",
     "material": "Acrylic on Canvas",
@@ -22,7 +22,7 @@ export const products: Product[] = [
     "title": "Terre-mère",
     "titleFr": "Terre-mère",
     "size": "S",
-    "price": 75,
+    "price": 1,//75,
     "image": "/images/paint2.jpeg",
     "category": "Painting",
     "material": "Acrylic on Canvas",
