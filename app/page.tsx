@@ -9,12 +9,12 @@ type ProductsByCategory = Record<string, Product[]>;
 
 export default function HomePage() {
   // Catégories à afficher sur la home
-  const categoriesToShow = ['Galerie', 'Home Garden', 'Sculpture', 'Impression 3D'];
+  const categoriesToShow = ['Galerie', 'Maison Jardin', 'Sculpture', 'Impression 3D'];
 
   // Mapping anglais → français
   const categoryMap: Record<string, string> = {
     'Painting': 'Galerie',
-    'Home-Garden': 'Home Garden',
+    'Home-Garden': 'Maison Jardin',
     'Sculpture': 'Sculpture',
     '3DPrint': 'Impression 3D',
   };
