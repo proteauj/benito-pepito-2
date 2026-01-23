@@ -118,7 +118,7 @@ export async function POST(req: NextRequest) {
       📩 Envoi email au client + artiste
     ------------------------------ */
     try {
-      const emailRes = await fetch(`/api/email`, {
+        const emailRes = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
