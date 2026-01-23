@@ -212,6 +212,47 @@ export default function CartPage() {
                     </button>
                   </div>
                 </div>
+                <form className="grid grid-cols-1 gap-6 bg-white border border-[#cfc9c0] p-6">
+                  <div>
+                    <label className="block text-sm font-medium text-black mb-1">{t('contact.form.email')}</label>
+                    <input
+                      type="email"
+                      className="w-full border border-[#cfc9c0] px-3 py-2 text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-[var(--leaf)]/40"
+                      placeholder={t('contact.form.placeholderEmail')}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-black mb-1">{t('contact.form.shippingMethod')}</label>
+                    <input
+                      type="radio"
+                      className="w-full border border-[#cfc9c0] px-3 py-2 text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-[var(--leaf)]/40"
+                      checked={shippingMethod === 'pickup'}
+                      onChange={() => setShippingMethod('pickup')}
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="radio"
+                      checked={shippingMethod === 'shipping'}
+                      onChange={() => setShippingMethod('shipping')}
+                    />
+                  </div>
+                  <div>
+                    {shippingMethod === 'shipping' && (
+                      <div className="space-y-2">
+                        <label className="block text-sm font-medium text-black mb-1">{t('contact.form.address')}</label>
+                        <input placeholder="Nom complet" value={address.name} onChange={(e) => setAddress({ ...address, name: e.target.value })} />
+                        <input placeholder="Adresse" value={address.street} onChange={(e) => setAddress({ ...address, street: e.target.value })} />
+                        <input placeholder="Ville" value={address.city} onChange={(e) => setAddress({ ...address, city: e.target.value })} />
+                        <input placeholder="Province" value={address.province} onChange={(e) => setAddress({ ...address, province: e.target.value })} />
+                        <input placeholder="Code postal" value={address.postalCode} onChange={(e) => setAddress({ ...address, postalCode: e.target.value })} />
+                      </div>
+                    )}
+                  </div>
+                </form>
               </div>
             ))}
           </div>
@@ -223,7 +264,7 @@ export default function CartPage() {
             </h3>
 
             {/* Conteneur Square */}
-            <div
+            {/* <div
               id="card-container"
               style={{
                 width: '100%',
@@ -242,60 +283,7 @@ export default function CartPage() {
               //   inset: 0,
               //   zIndex: 99999
               // }}
-            >
-              <div
-                id="card-container"
-                style={{
-                  width: '100%',
-                  maxWidth: 420,
-                  margin: '100px auto',
-                  background: 'white',
-                  padding: 16,
-                  pointerEvents: 'auto', // ← CRUCIAL
-                }}
-              />
-              <form className="grid grid-cols-1 gap-6 bg-white border border-[#cfc9c0] p-6">
-                <div>
-                  <label className="block text-sm font-medium text-black mb-1">{t('contact.form.email')}</label>
-                  <input
-                    type="email"
-                    className="w-full border border-[#cfc9c0] px-3 py-2 text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-[var(--leaf)]/40"
-                    placeholder={t('contact.form.placeholderEmail')}
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-black mb-1">{t('contact.form.shippingMethod')}</label>
-                  <input
-                    type="radio"
-                    className="w-full border border-[#cfc9c0] px-3 py-2 text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-[var(--leaf)]/40"
-                    checked={shippingMethod === 'pickup'}
-                    onChange={() => setShippingMethod('pickup')}
-                  />
-                </div>
-                <div>
-                  <input
-                    type="radio"
-                    checked={shippingMethod === 'shipping'}
-                    onChange={() => setShippingMethod('shipping')}
-                  />
-                </div>
-                <div>
-                  {shippingMethod === 'shipping' && (
-                    <div className="space-y-2">
-                      <label className="block text-sm font-medium text-black mb-1">{t('contact.form.address')}</label>
-                      <input placeholder="Nom complet" value={address.name} onChange={(e) => setAddress({ ...address, name: e.target.value })} />
-                      <input placeholder="Adresse" value={address.street} onChange={(e) => setAddress({ ...address, street: e.target.value })} />
-                      <input placeholder="Ville" value={address.city} onChange={(e) => setAddress({ ...address, city: e.target.value })} />
-                      <input placeholder="Province" value={address.province} onChange={(e) => setAddress({ ...address, province: e.target.value })} />
-                      <input placeholder="Code postal" value={address.postalCode} onChange={(e) => setAddress({ ...address, postalCode: e.target.value })} />
-                    </div>
-                  )}
-                </div>
-              </form>
-            </div>
+            > */}
           </div>
         </div>
         <div className="flex justify-between mb-4">
