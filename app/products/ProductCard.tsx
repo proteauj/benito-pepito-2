@@ -56,6 +56,7 @@ export default function ProductCard({
         }
 
         dims = sizeDimensions[data.size];
+        console.log('dims', dims);
       } catch (err) {
         console.error('Erreur récupération stock', err);
         setRealStock(product.inStock); // fallback
