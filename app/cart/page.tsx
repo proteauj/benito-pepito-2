@@ -126,7 +126,8 @@ export default function CartPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          productIds: (items || [])?.map(item => item.id)
+          productIds: (items || [])?.map(item => item.id),
+          inStock: false
         }),
       });
 
