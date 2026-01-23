@@ -92,21 +92,32 @@ export default function ProductCard({
             {product.size && sizeDimensions[product.size] && (
               <div className="text-xs mb-2">
                 <p className="font-semibold">{t('dim.dimensions')}</p>
-                <ul className="mt-1 space-y-0.5">
-                  ({t('dim.between')}
-                  {sizeDimensions[0].map((dim, index) => (
-                    <li key={index}>
-                      {dim.width}" × {dim.height}" {dim.unit}
+                {sizeDimensions[0] && sizeDimensions[1] && sizeDimensions[0].length > 0 ? (
+                  <ul className="mt-1 space-y-0.5">
+                    <li>
+                      {t('dim.between')}{' '}
+                      {sizeDimensions[0].map((dim, index) => (
+                        <span key={index}>
+                          {dim.width}" × {dim.height}" {dim.unit}
+                        </span>
+                      ))}{' '}
+                      {t('dim.and')}{' '}
+                      {sizeDimensions[1].map((dim, index) => (
+                        <span key={`and-${index}`}>
+                          {dim.width}" × {dim.height}" {dim.unit}
+                        </span>
+                      ))}
                     </li>
-                  ))}
-                  {t('dim.and')}
-                  {sizeDimensions[0].map((dim, index) => (
-                    <li key={index}>
-                      {dim.width}" × {dim.height}" {dim.unit}
-                    </li>
-                  ))})
-                </ul>
+                  </ul>
+                ) : sizeDimensions[0] && sizeDimensions[0].length > 0 ? (
+                  <span>
+                    {sizeDimensions[0][0].width}" × {sizeDimensions[0][0].height}" {sizeDimensions[0][0].unit}
+                  </span>
+                ) : (
+                  <span>{t('dim.noDimensions')}</span>
+                )}
               </div>
+
             )}
 
             {/* BADGE VENDU — TOUJOURS ACTIF */}
