@@ -21,14 +21,14 @@ export default function ProductPage() {
 
         console.log('fetchProduct data: ', data);
         if (data) {
-          setRealStock(data.inStock ?? true);
+          setRealStock(data.inStock);
           setProduct(data);
         } else {
           setProduct(null);
           setRealStock(null);
         }
 
-        console.log('product', product);
+        console.log('product', data);
       } catch (err) {
         console.error(err);
         setProduct(null);
