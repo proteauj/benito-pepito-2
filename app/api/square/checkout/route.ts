@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { SquareClient, SquareEnvironment, Country } from 'square';
 import { DatabaseService } from '../../../../lib/db/service';
-import { sendOrderEmail } from '../../email/route';
+import { sendOrderEmail } from '../../../../lib/email';
 
 export async function POST(req: NextRequest) {
   try {
@@ -119,23 +119,20 @@ export async function POST(req: NextRequest) {
       📩 Envoi email au client + artiste
     ------------------------------ */    
     try {
-      await sendOrderEmail(
-        {
-          id: payment.id,
-          squarePaymentId: payment.id,
-          totalAmount: Number(total),
-          currency: 'CAD',
-          items: items.map(i => ({
-            id: i.id,
-            title: i.title,
-            titleFr: i.titleFr,
-            price: i.price,
-          })),
-          shippingMethod,
-          shippingAddress,
-        },
-        { email: customerEmail }
-      );
+      await sendOrderEmail({
+        id: payment.id,
+        squarePaymentId: payment.id,
+        totalAmount: Number(total),
+        currency: 'CAD',
+        items: items.map(i => ({
+          id: i.id,
+          title: i.title,
+          titleFr: i.titleFr,
+          price: i.price,
+        })),
+        shippingMethod,
+        shippingAddress,
+      }, { email: customerEmail });
     } catch (err) {
       console.error('Erreur envoi email:', err);
     }
