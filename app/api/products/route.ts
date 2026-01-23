@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
     let inStock = product.inStock; // fallback
 
     try {
-      inStock = await require('../../../lib/db/service').DatabaseService.getProductStock(product.id);
+      inStock = await DatabaseService.getProductStock(product.id);
     } catch (err) {
       console.warn('Stock fallback to product data');
     }

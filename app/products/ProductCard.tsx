@@ -54,6 +54,7 @@ export default function ProductCard({
 
         // ⚡ mettre à jour le state React
         setDims(sizeDimensions[data.size] || []);
+        console.log('fetchStock', data);
         console.log('dims', sizeDimensions[data.size]);
       } catch (err) {
         console.error('Erreur récupération stock', err);
