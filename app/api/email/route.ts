@@ -17,12 +17,12 @@ export async function POST(req: NextRequest) {
     });
 
     // 🖼️ résumé produits
-    const itemsHtml = order.items?
+    const itemsHtml = order.items
       .map(
         (item: any) =>
           `<li>${item.titleFr || item.title} – ${item.price} $</li>`
       )
-      .join(''):[];
+      .join('');
 
     const shippingHtml =
       order.shippingMethod === 'pickup'
