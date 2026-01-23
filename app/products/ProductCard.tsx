@@ -98,13 +98,13 @@ export default function ProductCard({
                       <ul className="mt-1 space-y-0.5">
                         <li>
                           {t('dim.between')}{' '}
-                          {sizeDimensions[0].map((dim, index) => (
+                          {sizeDimensions[0]?.map((dim, index) => (
                             <span key={index}>
                               {dim.width}" × {dim.height}" {dim.unit}
                             </span>
                           ))}{' '}
                           {t('dim.and')}{' '}
-                          {sizeDimensions[1].map((dim, index) => (
+                          {sizeDimensions[1]?.map((dim, index) => (
                             <span key={`and-${index}`}>
                               {dim.width}" × {dim.height}" {dim.unit}
                             </span>
