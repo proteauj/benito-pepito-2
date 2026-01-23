@@ -10,7 +10,7 @@ export const sizeDimensions: Record<string, Dimension[]> = {
   ],
   S: [
     { width: 10, height: 8, unit: 'in' },
-    { width: 12, height: 6, unit: 'in' },
+    // { width: 12, height: 6, unit: 'in' },
     { width: 12, height: 9, unit: 'in' },
   ],
   M: [
@@ -19,7 +19,7 @@ export const sizeDimensions: Record<string, Dimension[]> = {
   ],
   L: [
     { width: 18, height: 14, unit: 'in' },
-    { width: 20, height: 16, unit: 'in' },
+    // { width: 20, height: 16, unit: 'in' },
     { width: 24, height: 12, unit: 'in' },
   ],
   XL: [
