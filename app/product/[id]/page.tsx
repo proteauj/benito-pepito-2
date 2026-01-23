@@ -26,6 +26,8 @@ export default function ProductPage() {
           setProduct(null);
           setRealStock(null);
         }
+
+        console.log('product', product);
       } catch (err) {
         console.error(err);
         setProduct(null);
