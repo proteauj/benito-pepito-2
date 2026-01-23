@@ -12,7 +12,7 @@ export default function ProductsClient() {
 
   const slugToCategory: Record<string, string> = {
     galerie: 'Painting',
-    'maison-jardin': 'HomeGarden',
+    'maison-jardin': 'Home-Garden',   // <-- correspond exactement à `category` dans tes données
     sculpture: 'Sculpture',
     'impression-3d': '3DPrint',
   };
