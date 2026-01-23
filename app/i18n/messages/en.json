@@ -104,7 +104,12 @@
   "success.stockNotUpdated": "Stock could not be updated automatically",
   "products.all": "All",
   "products.allSizes": "All sizes",
-  "dim.between": "Entre",
-  "dim.and": "et",
-  "dim.dimensions": "Sizes"
+  "dim.between": "Between",
+  "dim.and": "and",
+  "dim.dimensions": "Sizes",
+  "address.name": "Name",
+  "address.street": "Street",
+  "address.city": "City",
+  "address.province": "Province",
+  "address.postalCode": "Postal Code"
 }

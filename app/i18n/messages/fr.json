@@ -104,7 +104,12 @@
   "footer.rights": "Tous droits réservés.",
   "products.all": "Tous",
   "products.allSizes": "Toutes tailles",
-  "dim.between": "Between",
-  "dim.and": "and",
-  "dim.dimensions": "Dimensions"
+  "dim.between": "Entre",
+  "dim.and": "et",
+  "dim.dimensions": "Dimensions",
+  "address.name": "Nom",
+  "address.street": "Adresse",
+  "address.city": "Ville",
+  "address.province": "Province",
+  "address.postalCode": "Code Postal"
 }

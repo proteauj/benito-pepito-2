@@ -242,10 +242,15 @@ export default function CartPage() {
                   {shippingMethod === 'shipping' && (
                     <div className="space-y-2">
                       <label className="block text-sm font-medium text-black mb-1">{t('contact.form.address')}</label>
+                      <label className="text-sm font-normal text-black">{t('address.name')}</label>
                       <input placeholder="Nom complet" value={address.name} onChange={(e) => setAddress({ ...address, name: e.target.value })} />
+                      <label className="text-sm font-normal text-black">{t('address.street')}</label>
                       <input placeholder="Adresse" value={address.street} onChange={(e) => setAddress({ ...address, street: e.target.value })} />
+                      <label className="text-sm font-normal text-black">{t('address.city')}</label>
                       <input placeholder="Ville" value={address.city} onChange={(e) => setAddress({ ...address, city: e.target.value })} />
+                      <label className="text-sm font-normal text-black">{t('address.province')}</label>
                       <input placeholder="Province" value={address.province} onChange={(e) => setAddress({ ...address, province: e.target.value })} />
+                      <label className="text-sm font-normal text-black">{t('address.postalCode')}</label>
                       <input placeholder="Code postal" value={address.postalCode} onChange={(e) => setAddress({ ...address, postalCode: e.target.value })} />
                     </div>
                   )}
