@@ -89,27 +89,31 @@ export default function ProductCard({
             <p className="text-xs mb-2">{product.materialFr}</p>
             <p className="text-xs mb-2">{product.price} $</p>
 
-            {product.size && sizeDimensions[product.size] && (
+            {product.size && sizeDimensions[product.size] ? (
               <div className="text-xs mb-2">
                 <p className="font-semibold">{t('dim.dimensions')}</p>
-                {sizeDimensions[0] && sizeDimensions[1] && sizeDimensions[0].length > 0 ? (
+                {sizeDimensions[product.size]?.length == 2 ? (
                   <ul className="mt-1 space-y-0.5">
-                    <li>
-                      {t('dim.between')}{' '}
-                      {sizeDimensions[0].map((dim, index) => (
-                        <span key={index}>
-                          {dim.width}" × {dim.height}" {dim.unit}
-                        </span>
-                      ))}{' '}
-                      {t('dim.and')}{' '}
-                      {sizeDimensions[1].map((dim, index) => (
-                        <span key={`and-${index}`}>
-                          {dim.width}" × {dim.height}" {dim.unit}
-                        </span>
-                      ))}
-                    </li>
+                    {sizeDimensions[product.size].map((dim, index) => (
+                      <ul className="mt-1 space-y-0.5">
+                        <li>
+                          {t('dim.between')}{' '}
+                          {sizeDimensions[0].map((dim, index) => (
+                            <span key={index}>
+                              {dim.width}" × {dim.height}" {dim.unit}
+                            </span>
+                          ))}{' '}
+                          {t('dim.and')}{' '}
+                          {sizeDimensions[1].map((dim, index) => (
+                            <span key={`and-${index}`}>
+                              {dim.width}" × {dim.height}" {dim.unit}
+                            </span>
+                          ))}
+                        </li>
+                      </ul>
+                    ))}
                   </ul>
-                ) : sizeDimensions[0] && sizeDimensions[0].length > 0 ? (
+                ) : sizeDimensions[product.size]?.length == 1 ? (
                   <span>
                     {sizeDimensions[0][0].width}" × {sizeDimensions[0][0].height}" {sizeDimensions[0][0].unit}
                   </span>
@@ -117,8 +121,8 @@ export default function ProductCard({
                   <span>{t('dim.noDimensions')}</span>
                 )}
               </div>
-
-            )}
+            
+            ):(<></>)}
 
             {/* BADGE VENDU — TOUJOURS ACTIF */}
             {!realStock && (
