@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { JSXElementConstructor, ReactElement, ReactNode, ReactPortal, useEffect, useState } from 'react';
 import { Product } from '../../lib/db/types';
 import { sizeDimensions } from '../data/dimensions';
 import { useI18n } from '../i18n/I18nProvider'
@@ -28,6 +28,11 @@ export default function ProductCard({
   const [added, setAdded] = useState(false);
   const [realStock, setRealStock] = useState(product.inStock);
   const { t } = useI18n();
+  var dims: {
+    height: ReactNode;
+    width: ReactNode; 
+    unit: string; 
+}[] = [];
 
   const handleAdd = () => {
     if (onAddToCart) {
@@ -49,6 +54,8 @@ export default function ProductCard({
         } else {
           setRealStock(product.inStock);
         }
+
+        dims = sizeDimensions[data.size];
       } catch (err) {
         console.error('Erreur récupération stock', err);
         setRealStock(product.inStock); // fallback
@@ -92,30 +99,24 @@ export default function ProductCard({
             {product.size && sizeDimensions[product.size] ? (
               <div className="text-xs mb-2">
                 <p className="font-semibold">{t('dim.dimensions')}</p>
-                {sizeDimensions[product.size]?.length == 2 ? (
+                
+
+                {dims?.length === 2 ? (
                   <ul className="mt-1 space-y-0.5">
-                    {sizeDimensions[product.size].map((dim, index) => (
-                      <ul className="mt-1 space-y-0.5">
-                        <li>
-                          {t('dim.between')}{' '}
-                          {sizeDimensions[0]?.map((dim, index) => (
-                            <span key={index}>
-                              {dim.width}" × {dim.height}" {dim.unit}
-                            </span>
-                          ))}{' '}
-                          {t('dim.and')}{' '}
-                          {sizeDimensions[1]?.map((dim, index) => (
-                            <span key={`and-${index}`}>
-                              {dim.width}" × {dim.height}" {dim.unit}
-                            </span>
-                          ))}
-                        </li>
-                      </ul>
-                    ))}
+                    <li>
+                      {t('dim.between')}{' '}
+                      <span>
+                        {dims[0].width}" × {dims[0].height}" {dims[0].unit}
+                      </span>{' '}
+                      {t('dim.and')}{' '}
+                      <span>
+                        {dims[1].width}" × {dims[1].height}" {dims[1].unit}
+                      </span>
+                    </li>
                   </ul>
-                ) : sizeDimensions[product.size]?.length == 1 ? (
+                ) : dims?.length === 1 ? (
                   <span>
-                    {sizeDimensions[0][0].width}" × {sizeDimensions[0][0].height}" {sizeDimensions[0][0].unit}
+                    {dims[0].width}" × {dims[0].height}" {dims[0].unit}
                   </span>
                 ) : (
                   <span>{t('dim.noDimensions')}</span>
