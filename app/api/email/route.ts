@@ -28,8 +28,7 @@ export async function POST(req: NextRequest) {
       order.shippingMethod === 'pickup'
         ? `
           <p><strong>Ramassage :</strong><br/>
-          Saint-Jean-sur-Richelieu<br/>
-          L’adresse exacte sera communiquée sous peu.</p>
+          4 rue Dufresne Saint-Jean-sur-Richelieu</p>
         `
         : `
           <p><strong>Livraison :</strong><br/>

@@ -115,6 +115,41 @@ export async function POST(req: NextRequest) {
     });
 
     /* ------------------------------
+      📩 Envoi email au client + artiste
+    ------------------------------ */
+    try {
+      const emailRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          order: {
+            id: payment.id, // ou l'id DB si tu l'as
+            squarePaymentId: payment.id,
+            totalAmount: Number(total),
+            currency: 'CAD',
+            items: items.map((i: any) => ({
+              id: i.id,
+              title: i.title,
+              titleFr: i.titleFr,
+              price: i.price,
+            })),
+            shippingMethod,
+            shippingAddress,
+          },
+          customer: {
+            email: customerEmail,
+          },
+        }),
+      });
+
+      if (!emailRes.ok) {
+        console.warn('Erreur envoi email:', await emailRes.text());
+      }
+    } catch (err) {
+      console.error('Erreur fetch email API:', err);
+    }
+
+    /* ------------------------------
        ✅ Réponse client
     ------------------------------ */
     return NextResponse.json({
