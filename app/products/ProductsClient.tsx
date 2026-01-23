@@ -12,7 +12,7 @@ export default function ProductsClient() {
 
   const slugToCategory: Record<string, string> = {
     galerie: 'Painting',
-    'maison-&-jardin': 'Home-Garden',
+    'home-garden': 'Home-Garden',
     sculpture: 'Sculpture',
     'impression-3d': '3DPrint',
   };
