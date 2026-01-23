@@ -1,7 +1,6 @@
 'use client';
-
-import { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useMemo, useState } from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import ProductCard from './ProductCard';
 import { products } from '../data/products';
 
@@ -12,26 +11,28 @@ export default function ProductsClient() {
 
   const slugToCategory: Record<string, string> = {
     galerie: 'Painting',
-    'maison-jardin': 'HomeGarden',   // <-- correspond exactement à `category` dans tes données
+    'maison-jardin': 'HomeGarden',
     sculpture: 'Sculpture',
     'impression-3d': '3DPrint',
   };
 
-  const category = categorySlug
-    ? slugToCategory[categorySlug.toLowerCase()]
-    : null;
+  const category = categorySlug ? slugToCategory[categorySlug.toLowerCase()] : null;
 
   const [materialFilter, setMaterialFilter] = useState('');
   const [sizeFilter, setSizeFilter] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
-  const filteredProducts = products
-    .filter(p => !category || p.category === category)
-    .filter(p => (materialFilter ? p.material?.toLowerCase() === materialFilter.toLowerCase() : true))
-    .filter(p => (sizeFilter ? p.size?.toLowerCase() === sizeFilter.toLowerCase() : true))
-    .sort((a, b) =>
-      sortOrder === 'asc' ? (a.price || 0) - (b.price || 0) : (b.price || 0) - (a.price || 0)
-    );
+  // recalculer filteredProducts chaque fois que categorySlug ou les filtres changent
+  const filteredProducts = useMemo(() => {
+    return products
+      .filter(p => !category || p.category === category)
+      .filter(p => (materialFilter ? p.material?.toLowerCase() === materialFilter.toLowerCase() : true))
+      .filter(p => (sizeFilter ? p.size?.toLowerCase() === sizeFilter.toLowerCase() : true))
+      .sort((a, b) =>
+        sortOrder === 'asc' ? (a.price || 0) - (b.price || 0) : (b.price || 0) - (a.price || 0)
+      );
+  }, [category, materialFilter, sizeFilter, sortOrder]);
+
 
   if (!filteredProducts.length) {
     return <p className="text-center py-12">Aucun produit disponible</p>;
