@@ -215,9 +215,9 @@ export default function CartPage() {
               </div>
             ))}
             <br/>
-            <div className="flex-1">
+            <div className="flex-1 rounded">
               <form className="grid grid-cols-1 gap-1 bg-white border border-[#cfc9c0] p-6">
-                  <label className="block text-sm font-medium text-black mb-1">{t('contact.form.email')}</label>
+                  <label className="block text-sm font-semibold text-black mb-1">{t('contact.form.email')}</label>
                   <input
                     type="email"
                     className="text-black"
@@ -226,7 +226,7 @@ export default function CartPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
-                  <label className="block text-sm font-medium text-black mb-1">{t('contact.form.shippingMethod')}</label>
+                  <label className="block text-sm font-semibold text-black mb-1">{t('contact.form.shippingMethod')}</label>
                   <div className="flex items-center gap-4">
                     {/* Cueillette */}
                     <label className="flex items-center gap-1 text-sm font-normal text-black">
@@ -253,7 +253,7 @@ export default function CartPage() {
 
                   {shippingMethod === 'shipping' && (
                     <div className="space-y-2">
-                      <label className="block text-sm font-medium text-black mb-1">{t('contact.form.address')}</label>
+                      <label className="block text-sm font-semibold text-black mb-1">{t('contact.form.address')}</label>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {/* Nom */}

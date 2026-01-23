@@ -111,5 +111,6 @@
   "address.street": "Adresse",
   "address.city": "Ville",
   "address.province": "Province",
-  "address.postalCode": "Code Postal"
+  "address.postalCode": "Code Postal",
+  "address.country": "Pays"
 }
