@@ -122,7 +122,7 @@ export default function CartPage() {
       alert('Paiement réussi !');
 
       // 2️⃣ Mettre les produits en stock=false
-      const updateStockRes = await fetch('/api/products/stock', { 
+      const updateStockRes = await fetch('/api/products', { 
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
