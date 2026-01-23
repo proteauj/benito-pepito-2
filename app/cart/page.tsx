@@ -203,7 +203,7 @@ export default function CartPage() {
 
                 <div className="flex-1">
                   <h2 className="font-semibold">{item.title}</h2>
-                  <p className="text-gray-600">{item.category}</p>
+                  <p className="text-gray-600">{t(`category.${item.category}`)}</p>
 
                   <div className="flex items-center gap-3 mt-3">
                     <span>${item.price}</span>

@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import ProductCard from './ProductCard';
 import { products } from '../data/products';
+import { useI18n } from '../i18n/I18nProvider';
 
 export default function ProductsClient() {
   const router = useRouter();
@@ -21,6 +22,7 @@ export default function ProductsClient() {
   const [materialFilter, setMaterialFilter] = useState('');
   const [sizeFilter, setSizeFilter] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const {t} = useI18n();
 
   // recalculer filteredProducts chaque fois que categorySlug ou les filtres changent
   const filteredProducts = useMemo(() => {
@@ -96,6 +98,7 @@ export default function ProductsClient() {
       {/* Titre */}
       <h1 className="text-3xl font-bold mb-8">
         {categorySlug ? categorySlug.replace(/-/g, ' ') : 'Tous les produits'}
+         {category ? t(`category.${category}`) : ''}
       </h1>
 
       {/* Grille des produits */}
