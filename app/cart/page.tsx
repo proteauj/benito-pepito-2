@@ -226,6 +226,7 @@ export default function CartPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-black mb-1">{t('contact.form.shippingMethod')}</label>
+                    <label className="text-sm font-normal text-black">{t('contact.form.shippingPickup')}</label>
                     <input
                       type="radio"
                       className="w-full border border-[#cfc9c0] px-3 py-2 text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-[var(--leaf)]/40"
@@ -234,6 +235,7 @@ export default function CartPage() {
                     />
                   </div>
                   <div>
+                    <label className="text-sm font-normal text-black">{t('contact.form.shipping')}</label>
                     <input
                       type="radio"
                       checked={shippingMethod === 'shipping'}
@@ -263,42 +265,18 @@ export default function CartPage() {
               {t('cart.orderSummary')}
             </h3>
 
-            {/* Conteneur Square */}
-            {/* <div
-              id="card-container"
-              style={{
-                width: '100%',
-                maxWidth: 420,
-                margin: '16px 0',
-                background: 'white',
-                padding: 16,
-                borderRadius: 6,
-              }}
-            />
+            <span>{t('cart.total')}</span>
+            <span className="text-2xl font-bold">${total.toFixed(2)}</span>
 
-            <div
-              id="square-overlay"
-              // style={{
-              //   position: 'fixed',
-              //   inset: 0,
-              //   zIndex: 99999
-              // }}
-            > */}
+            <button
+              onClick={handleCheckout}
+              disabled={loading || !card || success}
+              className="w-full bg-[var(--gold)] text-black py-3 rounded-sm font-semibold"
+            >
+              {loading ? t('cart.processing') : t('cart.checkout')}
+            </button>
           </div>
         </div>
-        <div className="flex justify-between mb-4">
-          <span>{t('cart.total')}</span>
-          <span className="text-2xl font-bold">${total.toFixed(2)}</span>
-          <span className="text-md">{t('cart.expedition')}</span>
-        </div>
-
-        <button
-          onClick={handleCheckout}
-          disabled={loading || !card || success}
-          className="w-full bg-[var(--gold)] text-black py-3 rounded-sm font-semibold"
-        >
-          {loading ? t('cart.processing') : t('cart.checkout')}
-        </button>
       </div>
     </div>
   );

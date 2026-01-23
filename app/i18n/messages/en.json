@@ -54,6 +54,8 @@
   "contact.form.placeholderName": "Your full name",
   "contact.form.placeholderEmail": "you@example.com",
   "contact.form.placeholderMessage": "Tell us about the artwork or project...",
+  "contact.form.shipping": "Shipping",
+  "contact.form.shippingPickup": "Pickup",
   "contact.direct": "Or write us directly:",
   "contact.gallery": "Gallery",
   "contact.press": "Press",

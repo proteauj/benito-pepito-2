@@ -67,6 +67,8 @@
   "contact.form.placeholderName": "Votre nom complet",
   "contact.form.placeholderEmail": "vous@exemple.com",
   "contact.form.placeholderMessage": "Parlez‑nous de l'œuvre ou du projet…",
+  "contact.form.shipping": "Expédition",
+  "contact.form.shippingPickup": "Cueillette",
   "contact.direct": "Ou écrivez-nous directement :",
   "contact.gallery": "Galerie",
   "contact.press": "Presse",
