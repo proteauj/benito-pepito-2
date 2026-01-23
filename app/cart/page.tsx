@@ -122,13 +122,14 @@ export default function CartPage() {
       alert('Paiement réussi !');
 
       // 2️⃣ Mettre les produits en stock=false
-      const updateStockRes = await fetch('/api/products', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      const updateStockRes = await fetch('/api/products/stock', { 
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
           productIds: (items || [])?.map(item => item.id),
-          inStock: false
-        }),
+          inStock: false }),
       });
 
       // const updateData = await updateStockRes.json();
