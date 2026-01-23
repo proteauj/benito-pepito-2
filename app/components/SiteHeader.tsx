@@ -17,7 +17,7 @@ export default function SiteHeader() {
 
   const categories = [
     { name: 'Galerie', slug: 'galerie' },
-    { name: 'Maison & Jardin', slug: 'maison-&-jardin' },
+    { name: 'Maison & Jardin', slug: 'maison-jardin' },
     { name: 'Sculpture', slug: 'sculpture' },
     { name: 'Impression 3D', slug: 'impression-3d' },
   ];
