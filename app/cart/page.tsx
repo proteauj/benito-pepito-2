@@ -227,18 +227,30 @@ export default function CartPage() {
                     required
                   />
                   <label className="block text-sm font-medium text-black mb-1">{t('contact.form.shippingMethod')}</label>
-                  <label className="text-sm font-normal text-black">{t('contact.form.shippingPickup')}</label>
-                  <input
-                    type="radio"
-                    checked={shippingMethod === 'pickup'}
-                    onChange={() => setShippingMethod('pickup')}
-                  />
-                  <label className="text-sm font-normal text-black">{t('contact.form.shipping')}</label>
-                  <input
-                    type="radio"
-                    checked={shippingMethod === 'shipping'}
-                    onChange={() => setShippingMethod('shipping')}
-                  />
+                  <div className="flex items-center gap-4">
+                    {/* Cueillette */}
+                    <label className="flex items-center gap-1 text-sm font-normal text-black">
+                      <input
+                        type="radio"
+                        checked={shippingMethod === 'pickup'}
+                        onChange={() => setShippingMethod('pickup')}
+                        className="accent-[var(--leaf)]"
+                      />
+                      {t('contact.form.shippingPickup')}
+                    </label>
+
+                    {/* Expédition */}
+                    <label className="flex items-center gap-1 text-sm font-normal text-black">
+                      <input
+                        type="radio"
+                        checked={shippingMethod === 'shipping'}
+                        onChange={() => setShippingMethod('shipping')}
+                        className="accent-[var(--leaf)]"
+                      />
+                      {t('contact.form.shipping')}
+                    </label>
+                  </div>
+
                   {shippingMethod === 'shipping' && (
                     <div className="space-y-2">
                       <label className="block text-sm font-medium text-black mb-1">{t('contact.form.address')}</label>
