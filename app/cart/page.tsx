@@ -226,7 +226,7 @@ export default function CartPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
-                  <label className="block text-sm font-semibold text-black mb-1">{t('contact.form.shippingMethod')}</label>
+                  <label className="block text-sm font-semibold text-black mb-1 mt-1">{t('contact.form.shippingMethod')}</label>
                   <div className="flex items-center gap-4">
                     {/* Cueillette */}
                     <label className="flex items-center gap-1 text-sm font-normal text-black">
@@ -253,15 +253,15 @@ export default function CartPage() {
 
                   {shippingMethod === 'shipping' && (
                     <div className="space-y-2">
-                      <label className="block text-sm font-semibold text-black mb-1">{t('contact.form.address')}</label>
+                      <label className="block text-sm font-semibold text-black mb-1 mt-1">{t('contact.form.address')}</label>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {/* Nom */}
                         <div className="flex flex-col">
-                          <label className="text-sm font-normal text-black">{t('address.name')}</label>
+                          {/* <label className="text-sm font-normal text-black">{t('address.name')}</label> */}
                           <input
                             className="border border-gray-300 px-2 py-1 rounded"
-                            placeholder="Nom complet"
+                            placeholder={t('address.name')}
                             value={address.name}
                             onChange={(e) => setAddress({ ...address, name: e.target.value })}
                           />
@@ -269,10 +269,10 @@ export default function CartPage() {
 
                         {/* Adresse */}
                         <div className="flex flex-col">
-                          <label className="text-sm font-normal text-black">{t('address.street')}</label>
+                          {/* <label className="text-sm font-normal text-black">{t('address.street')}</label> */}
                           <input
                             className="border border-gray-300 px-2 py-1 rounded"
-                            placeholder="Adresse"
+                            placeholder={t('address.street')}
                             value={address.street}
                             onChange={(e) => setAddress({ ...address, street: e.target.value })}
                           />
@@ -280,10 +280,10 @@ export default function CartPage() {
 
                         {/* Ville */}
                         <div className="flex flex-col">
-                          <label className="text-sm font-normal text-black">{t('address.city')}</label>
+                          {/* <label className="text-sm font-normal text-black">{t('address.city')}</label> */}
                           <input
                             className="border border-gray-300 px-2 py-1 rounded"
-                            placeholder="Ville"
+                            placeholder={t('address.city')}
                             value={address.city}
                             onChange={(e) => setAddress({ ...address, city: e.target.value })}
                           />
@@ -291,10 +291,10 @@ export default function CartPage() {
 
                         {/* Province */}
                         <div className="flex flex-col">
-                          <label className="text-sm font-normal text-black">{t('address.province')}</label>
+                          {/* <label className="text-sm font-normal text-black">{t('address.province')}</label> */}
                           <input
                             className="border border-gray-300 px-2 py-1 rounded"
-                            placeholder="Province"
+                            placeholder={t('address.province')}
                             value={address.province}
                             onChange={(e) => setAddress({ ...address, province: e.target.value })}
                           />
@@ -302,10 +302,10 @@ export default function CartPage() {
 
                         {/* Code postal */}
                         <div className="flex flex-col">
-                          <label className="text-sm font-normal text-black">{t('address.postalCode')}</label>
+                          {/* <label className="text-sm font-normal text-black">{t('address.postalCode')}</label> */}
                           <input
                             className="border border-gray-300 px-2 py-1 rounded"
-                            placeholder="Code postal"
+                            placeholder={t('address.postalCode')}
                             value={address.postalCode}
                             onChange={(e) => setAddress({ ...address, postalCode: e.target.value })}
                           />
@@ -313,12 +313,13 @@ export default function CartPage() {
 
                         {/* Pays (facultatif) */}
                         <div className="flex flex-col">
-                          <label className="text-sm font-normal text-black">{t('address.country')}</label>
+                          {/* <label className="text-sm font-normal text-black">{t('address.country')}</label> */}
                           <input
                             className="border border-gray-300 px-2 py-1 rounded"
                             placeholder="Canada"
                             value={address.country}
                             onChange={(e) => setAddress({ ...address, country: e.target.value })}
+                            disabled
                           />
                         </div>
                       </div>
