@@ -58,7 +58,7 @@ export default function SiteHeader() {
             <LanguageSelector />
             <button
               onClick={() => setMobileOpen(true)}
-              className="md:hidden h-16 w-16 text-black hover:bg-white flex items-center justify-center"
+              className="md:hidden h-10 w-10 text-black hover:bg-white flex items-center justify-center"
               aria-label="Open menu"
             >
               ☰
