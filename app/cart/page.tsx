@@ -217,7 +217,6 @@ export default function CartPage() {
             <br/>
             <div className="flex-1">
               <form className="grid grid-cols-1 gap-6 bg-white border border-[#cfc9c0] p-6">
-                <div>
                   <label className="block text-sm font-medium text-black mb-1">{t('contact.form.email')}</label>
                   <input
                     type="email"
@@ -227,8 +226,6 @@ export default function CartPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
-                </div>
-                <div>
                   <label className="block text-sm font-medium text-black mb-1">{t('contact.form.shippingMethod')}</label>
                   <label className="text-sm font-normal text-black">{t('contact.form.shippingPickup')}</label>
                   <input
@@ -236,16 +233,12 @@ export default function CartPage() {
                     checked={shippingMethod === 'pickup'}
                     onChange={() => setShippingMethod('pickup')}
                   />
-                </div>
-                <div>
                   <label className="text-sm font-normal text-black">{t('contact.form.shipping')}</label>
                   <input
                     type="radio"
                     checked={shippingMethod === 'shipping'}
                     onChange={() => setShippingMethod('shipping')}
                   />
-                </div>
-                <div>
                   {shippingMethod === 'shipping' && (
                     <div className="space-y-2">
                       <label className="block text-sm font-medium text-black mb-1">{t('contact.form.address')}</label>
@@ -256,7 +249,6 @@ export default function CartPage() {
                       <input placeholder="Code postal" value={address.postalCode} onChange={(e) => setAddress({ ...address, postalCode: e.target.value })} />
                     </div>
                   )}
-                </div>
               </form>
             </div>
           </div>
@@ -267,8 +259,10 @@ export default function CartPage() {
               {t('cart.orderSummary')}
             </h3>
 
-            <span>{t('cart.total')}</span>
-            <span className="text-2xl font-bold">${total.toFixed(2)}</span>
+            <div className="flex justify-between">
+              <span>{t('cart.total')}</span>
+              <span className="font-bold">${total.toFixed(2)}</span>
+            </div>
 
             <button
               onClick={handleCheckout}
