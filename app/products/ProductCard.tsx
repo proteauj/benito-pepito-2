@@ -28,11 +28,11 @@ export default function ProductCard({
   const [added, setAdded] = useState(false);
   const [realStock, setRealStock] = useState(product.inStock);
   const { t } = useI18n();
-  var dims: {
-    height: ReactNode;
-    width: ReactNode; 
-    unit: string; 
-}[] = [];
+  const [dims, setDims] = useState<{
+    width: number;
+    height: number;
+    unit: string;
+  }[]>([]);
 
   const handleAdd = () => {
     if (onAddToCart) {
@@ -46,25 +46,25 @@ export default function ProductCard({
       try {
         const res = await fetch(`/api/products?id=${product.id}`);
         const data = await res.json();
-        console.log('product from db', data);
-        // Si on trouve une ligne en DB, on prend son inStock
-        // Sinon on garde product.inStock de products.ts
         if (data && typeof data.inStock === 'boolean') {
           setRealStock(data.inStock);
         } else {
           setRealStock(product.inStock);
         }
 
-        dims = sizeDimensions[data.size];
-        console.log('dims', dims);
+        // ⚡ mettre à jour le state React
+        setDims(sizeDimensions[data.size] || []);
+        console.log('dims', sizeDimensions[data.size]);
       } catch (err) {
         console.error('Erreur récupération stock', err);
         setRealStock(product.inStock); // fallback
+        const dimsForSize = product.size ? sizeDimensions[product.size] : [];
+        setDims(dimsForSize);
       }
     };
 
     fetchStock();
-  }, [product.id, product.inStock]);
+  }, [product.id, product.inStock, product.size]);
 
   return (
     <>
