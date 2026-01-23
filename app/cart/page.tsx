@@ -233,7 +233,6 @@ export default function CartPage() {
                   <label className="text-sm font-normal text-black">{t('contact.form.shippingPickup')}</label>
                   <input
                     type="radio"
-                    className="w-full border border-[#cfc9c0] px-3 py-2 text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-[var(--leaf)]/40"
                     checked={shippingMethod === 'pickup'}
                     onChange={() => setShippingMethod('pickup')}
                   />
