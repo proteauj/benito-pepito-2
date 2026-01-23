@@ -126,7 +126,7 @@ export default function CartPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          productIds: items.map(item => item.id)
+          productIds: (items || [])?.map(item => item.id)
         }),
       });
 
@@ -136,7 +136,7 @@ export default function CartPage() {
 
       // if (!updateStockRes.ok) throw new Error(updateData.error || 'Erreur mise à jour stock');
 
-      console.log('Produits mis à jour :', items.map(item => item.id));
+      console.log('Produits mis à jour :', (items || [])?.map(item => item.id));
     } catch (e: any) {
       setError(e.message || 'Erreur serveur');
     } finally {
