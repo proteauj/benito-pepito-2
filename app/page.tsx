@@ -11,11 +11,10 @@ export default function HomePage() {
   // Catégories à afficher sur la home
   const categoriesToShow = ['Galerie', 'Maison Jardin', 'Sculpture', 'Impression 3D'];
 
-  // Mapping anglais → français
   const categoryMap: Record<string, string> = {
-    'Painting': 'Galerie',
-    'Home-Garden': 'Maison Jardin',
-    'Sculpture': 'Sculpture',
+    Painting: 'Galerie',
+    'HomeGarden': 'Maison Jardin',
+    Sculpture: 'Sculpture',
     '3DPrint': 'Impression 3D',
   };
 
