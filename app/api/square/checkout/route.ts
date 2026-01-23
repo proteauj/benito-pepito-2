@@ -94,6 +94,7 @@ export async function POST(req: NextRequest) {
        🟦 Mise à jour stock
     ------------------------------ */
     for (const item of items) {
+      console.log('mark as sold: ', item);
       await DatabaseService.markProductAsSold(item.id);
     }
 
