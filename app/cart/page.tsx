@@ -212,6 +212,7 @@ export default function CartPage() {
                     </button>
                   </div>
                 </div>
+                <br />
                 <form className="grid grid-cols-1 gap-6 bg-white border border-[#cfc9c0] p-6">
                   <div>
                     <label className="block text-sm font-medium text-black mb-1">{t('contact.form.email')}</label>
