@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { SquareClient, SquareEnvironment, Country } from 'square';
 import { DatabaseService } from '../../../../lib/db/service';
+import { sendOrderEmail } from '../../email/route';
 
 export async function POST(req: NextRequest) {
   try {
@@ -116,37 +117,27 @@ export async function POST(req: NextRequest) {
 
     /* ------------------------------
       📩 Envoi email au client + artiste
-    ------------------------------ */
+    ------------------------------ */    
     try {
-        const emailRes = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          order: {
-            id: payment.id, // ou l'id DB si tu l'as
-            squarePaymentId: payment.id,
-            totalAmount: Number(total),
-            currency: 'CAD',
-            items: items.map((i: any) => ({
-              id: i.id,
-              title: i.title,
-              titleFr: i.titleFr,
-              price: i.price,
-            })),
-            shippingMethod,
-            shippingAddress,
-          },
-          customer: {
-            email: customerEmail,
-          },
-        }),
-      });
-
-      if (!emailRes.ok) {
-        console.warn('Erreur envoi email:', await emailRes.text());
-      }
+      await sendOrderEmail(
+        {
+          id: payment.id,
+          squarePaymentId: payment.id,
+          totalAmount: Number(total),
+          currency: 'CAD',
+          items: items.map(i => ({
+            id: i.id,
+            title: i.title,
+            titleFr: i.titleFr,
+            price: i.price,
+          })),
+          shippingMethod,
+          shippingAddress,
+        },
+        { email: customerEmail }
+      );
     } catch (err) {
-      console.error('Erreur fetch email API:', err);
+      console.error('Erreur envoi email:', err);
     }
 
     /* ------------------------------
