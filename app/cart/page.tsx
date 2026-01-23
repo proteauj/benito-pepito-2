@@ -216,11 +216,11 @@ export default function CartPage() {
             ))}
             <br/>
             <div className="flex-1">
-              <form className="grid grid-cols-1 gap-6 bg-white border border-[#cfc9c0] p-6">
+              <form className="grid grid-cols-1 gap-1 bg-white border border-[#cfc9c0] p-6">
                   <label className="block text-sm font-medium text-black mb-1">{t('contact.form.email')}</label>
                   <input
                     type="email"
-                    className="w-full border border-[#cfc9c0] px-3 py-2 text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-[var(--leaf)]/40"
+                    className="text-black"
                     placeholder={t('contact.form.placeholderEmail')}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
