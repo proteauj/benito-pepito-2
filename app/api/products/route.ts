@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
   if (id) {
     // Chercher le produit dans les données statiques
     const product = products.find(p => p.id === id);
-
+    console.log('Get product', product);
     if (!product) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
@@ -30,9 +30,7 @@ export async function GET(req: NextRequest) {
     let inStock = product.inStock; // fallback
 
     try {
-      if (DatabaseService) {
-        inStock = await DatabaseService.getProductStock(product.id);
-      }
+      inStock = await require('../../../lib/db/service').DatabaseService.getProductStock(product.id);
     } catch (err) {
       console.warn('Stock fallback to product data');
     }
