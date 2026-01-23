@@ -12,7 +12,7 @@ export default function ProductsClient() {
 
   const slugToCategory: Record<string, string> = {
     galerie: 'Painting',
-    'maison-&-jardin': 'Home & Garden',
+    'maison-&-jardin': 'Home-Garden',
     sculpture: 'Sculpture',
     'impression-3d': '3DPrint',
   };
@@ -25,8 +25,21 @@ export default function ProductsClient() {
   const [sizeFilter, setSizeFilter] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
-  const filteredProducts = products
-    .filter(p => (category ? p.category === category : true))
+  const filteredProducts = 
+    products.filter(p => {
+      if (!category) return true;
+
+      return (
+        p.category
+          ?.toLowerCase()
+          .replace(/\s+/g, ' ')
+          .trim() ===
+        category
+          .toLowerCase()
+          .replace(/\s+/g, ' ')
+          .trim()
+      );
+    })
     .filter(p =>
       materialFilter
         ? p.material?.toLowerCase() === materialFilter.toLowerCase()

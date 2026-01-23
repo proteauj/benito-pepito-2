@@ -14,7 +14,7 @@ export default function HomePage() {
   // Mapping anglais → français
   const categoryMap: Record<string, string> = {
     'Painting': 'Galerie',
-    'Home & Garden': 'Maison & Jardin',
+    'Home-Garden': 'Maison & Jardin',
     'Sculpture': 'Sculpture',
     '3DPrint': 'Impression 3D',
   };
