@@ -87,9 +87,10 @@ export async function POST(req: NextRequest) {
     );
   }
 
-    console.log('CHECKOUT BODY', req.json());
+  const body = await req.json();
+  console.log('CHECKOUT BODY', body);
 
-  const { productIds } = await req.json();
+  const { productIds } = body;
 
   if (!Array.isArray(productIds) || productIds.length === 0) {
     return NextResponse.json({ error: 'No product IDs provided' }, { status: 400 });
