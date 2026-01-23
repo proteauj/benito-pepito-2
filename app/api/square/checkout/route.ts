@@ -1,15 +1,20 @@
 // app/api/square/checkout/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
-import { SquareClient, SquareEnvironment } from 'square';
+import { SquareClient, SquareEnvironment, Country } from 'square';
 import { DatabaseService } from '../../../../lib/db/service';
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { sourceId, total, items, customerEmail, shippingMethod, shippingAddress } = body;
-
-    console.log('CHECKOUT BODY', body);
+    const {
+      sourceId,
+      total,
+      items,
+      customerEmail,
+      shippingMethod,
+      shippingAddress
+    } = body;
 
     if (!sourceId || !total) {
       return NextResponse.json(
@@ -41,6 +46,23 @@ export async function POST(req: NextRequest) {
           : SquareEnvironment.Sandbox,
     });
 
+    /* ------------------------------
+       🟨 Mapping shipping vers Square
+    ------------------------------ */
+    const squareShippingAddress =
+      shippingMethod === 'shipping' && shippingAddress
+        ? {
+            addressLine1: shippingAddress.street,
+            locality: shippingAddress.city,
+            administrativeDistrictLevel1: shippingAddress.province,
+            postalCode: shippingAddress.postalCode,
+            country: Country.Ca, // ✅ enum Square
+          }
+        : undefined;
+
+    /* ------------------------------
+       🟩 Création paiement Square
+    ------------------------------ */
     const paymentResponse = await client.payments.create({
       sourceId,
       idempotencyKey: crypto.randomUUID(),
@@ -48,6 +70,15 @@ export async function POST(req: NextRequest) {
         amount: BigInt(total),
         currency: 'CAD',
       },
+
+      buyerEmailAddress: customerEmail ?? undefined,
+      shippingAddress: squareShippingAddress,
+
+      // On stocke le shippingMethod + address pour le webhook
+      note: JSON.stringify({
+        shippingMethod,
+        shippingAddress,
+      }),
     });
 
     const payment = paymentResponse.payment;
@@ -59,12 +90,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 1️⃣ Mettre les produits en stock=false
+    /* ------------------------------
+       🟦 Mise à jour stock
+    ------------------------------ */
     for (const item of items) {
       await DatabaseService.markProductAsSold(item.id);
     }
 
-    // 2️⃣ Créer la commande
+    /* ------------------------------
+       🟪 Création commande DB
+    ------------------------------ */
     await DatabaseService.createOrder({
       squarePaymentId: payment.id!,
       customerEmail: customerEmail ?? null,
@@ -72,12 +107,15 @@ export async function POST(req: NextRequest) {
       totalAmount: Number(total),
       currency: 'CAD',
       status: 'completed',
-      shippingMethod,           // ← nouveau
-      shippingAddress,          // ← nouveau
+
+      // Données internes (PAS Square)
+      shippingMethod,
+      shippingAddress,
     });
 
-
-    // 3️⃣ Réponse SAFE
+    /* ------------------------------
+       ✅ Réponse client
+    ------------------------------ */
     return NextResponse.json({
       success: true,
       payment: {

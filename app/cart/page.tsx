@@ -115,6 +115,7 @@ export default function CartPage() {
         body: JSON.stringify(checkoutPayload),
       });
 
+
       const data = await checkoutRes.json();
       if (!checkoutRes.ok) throw new Error(data.error || 'Erreur paiement');
 
