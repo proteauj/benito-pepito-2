@@ -97,8 +97,7 @@ export default function ProductsClient() {
 
       {/* Titre */}
       <h1 className="text-3xl font-bold mb-8">
-        {categorySlug ? categorySlug.replace(/-/g, ' ') : 'Tous les produits'}
-         {category ? t(`category.${category}`) : ''}
+        {categorySlug ? t(`category.${category}`) : 'Tous les produits'}
       </h1>
 
       {/* Grille des produits */}
