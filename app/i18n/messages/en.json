@@ -48,6 +48,8 @@
   "contact.description": "We'd love to hear from you. For acquisition inquiries, consignments, or general questions, send us a message and our team will get back to you.",
   "contact.form.name": "Name",
   "contact.form.email": "Email",
+  "contact.form.shippingMethod": "Shipping Method",
+  "contact.form.address": "Address",
   "contact.form.message": "Message",
   "contact.form.placeholderName": "Your full name",
   "contact.form.placeholderEmail": "you@example.com",

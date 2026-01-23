@@ -237,11 +237,11 @@ export default function CartPage() {
 
             <div
               id="square-overlay"
-              style={{
-                position: 'fixed',
-                inset: 0,
-                zIndex: 99999
-              }}
+              // style={{
+              //   position: 'fixed',
+              //   inset: 0,
+              //   zIndex: 99999
+              // }}
             >
               <div
                 id="card-container"
@@ -254,62 +254,63 @@ export default function CartPage() {
                   pointerEvents: 'auto', // ← CRUCIAL
                 }}
               />
-              <div className="space-y-4">
-                <input
-                  type="email"
-                  placeholder="Adresse courriel"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="border p-2 w-full"
-                  required
-                />
-
-                <div className="flex gap-4">
-                  <label>
-                    <input
-                      type="radio"
-                      checked={shippingMethod === 'pickup'}
-                      onChange={() => setShippingMethod('pickup')}
-                    />
-                    Ramassage
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      checked={shippingMethod === 'shipping'}
-                      onChange={() => setShippingMethod('shipping')}
-                    />
-                    Livraison
-                  </label>
+              <form className="grid grid-cols-1 gap-6 bg-white border border-[#cfc9c0] p-6">
+                <div>
+                  <label className="block text-sm font-medium text-black mb-1">{t('contact.form.email')}</label>
+                  <input
+                    type="email"
+                    className="w-full border border-[#cfc9c0] px-3 py-2 text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-[var(--leaf)]/40"
+                    placeholder={t('contact.form.placeholderEmail')}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
                 </div>
-
-                {shippingMethod === 'shipping' && (
-                  <div className="space-y-2">
-                    <input placeholder="Nom complet" value={address.name} onChange={(e) => setAddress({ ...address, name: e.target.value })} />
-                    <input placeholder="Adresse" value={address.street} onChange={(e) => setAddress({ ...address, street: e.target.value })} />
-                    <input placeholder="Ville" value={address.city} onChange={(e) => setAddress({ ...address, city: e.target.value })} />
-                    <input placeholder="Province" value={address.province} onChange={(e) => setAddress({ ...address, province: e.target.value })} />
-                    <input placeholder="Code postal" value={address.postalCode} onChange={(e) => setAddress({ ...address, postalCode: e.target.value })} />
-                  </div>
-                )}
-              </div>
+                <div>
+                  <label className="block text-sm font-medium text-black mb-1">{t('contact.form.shippingMethod')}</label>
+                  <input
+                    type="radio"
+                    className="w-full border border-[#cfc9c0] px-3 py-2 text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-[var(--leaf)]/40"
+                    checked={shippingMethod === 'pickup'}
+                    onChange={() => setShippingMethod('pickup')}
+                  />
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    checked={shippingMethod === 'shipping'}
+                    onChange={() => setShippingMethod('shipping')}
+                  />
+                </div>
+                <div>
+                  {shippingMethod === 'shipping' && (
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-black mb-1">{t('contact.form.address')}</label>
+                      <input placeholder="Nom complet" value={address.name} onChange={(e) => setAddress({ ...address, name: e.target.value })} />
+                      <input placeholder="Adresse" value={address.street} onChange={(e) => setAddress({ ...address, street: e.target.value })} />
+                      <input placeholder="Ville" value={address.city} onChange={(e) => setAddress({ ...address, city: e.target.value })} />
+                      <input placeholder="Province" value={address.province} onChange={(e) => setAddress({ ...address, province: e.target.value })} />
+                      <input placeholder="Code postal" value={address.postalCode} onChange={(e) => setAddress({ ...address, postalCode: e.target.value })} />
+                    </div>
+                  )}
+                </div>
+              </form>
             </div>
-
-            <div className="flex justify-between mb-4">
-              <span>{t('cart.total')}</span>
-              <span className="text-2xl font-bold">${total.toFixed(2)}</span>
-              <span className="text-md">{t('cart.expedition')}</span>
-            </div>
-
-            <button
-              onClick={handleCheckout}
-              disabled={loading || !card || success}
-              className="w-full bg-[var(--gold)] text-black py-3 rounded-sm font-semibold"
-            >
-              {loading ? t('cart.processing') : t('cart.checkout')}
-            </button>
           </div>
         </div>
+        <div className="flex justify-between mb-4">
+          <span>{t('cart.total')}</span>
+          <span className="text-2xl font-bold">${total.toFixed(2)}</span>
+          <span className="text-md">{t('cart.expedition')}</span>
+        </div>
+
+        <button
+          onClick={handleCheckout}
+          disabled={loading || !card || success}
+          className="w-full bg-[var(--gold)] text-black py-3 rounded-sm font-semibold"
+        >
+          {loading ? t('cart.processing') : t('cart.checkout')}
+        </button>
       </div>
     </div>
   );

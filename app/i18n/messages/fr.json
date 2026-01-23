@@ -61,6 +61,8 @@
   "actions.contact": "Contact",
   "contact.form.name": "Nom",
   "contact.form.email": "Courriel",
+  "contact.form.shippingMethod": "Méthode d'expédition",
+  "contact.form.address": "Adresse",
   "contact.form.message": "Message",
   "contact.form.placeholderName": "Votre nom complet",
   "contact.form.placeholderEmail": "vous@exemple.com",
