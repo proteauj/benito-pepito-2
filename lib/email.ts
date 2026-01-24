@@ -2,6 +2,11 @@
 import nodemailer from 'nodemailer';
 
 export async function sendOrderEmail(order: any, customer: any) {
+console.log('📨 sendOrderEmail CALLED');
+console.log('EMAIL_USER:', process.env.EMAIL_USER);
+console.log('EMAIL_PASSWORD exists:', !!process.env.EMAIL_PASSWORD);
+
+
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 587,
