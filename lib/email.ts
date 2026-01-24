@@ -25,6 +25,7 @@ export async function sendOrderEmail(order: any, customer: any) {
          ${order.shippingAddress.city}, ${order.shippingAddress.province}<br/>
          ${order.shippingAddress.postalCode}</p>`;
 
+  console.log('shippingHtml', shippingHtml);
   // Email artiste
   await transporter.sendMail({
     from: `"Benito Pepito" <${process.env.EMAIL_USER}>`,
