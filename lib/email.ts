@@ -2,10 +2,9 @@
 import nodemailer from 'nodemailer';
 
 export async function sendOrderEmail(order: any, customer: any) {
-console.log('📨 sendOrderEmail CALLED');
-console.log('EMAIL_USER:', process.env.EMAIL_USER);
-console.log('EMAIL_PASSWORD exists:', !!process.env.EMAIL_PASSWORD);
-
+console.log('📨 sendOrderEmail START');
+console.log('EMAIL_USER:', process.env.EMAIL_USER ? 'OK' : 'MISSING');
+console.log('EMAIL_PASSWORD:', process.env.EMAIL_PASSWORD ? 'OK' : 'MISSING');
 
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
