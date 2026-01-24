@@ -1,3 +1,5 @@
+export const runtime = 'nodejs';
+
 // app/api/square/checkout/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
