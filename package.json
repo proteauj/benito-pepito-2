@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "@sendgrid/mail": "^8.1.6",
     "@square/web-sdk": "^2.1.0",
     "@tanstack/react-virtual": "^3.13.18",
     "@vercel/postgres": "^0.10.0",

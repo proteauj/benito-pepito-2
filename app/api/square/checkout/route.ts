@@ -122,8 +122,7 @@ export async function POST(req: NextRequest) {
     ------------------------------ */    
     try {
       await sendOrderEmail({
-        id: payment.id,
-        squarePaymentId: payment.id,
+        squarePaymentId: payment.id!,
         totalAmount: Number(total),
         currency: 'CAD',
         items: items.map(i => ({
