@@ -5,7 +5,7 @@ const config = {
       // Prisma Accelerate si défini
       ...(process.env.PRISMA_ACCELERATE_URL
         ? { accelerateUrl: process.env.PRISMA_ACCELERATE_URL }
-        : { url: process.env.DB_DATABASE_URL }), // fallback DB classique
+        : { url: process.env.DATABASE_URL }), // fallback DB classique
     },
   },
 }
