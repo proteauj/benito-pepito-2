@@ -1,4 +1,4 @@
-// lib/db/client.ts
+// lib/db/client.ts 
 import { PrismaClient } from '@prisma/client';
 
 if (!process.env.DATABASE_URL) {
