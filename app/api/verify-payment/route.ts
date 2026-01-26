@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     const { orderId } = await request.json();
     if (!orderId) return NextResponse.json({ error: 'orderId is required' }, { status: 400 });
 
-    const order = await prisma.order.update({
+    const order = await prisma!.order.update({
       where: { id: orderId },
       data: { status: 'completed' } // paiement effectué
     });

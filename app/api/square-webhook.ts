@@ -30,7 +30,7 @@ export async function POST(request: Request) {
       const shippingAddress = payment.shippingAddress;
 
       // Sauvegarde dans la table order
-      await prisma.order.create({
+      await prisma!.order.create({
         data: {
           squarePaymentId: '',
           totalAmount: payment.amount_money?.amount || 0,

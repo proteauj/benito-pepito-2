@@ -6,7 +6,7 @@ export class DatabaseService {
   static async createOrder(orderData: Omit<Order, 'id' | 'createdAt' | 'updatedAt'>): Promise<Order> {
     
     // Dans DatabaseService.createOrder
-    const order = await prisma.order.create({
+    const order = await prisma!.order.create({
       data: {
         squarePaymentId: orderData.squarePaymentId,
         customerEmail: orderData.customerEmail,
@@ -27,7 +27,7 @@ export class DatabaseService {
 
   static async updateOrderStatus(id: string, status: Order['status']): Promise<Order | null> {
     try {
-      const order = await prisma.order.update({
+      const order = await prisma!.order.update({
         where: { id }, // ✅ uniquement la clé unique
         data: { status, updatedAt: new Date() }
       });
