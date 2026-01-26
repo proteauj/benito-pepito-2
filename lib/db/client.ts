@@ -1,18 +1,26 @@
 // lib/db/client.ts
 import { PrismaClient } from '@prisma/client';
 
+if (!process.env.DATABASE_URL) {
+  throw new Error('❌ DATABASE_URL is missing at runtime');
+} else {
+  console.log('DATABASE_URL at runtime:', process.env.DATABASE_URL);
+}
 declare global {
-  // Évite les doubles instances en dev (Next.js app/)
   // eslint-disable-next-line no-var
   var prisma: PrismaClient | undefined;
 }
 
-// Création du client
 export const prisma =
-  global.prisma ||
+  global.prisma ??
   new PrismaClient({
-    log: ['query'], // optionnel, utile pour debug
+    datasources: {
+      db: {
+        url: process.env.DATABASE_URL, // 🔒 force explicite
+      },
+    },
   });
 
-// Pour dev uniquement
-if (process.env.NODE_ENV !== 'production') global.prisma = prisma;
+if (process.env.NODE_ENV !== 'production') {
+  global.prisma = prisma;
+}
