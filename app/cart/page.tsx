@@ -85,6 +85,16 @@ export default function CartPage() {
     return line_items.reduce((sum, item) => sum + item.line_total, 0);
   }, [line_items]);
 
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => {
+        router.push('/'); // redirige vers l'accueil
+      }, 2000); // 2 secondes
+
+      return () => clearTimeout(timer);
+    }
+  }, [success, router]);
+
   /* ------------------------------------------------------------------
      4️⃣ Paiement
   ------------------------------------------------------------------ */
@@ -101,7 +111,7 @@ export default function CartPage() {
       const nonce = result.token;
 
       const checkoutPayload = {
-        sourceId: result.token,
+        sourceId: nonce,
         total,
         items,
         customerEmail: email,
@@ -115,30 +125,23 @@ export default function CartPage() {
         body: JSON.stringify(checkoutPayload),
       });
 
-
       const data = await checkoutRes.json();
       if (!checkoutRes.ok) throw new Error(data.error || 'Erreur paiement');
 
-      alert('Paiement réussi !');
+      // ✅ Paiement réussi
+      setSuccess(true);
+      clearCart();
 
-      // 2️⃣ Mettre les produits en stock=false
-      const updateStockRes = await fetch('/api/products', { 
+      // Mettre les produits en stock=false
+      await fetch('/api/products', { 
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          productIds: (items || [])?.map(item => item.id),
-          inStock: false }),
+          productIds: items.map(item => item.id),
+          inStock: false
+        }),
       });
 
-      // const updateData = await updateStockRes.json();
-      const raw = await updateStockRes.text();
-      console.log('RAW RESPONSE:', raw);
-
-      // if (!updateStockRes.ok) throw new Error(updateData.error || 'Erreur mise à jour stock');
-
-      console.log('Produits mis à jour :', (items || [])?.map(item => item.id));
     } catch (e: any) {
       setError(e.message || 'Erreur serveur');
     } finally {
@@ -190,7 +193,7 @@ export default function CartPage() {
         )}
 
         {success && (
-          <div className="mb-4 p-3 rounded bg-green-100 text-green-800 text-center font-semibold">
+          <div className="mb-4 p-3 rounded bg-green-100 text-green-800 text-center font-semibold animate-pulse">
             Paiement réussi 🎉 Vous allez être redirigé vers l'accueil...
           </div>
         )}
