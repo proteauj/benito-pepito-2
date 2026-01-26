@@ -29,8 +29,9 @@ export async function POST(request: Request) {
       const shippingMethod = payment.shippingMethod
       const shippingAddress = payment.shippingAddress;
 
+      if (!prisma) throw new Error("Prisma client not initialized");
       // Sauvegarde dans la table order
-      await prisma!.order.create({
+      await prisma.order.create({
         data: {
           squarePaymentId: '',
           totalAmount: payment.amount_money?.amount || 0,
@@ -38,7 +39,7 @@ export async function POST(request: Request) {
           status: payment.status,
           customerEmail: email,
           shippingAddress: shippingAddress ? JSON.stringify(shippingAddress) : null,
-          shippingMethod: shippingMethod ? shippingMethod : null
+          shippingMethod: shippingMethod || null
         }
       });
     }

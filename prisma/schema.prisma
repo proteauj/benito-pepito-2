@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "file:./placeholder.db"
+  url      = "postgresql://user:password@invalid:5432/placeholder"
 }
 
 model User {

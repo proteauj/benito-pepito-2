@@ -1,13 +1,16 @@
-import { PrismaClient } from '@prisma/client'
-import { withAccelerate } from '@prisma/extension-accelerate'
+// lib/db/client.ts
+import { PrismaClient } from '@prisma/client';
+import { withAccelerate } from '@prisma/extension-accelerate';
 
-let prisma = new PrismaClient().$extends(withAccelerate())
+type ExtendedPrisma = PrismaClient & ReturnType<typeof withAccelerate>;
 
-// Eviter multiples instances en dev (Next.js hot reload)
-if (process.env.NODE_ENV !== 'production') {
-  ;(globalThis as any).prisma = (globalThis as any).prisma || prisma
-  prisma = (globalThis as any).prisma
+let prisma: ExtendedPrisma;
+
+if (process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE === 'phase-production-build') {
+  prisma = {} as any; // build-time placeholder
+} else {
+  prisma = new PrismaClient().$extends(withAccelerate()) as unknown as ExtendedPrisma;
 }
 
-export { prisma }
-export type Prisma = typeof prisma
+export { prisma };
+export type Prisma = typeof prisma;
