@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getPrisma } from '@/lib/db/client';
+import { prisma } from '@/lib/db/client'
 
 const SQUARE_WEBHOOK_SIGNATURE_KEY = process.env.SQUARE_WEBHOOK_SIGNATURE_KEY;
 
@@ -7,7 +7,6 @@ export async function POST(request: Request) {
   try {
     const body = await request.text();
     const signature = request.headers.get('x-square-signature');
-    const prisma = await getPrisma();
 
     // Vérifier la signature (Square recommande HMAC-SHA1)
     if (!SQUARE_WEBHOOK_SIGNATURE_KEY || !signature) {

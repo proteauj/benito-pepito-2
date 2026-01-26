@@ -1,10 +1,10 @@
-datasource db {
-  provider = "postgresql"
-  url      = env("DB_DATABASE_URL")
-}
-
 generator client {
   provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -13,17 +13,17 @@ model User {
 }
 
 model Order {
-  id             String    @id @default(cuid())
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id              String   @id @default(cuid())
   squarePaymentId String
-  customerEmail  String?
-  productIds     String[]
-  totalAmount    Float
-  currency       String
-  status         String
-  shippingMethod String?
+  customerEmail   String?
+  productIds      String[]
+  totalAmount     Float
+  currency        String
+  status          String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
   shippingAddress String?
+  shippingMethod  String?
 }
 
 model ProductStock {
@@ -40,8 +40,8 @@ model Migration {
 
 model PageVisit {
   id        String   @id @default(cuid())
-  page      String   // 'homepage', 'products', etc.
-  visitorIP String?  // Optionnel
-  userAgent String?  // Optionnel
+  page      String
+  visitorIP String?
+  userAgent String?
   visitedAt DateTime @default(now())
 }

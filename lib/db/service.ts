@@ -1,10 +1,9 @@
-import { getPrisma } from '@/lib/db/client';
+import { prisma } from '@/lib/db/client';
 import { Order, ProductStock } from './types';
 
 export class DatabaseService {
   // Orders
   static async createOrder(orderData: Omit<Order, 'id' | 'createdAt' | 'updatedAt'>): Promise<Order> {
-    const prisma = await getPrisma();
     
     // Dans DatabaseService.createOrder
     const order = await prisma.order.create({
@@ -28,7 +27,6 @@ export class DatabaseService {
 
   static async updateOrderStatus(id: string, status: Order['status']): Promise<Order | null> {
     try {
-      const prisma = await getPrisma();
       const order = await prisma.order.update({
         where: { id }, // ✅ uniquement la clé unique
         data: { status, updatedAt: new Date() }
@@ -42,8 +40,6 @@ export class DatabaseService {
   // Product Stock
   static async getProductStock(productId: string | number): Promise<boolean> {
     try {
-      const prisma = await getPrisma();
-
       const productIdStr = String(productId); // toujours string
       console.log('Fetching stock for productId:', productIdStr);
 
@@ -63,7 +59,6 @@ export class DatabaseService {
 
   static async updateProductStock(productId: string, inStock: boolean): Promise<void> {
     try {
-      const prisma = await getPrisma();
       await prisma.productStock.upsert({
         where: { productId },
         update: { inStock, updatedAt: new Date() },
@@ -76,7 +71,6 @@ export class DatabaseService {
 
   static async markProductAsSold(productId: string) {
     try {
-      const prisma = await getPrisma();
       const updatedProduct = await prisma.productStock.update({
         where: { productId },
         data: { inStock: false },
@@ -89,7 +83,6 @@ export class DatabaseService {
 
   static async updateMultipleProductStock(productIds: string[], inStock: boolean): Promise<void> {
     try {
-      const prisma = await getPrisma();
       await Promise.all(
         productIds.map(productId =>
           prisma.productStock.upsert({
