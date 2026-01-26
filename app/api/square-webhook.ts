@@ -1,14 +1,16 @@
-export const runtime = 'nodejs';
-
 // app/api/square-webhook.ts
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/db/client';
 import crypto from 'crypto';
+import { prisma } from '@/lib/db/client';
 
 const SQUARE_WEBHOOK_SIGNATURE_KEY = process.env.SQUARE_WEBHOOK_SIGNATURE_KEY;
 
 // Vérification HMAC-SHA1 de Square
-function verifySquareWebhookSignature(body: string, signature: string, secret: string) {
+function verifySquareWebhookSignature(
+  body: string,
+  signature: string,
+  secret: string
+) {
   const hmac = crypto.createHmac('sha1', secret);
   hmac.update(body);
   const hash = hmac.digest('base64');
@@ -21,7 +23,10 @@ export async function POST(request: Request) {
     const signature = request.headers.get('x-square-signature');
 
     if (!SQUARE_WEBHOOK_SIGNATURE_KEY || !signature) {
-      return NextResponse.json({ error: 'Webhook signature missing' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Webhook signature missing' },
+        { status: 400 }
+      );
     }
 
     if (!verifySquareWebhookSignature(body, signature, SQUARE_WEBHOOK_SIGNATURE_KEY)) {
@@ -34,33 +39,30 @@ export async function POST(request: Request) {
     if (event.type === 'payment.created' || event.type === 'payment.updated') {
       const payment = event.data.object.payment;
 
-      // Extraire les infos importantes
-      const email = payment.customer_details?.email_address || '';
+      const email = payment.customer_details?.email_address || null;
       const shippingMethod = payment.shipping_method || null;
-      const shippingAddress = payment.shipping_address || null;
-      const items = payment.order_items || null;       // Articles commandés
-      const metadata = payment.metadata || null;       // Metadata Square
+      const shippingAddress = payment.shipping_address
+        ? JSON.stringify(payment.shipping_address)
+        : null;
 
-      // Récupérer les IDs des produits depuis le paiement (à adapter selon ton payload)
-      const productIds: string[] = items?.map((item: any) => item.id) || [];
+      // Transforme les items en productIds (tableau de strings)
+      const productIds: string[] = (payment.order?.line_items || []).map(
+        (item: any) => item.catalog_object_id || item.name || ''
+      );
 
+      // Sauvegarde dans la table order
       await prisma.order.create({
         data: {
           squarePaymentId: payment.id || '',
-          totalAmount: payment.amount_money?.amount
-            ? payment.amount_money.amount // si amount est en cents
-            : 0,
+          totalAmount: payment.amount_money?.amount || 0,
           currency: payment.amount_money?.currency || 'CAD',
           status: payment.status || 'UNKNOWN',
           customerEmail: email,
-          shippingAddress: shippingAddress ? JSON.stringify(shippingAddress) : null,
+          shippingAddress,
           shippingMethod,
-          productIds, // ✅ ici le tableau de chaînes
+          productIds,
         },
       });
-
-
-      console.log('Commande sauvegardée Square webhook:', payment.id);
     }
 
     return NextResponse.json({ received: true });
