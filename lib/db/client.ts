@@ -2,14 +2,27 @@
 import { PrismaClient } from '@prisma/client';
 import { withAccelerate } from '@prisma/extension-accelerate';
 
-type ExtendedPrisma = PrismaClient & ReturnType<typeof withAccelerate>;
+// Type pour ton client étendu
+export type ExtendedPrisma = ReturnType<PrismaClient['$extends']>;
 
+// Prisma singleton pour éviter plusieurs instances
 let prisma: ExtendedPrisma;
 
+// On ne veut **pas** que le build essaie de se connecter à la DB
 if (process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE === 'phase-production-build') {
-  prisma = {} as any; // build-time placeholder
+  // Pendant le build, on renvoie un "stub" vide
+  prisma = {} as ExtendedPrisma;
 } else {
-  prisma = new PrismaClient().$extends(withAccelerate()) as unknown as ExtendedPrisma;
+  // ✅ Runtime (dev ou prod) : initialiser le vrai client avec accelerate
+  if (!process.env.DATABASE_URL) {
+    throw new Error('DATABASE_URL non défini !');
+  }
+
+  prisma = new PrismaClient({
+    datasources: {
+      db: { url: process.env.DATABASE_URL }, // s'assure qu'on prend bien l'env Vercel
+    },
+  }).$extends(withAccelerate());
 }
 
 export { prisma };
