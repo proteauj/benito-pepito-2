@@ -2,7 +2,7 @@
 const config = {
   datasources: {
     db: {
-      url: process.env.DATABASE_URL,
+      url: process.env.POSTGRES_PRISMA_URL,
     },
   },
 }
