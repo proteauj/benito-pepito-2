@@ -1,5 +1,5 @@
 // lib/db/client.ts
-import { PrismaClient } from '@prisma/client'; 
+import { PrismaClient } from '@prisma/client';
 
 declare global {
   // ⚠️ Permet à TypeScript de savoir que global.prisma existe
