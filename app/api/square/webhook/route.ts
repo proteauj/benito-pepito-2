@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
         squarePaymentId: payment.id,
         customerEmail: payment.customer_email || "",
         productIds: (payment.line_items || [])?.map((i: any) => i.name) || [],
-        totalAmount,
+        totalAmount: totalAmount * 100,
         currency: payment.total_money?.currency || "CAD",
         status: payment.status || "pending",
         shippingAddress: payment.shippingAddress,
