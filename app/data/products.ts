@@ -1673,9 +1673,9 @@ export const products: Product[] = [
   },
   {
     "id": "pa113",
-    "slug": "cactus-zigzag-2",
-    "title": "Cactus Zigzag 2",
-    "titleFr": "Cactus Zigzag 2",
+    "slug": "langues-belle-mere",
+    "title": "Langues Belle-mère",
+    "titleFr": "Langues Belle-mère",
     "size": "L",
     "price": 175,
     "image": "/images/paint113.jpeg",
@@ -1700,6 +1700,21 @@ export const products: Product[] = [
     "inStock": true,
     "year": 2025,
     "imageThumbnail": "/images/thumb/paint114.jpeg"
+  },
+  {
+    "id": "pa115",
+    "slug": "langues-belle-mere-2",
+    "title": "Langues Belle-mère 2",
+    "titleFr": "Langues Belle-mère 2",
+    "size": "L",
+    "price": 175,
+    "image": "/images/paint115.jpeg",
+    "category": "Painting",
+    "material": "Acrylic on Canvas",
+    "materialFr": "Acrylique sur toile",
+    "inStock": true,
+    "year": 2025,
+    "imageThumbnail": "/images/thumb/paint115.jpeg"
   },
   {
     "id": "hg1",
