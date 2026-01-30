@@ -1843,20 +1843,6 @@ export const products: Product[] = [
     "imageThumbnail": "/images/thumb/sculpt4.jpeg"
   },
   {
-    "id": "pr1",
-    "slug": "vase-1",
-    "title": "Vase 1",
-    "titleFr": "Vase 1",
-    "price": 15,
-    "image": "/images/print1.jpeg",
-    "category": "3DPrint",
-    "material": "Plastic",
-    "materialFr": "Plastique",
-    "inStock": true,
-    "year": 2025,
-    "imageThumbnail": "/images/thumb/print1.jpeg"
-  },
-  {
     "id": "pr2",
     "slug": "vase-2",
     "title": "Vase 2",
@@ -1911,19 +1897,5 @@ export const products: Product[] = [
     "inStock": true,
     "year": 2025,
     "imageThumbnail": "/images/thumb/print5.jpeg"
-  },
-  {
-    "id": "pr6",
-    "slug": "vase-4",
-    "title": "Vase 4",
-    "titleFr": "Vase 4",
-    "price": 40,
-    "image": "/images/print6.jpeg",
-    "category": "3DPrint",
-    "material": "Plastic",
-    "materialFr": "Plastique",
-    "inStock": true,
-    "year": 2025,
-    "imageThumbnail": "/images/thumb/print6.jpeg"
   },
 ];
