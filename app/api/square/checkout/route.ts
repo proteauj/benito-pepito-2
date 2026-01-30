@@ -10,7 +10,7 @@ import { sendOrderEmail } from '../../../../lib/email';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const {
+    var {
       sourceId,
       total,
       items,
@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
       shippingMethod,
       shippingAddress
     } = body;
+    total = total * 100;
 
     if (!sourceId || !total) {
       return NextResponse.json(

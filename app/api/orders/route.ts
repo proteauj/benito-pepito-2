@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     squarePaymentId: `square_${crypto.randomUUID()}`, // placeholder
     customerEmail: '', // sera rempli via webhook
     productIds,
-    totalAmount,
+    totalAmount: totalAmount * 100,
     currency: currency || 'CAD',
     status: 'pending',
   });
