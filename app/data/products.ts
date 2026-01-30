@@ -22,7 +22,7 @@ export const products: Product[] = [
     "title": "Terre-mère",
     "titleFr": "Terre-mère",
     "size": "S",
-    "price": 1,//75,
+    "price": 75,
     "image": "/images/paint2.jpeg",
     "category": "Painting",
     "material": "Acrylic on Canvas",
