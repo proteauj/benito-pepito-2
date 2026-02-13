@@ -60,7 +60,7 @@ export async function sendOrderEmail(
       <h3>Produits</h3>
       <ul>${itemsHtml}</ul>
 
-      <p><strong>Total :</strong> ${order.totalAmount} ${order.currency}</p>
+      <p><strong>Total :</strong> ${order.totalAmount / 100} ${order.currency}</p>
 
       ${shippingHtml}
 
