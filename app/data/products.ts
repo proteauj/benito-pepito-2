@@ -1792,6 +1792,21 @@ export const products: Product[] = [
     "imageThumbnail": "/images/thumb/paint120.jpeg"
   },
   {
+    "id": "pa121",
+    "slug": "abstrait-couleurs-tropicales",
+    "title": "Abstrait Couleurs Tropicales",
+    "titleFr": "Abstrait Couleurs Tropicales",
+    "size": "L",
+    "price": 175,
+    "image": "/images/paint121.jpeg",
+    "category": "Painting",
+    "material": "Oil on Canvas",
+    "materialFr": "Huile sur toile",
+    "inStock": true,
+    "year": 2025,
+    "imageThumbnail": "/images/thumb/paint121.jpeg"
+  },
+  {
     "id": "hg1",
     "slug": "wood-table-frêne",
     "title": "Wood table - Frêne",
