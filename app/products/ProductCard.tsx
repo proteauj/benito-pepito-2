@@ -3,7 +3,8 @@
 import { JSXElementConstructor, ReactElement, ReactNode, ReactPortal, useEffect, useState } from 'react';
 import { Product } from '../../lib/db/types';
 import { sizeDimensions } from '../data/dimensions';
-import { useI18n } from '../i18n/I18nProvider'
+import { useI18n } from '../i18n/I18nProvider';
+import SafeImage from "../components/SafeImage";
 
 interface ProductCardProps {
   product: Product;
@@ -81,15 +82,28 @@ export default function ProductCard({
             ${!useFullImg && !keepImgProportions ? 'aspect-square' : ''}
           `}
         >
-          <img
+          {/* <img
             src={useFullImg ? product.image : product.imageThumbnail || product.image || '/placeholder.png'}
             alt={product.titleFr}
             className={`
               block mx-auto relative z-10
               ${keepImgProportions ? 'h-auto object-contain' : 'h-full object-cover w-full'}
             `}
-          />
+          /> */}
+
+          <SafeImage
+  src={useFullImg ? product.image : product.imageThumbnail}
+  alt={product.titleFr}
+  className={`
+    mx-auto
+    ${keepImgProportions ? 'h-auto object-contain' : 'h-full object-cover w-full'}
+  `}
+/>
         </div>
+
+
+
+
 
         {expanded && (
           <div className="bg-white p-2">
