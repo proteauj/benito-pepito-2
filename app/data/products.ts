@@ -1261,7 +1261,7 @@ export const products: Product[] = [
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
-    "inStock": true,
+    "inStock": false,
     "year": 2025,
     "imageThumbnail": "/images/thumb/paint85.png"
   },

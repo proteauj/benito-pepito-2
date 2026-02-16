@@ -24,6 +24,7 @@ export const sizeDimensions: Record<string, Dimension[]> = {
   ],
   XL: [
     { width: 18, height: 24, unit: 'in' },
+    { width: 45, height: 16, unit: 'in' },
   ],
   XXL: [
     { width: 36, height: 24, unit: 'in' },
