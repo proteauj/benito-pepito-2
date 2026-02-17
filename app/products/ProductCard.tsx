@@ -55,8 +55,6 @@ export default function ProductCard({
 
         // ⚡ mettre à jour le state React
         setDims(sizeDimensions[data.size] || []);
-        console.log('fetchStock', data);
-        console.log('dims', sizeDimensions[data.size]);
       } catch (err) {
         console.error('Erreur récupération stock', err);
         setRealStock(product.inStock); // fallback
@@ -82,23 +80,14 @@ export default function ProductCard({
             ${!useFullImg && !keepImgProportions ? 'aspect-square' : ''}
           `}
         >
-          {/* <img
-            src={useFullImg ? product.image : product.imageThumbnail || product.image || '/placeholder.png'}
+          <SafeImage
+            src={useFullImg ? product.image : product.imageThumbnail}
             alt={product.titleFr}
             className={`
-              block mx-auto relative z-10
+              mx-auto
               ${keepImgProportions ? 'h-auto object-contain' : 'h-full object-cover w-full'}
             `}
-          /> */}
-
-          <SafeImage
-  src={useFullImg ? product.image : product.imageThumbnail}
-  alt={product.titleFr}
-  className={`
-    mx-auto
-    ${keepImgProportions ? 'h-auto object-contain' : 'h-full object-cover w-full'}
-  `}
-/>
+          />
         </div>
 
 

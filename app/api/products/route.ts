@@ -27,12 +27,22 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
 
-    let inStock = product.inStock; // fallback
+    let inStock = product.inStock; // fallback statique par défaut
 
-    try {
-      inStock = await DatabaseService.getProductStock(product.id);
-    } catch (err) {
-      console.warn('Stock fallback to product data');
+    if (DatabaseService) {
+      try {
+        const dbStock = await DatabaseService.getProductStock(product.id);
+
+        // ⚠️ IMPORTANT : distinguer "introuvable" de false
+        if (typeof dbStock === 'boolean') {
+          inStock = dbStock;
+        } else {
+          console.log('No DB stock found, using static value', product.id);
+        }
+
+      } catch (err) {
+        console.warn('DB error, fallback to static stock', product.id);
+      }
     }
 
     return NextResponse.json({
