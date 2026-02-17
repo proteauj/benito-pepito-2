@@ -8,13 +8,13 @@ export const products: Product[] = [
     "titleFr": "Phragemites dorées",
     "size": "XXL",
     "price": 275,
-    "image": "/images/paint1.jpeg",
+    "image": "/images/paint1.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint1.jpeg"
+    "imageThumbnail": "/images/thumb/paint1.png"
   },
   {
     "id": "pa2",
@@ -23,13 +23,13 @@ export const products: Product[] = [
     "titleFr": "Terre-mère",
     "size": "S",
     "price": 75,
-    "image": "/images/paint2.jpeg",
+    "image": "/images/paint2.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint2.jpeg"
+    "imageThumbnail": "/images/thumb/paint2.png"
   },
   {
     "id": "pa3",
@@ -38,13 +38,13 @@ export const products: Product[] = [
     "titleFr": "Richesses sumériennes",
     "size": "L",
     "price": 175,
-    "image": "/images/paint3.jpeg",
+    "image": "/images/paint3.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint3.jpeg"
+    "imageThumbnail": "/images/thumb/paint3.png"
   },
   {
     "id": "pa4",
@@ -53,13 +53,13 @@ export const products: Product[] = [
     "titleFr": "Tournesol soleil",
     "price": 50,
     "size": "XS",
-    "image": "/images/paint4.jpeg",
+    "image": "/images/paint4.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint4.jpeg"
+    "imageThumbnail": "/images/thumb/paint4.png"
   },
   {
     "id": "pa5",
@@ -68,13 +68,13 @@ export const products: Product[] = [
     "titleFr": "Gold Power Leaf",
     "price": 225,
     "size": "L",
-    "image": "/images/paint5.jpeg",
+    "image": "/images/paint5.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint5.jpeg"
+    "imageThumbnail": "/images/thumb/paint5.png"
   },
   {
     "id": "pa6",
@@ -83,13 +83,13 @@ export const products: Product[] = [
     "titleFr": "Duo Abstrait",
     "size": "S",
     "price": 100,
-    "image": "/images/paint6.jpeg",
+    "image": "/images/paint6.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint6.jpeg"
+    "imageThumbnail": "/images/thumb/paint6.png"
   },
   {
     "id": "pa7",
@@ -98,13 +98,13 @@ export const products: Product[] = [
     "titleFr": "Liberté Ananas",
     "size": "L",
     "price": 225,
-    "image": "/images/paint7.jpeg",
+    "image": "/images/paint7.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint7.jpeg"
+    "imageThumbnail": "/images/thumb/paint7.png"
   },
   {
     "id": "pa8",
@@ -113,13 +113,13 @@ export const products: Product[] = [
     "titleFr": "Hommage Vague de Changement Perpétuel",
     "size": "L",
     "price": 225,
-    "image": "/images/paint8.jpeg",
+    "image": "/images/paint8.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint8.jpeg"
+    "imageThumbnail": "/images/thumb/paint8.png"
   },
   {
     "id": "pa9",
@@ -128,13 +128,13 @@ export const products: Product[] = [
     "titleFr": "Chrysanthèmes Roses",
     "size": "XS",
     "price": 50,
-    "image": "/images/paint9.jpeg",
+    "image": "/images/paint9.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint9.jpeg"
+    "imageThumbnail": "/images/thumb/paint9.png"
   },
   {
     "id": "pa10",
@@ -143,13 +143,13 @@ export const products: Product[] = [
     "titleFr": "Abstrait Vagues",
     "size": "XS",
     "price": 50,
-    "image": "/images/paint10.jpeg",
+    "image": "/images/paint10.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint10.jpeg"
+    "imageThumbnail": "/images/thumb/paint10.png"
   },
   {
     "id": "pa11",
@@ -158,13 +158,13 @@ export const products: Product[] = [
     "titleFr": "Rêves de Ginger",
     "size": "M",
     "price": 175,
-    "image": "/images/paint11.jpeg",
+    "image": "/images/paint11.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint11.jpeg"
+    "imageThumbnail": "/images/thumb/paint11.png"
   },
   {
     "id": "pa12",
@@ -173,13 +173,13 @@ export const products: Product[] = [
     "titleFr": "Le Tribale d'or",
     "size": "L",
     "price": 125,
-    "image": "/images/paint12.jpeg",
+    "image": "/images/paint12.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint12.jpeg"
+    "imageThumbnail": "/images/thumb/paint12.png"
   },
   {
     "id": "pa13",
@@ -188,13 +188,13 @@ export const products: Product[] = [
     "titleFr": "Gold Leaf",
     "size": "M",
     "price": 125,
-    "image": "/images/paint13.jpeg",
+    "image": "/images/paint13.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint13.jpeg"
+    "imageThumbnail": "/images/thumb/paint13.png"
   },
   {
     "id": "pa14",
@@ -203,13 +203,13 @@ export const products: Product[] = [
     "titleFr": "Palmier aux Pépites",
     "size": "L",
     "price": 175,
-    "image": "/images/paint14.jpeg",
+    "image": "/images/paint14.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint14.jpeg"
+    "imageThumbnail": "/images/thumb/paint14.png"
   },
   {
     "id": "pa15",
@@ -218,13 +218,13 @@ export const products: Product[] = [
     "titleFr": "Power Vibe",
     "size": "L",
     "price": 125,
-    "image": "/images/paint15.jpeg",
+    "image": "/images/paint15.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint15.jpeg"
+    "imageThumbnail": "/images/thumb/paint15.png"
   },
   {
     "id": "pa16",
@@ -233,13 +233,13 @@ export const products: Product[] = [
     "titleFr": "Trilogie de Marigolds et Palmiers",
     "size": "L",
     "price": 225,
-    "image": "/images/paint16.jpeg",
+    "image": "/images/paint16.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint16.jpeg"
+    "imageThumbnail": "/images/thumb/paint16.png"
   },
   {
     "id": "pa17",
@@ -248,13 +248,13 @@ export const products: Product[] = [
     "titleFr": "Quatuor de Bananiers",
     "size": "XL",
     "price": 275,
-    "image": "/images/paint17.jpeg",
+    "image": "/images/paint17.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint17.jpeg"
+    "imageThumbnail": "/images/thumb/paint17.png"
   },
   {
     "id": "pa18",
@@ -263,13 +263,13 @@ export const products: Product[] = [
     "titleFr": "Coeurs à l'Unisson",
     "size": "S",
     "price": 100,
-    "image": "/images/paint18.jpeg",
+    "image": "/images/paint18.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint18.jpeg"
+    "imageThumbnail": "/images/thumb/paint18.png"
   },
   {
     "id": "pa19",
@@ -278,13 +278,13 @@ export const products: Product[] = [
     "titleFr": "Soleil Maya",
     "size": "L",
     "price": 175,
-    "image": "/images/paint19.jpeg",
+    "image": "/images/paint19.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint19.jpeg"
+    "imageThumbnail": "/images/thumb/paint19.png"
   },
   {
     "id": "pa20",
@@ -293,13 +293,13 @@ export const products: Product[] = [
     "titleFr": "Chute Abstraite",
     "size": "L",
     "price": 125,
-    "image": "/images/paint20.jpeg",
+    "image": "/images/paint20.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint20.jpeg"
+    "imageThumbnail": "/images/thumb/paint20.png"
   },
   {
     "id": "pa21",
@@ -308,13 +308,13 @@ export const products: Product[] = [
     "titleFr": "Rêve Bleu",
     "size": "M",
     "price": 175,
-    "image": "/images/paint21.jpeg",
+    "image": "/images/paint21.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint21.jpeg"
+    "imageThumbnail": "/images/thumb/paint21.png"
   },
   {
     "id": "pa22",
@@ -323,13 +323,13 @@ export const products: Product[] = [
     "titleFr": "Le Bouquet",
     "size": "L",
     "price": 225,
-    "image": "/images/paint22.jpeg",
+    "image": "/images/paint22.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint22.jpeg"
+    "imageThumbnail": "/images/thumb/paint22.png"
   },
   {
     "id": "pa23",
@@ -338,13 +338,13 @@ export const products: Product[] = [
     "titleFr": "Inukshuk l'Ancêtre - Hommage aux Premières Nations",
     "size": "L",
     "price": 225,
-    "image": "/images/paint23.jpeg",
+    "image": "/images/paint23.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint23.jpeg"
+    "imageThumbnail": "/images/thumb/paint23.png"
   },
   {
     "id": "pa24",
@@ -353,13 +353,13 @@ export const products: Product[] = [
     "titleFr": "Feuille Plume Palmier",
     "size": "M",
     "price": 125,
-    "image": "/images/paint24.jpeg",
+    "image": "/images/paint24.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint24.jpeg"
+    "imageThumbnail": "/images/thumb/paint24.png"
   },
   {
     "id": "pa25",
@@ -368,13 +368,13 @@ export const products: Product[] = [
     "titleFr": "Rêves Gingembre d'or",
     "size": "M",
     "price": 125,
-    "image": "/images/paint25.jpeg",
+    "image": "/images/paint25.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint25.jpeg"
+    "imageThumbnail": "/images/thumb/paint25.png"
   },
   {
     "id": "pa26",
@@ -383,13 +383,13 @@ export const products: Product[] = [
     "titleFr": "Inukshuk Naturel - Hommage aux Premières Nations",
     "size": "L",
     "price": 225,
-    "image": "/images/paint26.jpeg",
+    "image": "/images/paint26.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint26.jpeg"
+    "imageThumbnail": "/images/thumb/paint26.png"
   },
   {
     "id": "pa27",
@@ -398,13 +398,13 @@ export const products: Product[] = [
     "titleFr": "Duo de Feuilles Squelettes",
     "size": "M",
     "price": 150,
-    "image": "/images/paint27.jpeg",
+    "image": "/images/paint27.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint27.jpeg"
+    "imageThumbnail": "/images/thumb/paint27.png"
   },
   {
     "id": "pa28",
@@ -413,13 +413,13 @@ export const products: Product[] = [
     "titleFr": "Inukshuk Vert et Or - Hommage aux Premières Nations",
     "size": "M",
     "price": 225,
-    "image": "/images/paint28.jpeg",
+    "image": "/images/paint28.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint28.jpeg"
+    "imageThumbnail": "/images/thumb/paint28.png"
   },
   {
     "id": "pa29",
@@ -428,13 +428,13 @@ export const products: Product[] = [
     "titleFr": "Quatuor de Bananiers",
     "size": "L",
     "price": 225,
-    "image": "/images/paint29.jpeg",
+    "image": "/images/paint29.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint29.jpeg"
+    "imageThumbnail": "/images/thumb/paint29.png"
   },
   {
     "id": "pa30",
@@ -443,13 +443,13 @@ export const products: Product[] = [
     "titleFr": "Abstrait Attraits Féminins",
     "size": "L",
     "price": 175,
-    "image": "/images/paint30.jpeg",
+    "image": "/images/paint30.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint30.jpeg"
+    "imageThumbnail": "/images/thumb/paint30.png"
   },
   {
     "id": "pa31",
@@ -458,13 +458,13 @@ export const products: Product[] = [
     "titleFr": "Feuille Tropicale Dorée",
     "size": "M",
     "price": 175,
-    "image": "/images/paint31.jpeg",
+    "image": "/images/paint31.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint31.jpeg"
+    "imageThumbnail": "/images/thumb/paint31.png"
   },
   {
     "id": "pa32",
@@ -473,13 +473,13 @@ export const products: Product[] = [
     "titleFr": "Éclat de Beautés Bleutées",
     "size": "L",
     "price": 175,
-    "image": "/images/paint32.jpeg",
+    "image": "/images/paint32.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint32.jpeg"
+    "imageThumbnail": "/images/thumb/paint32.png"
   },
   {
     "id": "pa33",
@@ -488,13 +488,13 @@ export const products: Product[] = [
     "titleFr": "Fougères Black and Gold",
     "size": "M",
     "price": 225,
-    "image": "/images/paint33.jpeg",
+    "image": "/images/paint33.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint33.jpeg"
+    "imageThumbnail": "/images/thumb/paint33.png"
   },
   {
     "id": "pa34",
@@ -503,13 +503,13 @@ export const products: Product[] = [
     "titleFr": "Trio Botanique Tropical Olé Olé",
     "size": "L",
     "price": 175,
-    "image": "/images/paint34.jpeg",
+    "image": "/images/paint34.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint34.jpeg"
+    "imageThumbnail": "/images/thumb/paint34.png"
   },
   {
     "id": "pa35",
@@ -1453,8 +1453,8 @@ export const products: Product[] = [
     "slug": "feuilles-dorees-inversees",
     "title": "Feuilles Dorées Inversées",
     "titleFr": "Feuilles Dorées Inversées",
-    "size": "M",
-    "price": 175,
+    "size": "L",
+    "price": 225,
     "image": "/images/paint98.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
@@ -1588,13 +1588,13 @@ export const products: Product[] = [
     "titleFr": "Désert",
     "size": "L",
     "price": 175,
-    "image": "/images/paint107.jpeg",
+    "image": "/images/paint107.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint107.jpeg"
+    "imageThumbnail": "/images/thumb/paint107.png"
   },
   {
     "id": "pa108",
@@ -1603,13 +1603,13 @@ export const products: Product[] = [
     "titleFr": "Triologie Tropicale",
     "size": "L",
     "price": 175,
-    "image": "/images/paint108.jpeg",
+    "image": "/images/paint108.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint108.jpeg"
+    "imageThumbnail": "/images/thumb/paint108.png"
   },
   {
     "id": "pa109",
@@ -1618,13 +1618,13 @@ export const products: Product[] = [
     "titleFr": "Fleurs Hommage Deuil Périnatal",
     "size": "L",
     "price": 175,
-    "image": "/images/paint109.jpeg",
+    "image": "/images/paint109.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint109.jpeg"
+    "imageThumbnail": "/images/thumb/paint109.png"
   },
   {
     "id": "pa110",
@@ -1633,13 +1633,13 @@ export const products: Product[] = [
     "titleFr": "Cactus Fleuri Piquant",
     "size": "L",
     "price": 175,
-    "image": "/images/paint110.jpeg",
+    "image": "/images/paint110.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint110.jpeg"
+    "imageThumbnail": "/images/thumb/paint110.png"
   },
   {
     "id": "pa111",
@@ -1648,13 +1648,13 @@ export const products: Product[] = [
     "titleFr": "Cactus Doré",
     "size": "L",
     "price": 175,
-    "image": "/images/paint111.jpeg",
+    "image": "/images/paint111.png",
     "category": "Painting",
     "material": "Acrylic on Canvas",
     "materialFr": "Acrylique sur toile",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/paint111.jpeg"
+    "imageThumbnail": "/images/thumb/paint111.png"
   },
   {
     "id": "pa112",
@@ -1869,13 +1869,13 @@ export const products: Product[] = [
     "title": "Fontain – Bird Bath",
     "titleFr": "Fontaine – Bain d'oiseaux",
     "price": 800,
-    "image": "/images/home5.PNG",
+    "image": "/images/home5.jpeg",
     "category": "HomeGarden",
     "material": "Metal",
     "materialFr": "Métal",
     "inStock": true,
     "year": 2025,
-    "imageThumbnail": "/images/thumb/home5.PNG"
+    "imageThumbnail": "/images/thumb/home5.jpeg"
   },
   {
     "id": "hg6",
